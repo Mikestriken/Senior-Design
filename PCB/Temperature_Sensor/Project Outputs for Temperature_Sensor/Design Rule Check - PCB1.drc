@@ -1,0 +1,121 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\micha\Desktop\School_Stuff\Classes\Senior-Design\PCB\Temperature_Sensor\PCB1.PcbDoc
+Date     : 11/6/2023
+Time     : 5:09:37 PM
+
+Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=100mil) (Preferred=20mil) (InNet('+5'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=100mil) (Preferred=6mil) (All)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=10mil) (Max=100mil) (Preferred=20mil) (InNet('GND'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=10mil) (Preferred=6mil) (InNet('SCLK'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=10mil) (Preferred=6mil) (InNet('MISO'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=10mil) (Preferred=6mil) (InNet('NetU2_3'))
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=6mil) (Max=10mil) (Preferred=6mil) (InNet('\C\S\'))
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Direct Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=1mil) (Max=100mil) (All)
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk To Solder Mask (Clearance=10mil) (IsPad),(All)
+Rule Violations :0
+
+Processing Rule : Silk to Silk (Clearance=10mil) (All),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Board Clearance Constraint (Gap=0mil) (All)
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)
+Rule Violations :0
+
+Waived Violations Of Rule : Clearance Constraint (Gap=10mil) (All),(All)
+   Waived Violation between Clearance Constraint: (9.842mil < 10mil) Between Pad R1-1(910mil,601.299mil) on Top Layer And Pad R1-2(910mil,638.701mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.842mil < 10mil) Between Pad R2-1(910mil,508.701mil) on Top Layer And Pad R2-2(910mil,471.299mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.219mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Pad U1-2(624.409mil,580mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (5.905mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Pad U1-5(650mil,508.068mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.405mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Track (624.409mil,580mil)(624.409mil,643.591mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.219mil < 10mil) Between Pad U1-2(624.409mil,580mil) on Top Layer And Pad U1-3(598.819mil,580mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.405mil < 10mil) Between Pad U1-2(624.409mil,580mil) on Top Layer And Track (598.819mil,508.068mil)(598.819mil,580mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.405mil < 10mil) Between Pad U1-3(598.819mil,580mil) on Top Layer And Track (624.409mil,580mil)(624.409mil,643.591mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (6.939mil < 10mil) Between Pad U3-3(254.575mil,180mil) on Top Layer And Pad U3-4(190mil,180mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Clearance Constraint: (9.591mil < 10mil) Between Track (598.819mil,508.068mil)(598.819mil,580mil) on Top Layer And Track (624.409mil,580mil)(624.409mil,643.591mil) on Top Layer Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+Waived Violations :10
+
+Waived Violations Of Rule : Minimum Solder Mask Sliver (Gap=10mil) (All),(All)
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (4.598mil < 10mil) Between Pad C1-1(750mil,506.929mil) on Top Layer And Pad C1-2(750mil,473.071mil) on Top Layer [Top Solder] Mask Sliver [4.598mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (4.598mil < 10mil) Between Pad C2-1(480mil,342.071mil) on Top Layer And Pad C2-2(480mil,375.929mil) on Top Layer [Top Solder] Mask Sliver [4.598mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (9.441mil < 10mil) Between Pad C2-2(480mil,375.929mil) on Top Layer And Via (480mil,429mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [9.441mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (4.598mil < 10mil) Between Pad C3-1(189.929mil,285mil) on Top Layer And Pad C3-2(156.071mil,285mil) on Top Layer [Top Solder] Mask Sliver [4.598mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (1.843mil < 10mil) Between Pad R1-1(910mil,601.299mil) on Top Layer And Pad R1-2(910mil,638.701mil) on Top Layer [Top Solder] Mask Sliver [1.843mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (1.843mil < 10mil) Between Pad R2-1(910mil,508.701mil) on Top Layer And Pad R2-2(910mil,471.299mil) on Top Layer [Top Solder] Mask Sliver [1.843mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (9.52mil < 10mil) Between Pad R2-2(910mil,471.299mil) on Top Layer And Via (909mil,415mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [9.52mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (9.219mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Pad U1-2(624.409mil,580mil) on Top Layer [Top Solder] Mask Sliver [9.219mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (5.905mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Pad U1-5(650mil,508.068mil) on Top Layer [Top Solder] Mask Sliver [5.905mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.184mil < 10mil) Between Pad U1-1(650mil,580mil) on Top Layer And Via (624.409mil,643.591mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [6.184mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (9.219mil < 10mil) Between Pad U1-2(624.409mil,580mil) on Top Layer And Pad U1-3(598.819mil,580mil) on Top Layer [Top Solder] Mask Sliver [9.219mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (1.577mil < 10mil) Between Pad U1-2(624.409mil,580mil) on Top Layer And Via (624.409mil,643.591mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [1.577mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (5.905mil < 10mil) Between Pad U1-3(598.819mil,580mil) on Top Layer And Pad U1-4(598.819mil,508.068mil) on Top Layer [Top Solder] Mask Sliver [5.905mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (9.262mil < 10mil) Between Pad U1-3(598.819mil,580mil) on Top Layer And Via (624.409mil,643.591mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [9.262mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.567mil < 10mil) Between Pad U2-1(490.591mil,257.402mil) on Top Layer And Pad U2-2(490.591mil,220mil) on Top Layer [Top Solder] Mask Sliver [6.567mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.567mil < 10mil) Between Pad U2-2(490.591mil,220mil) on Top Layer And Pad U2-3(490.591mil,182.598mil) on Top Layer [Top Solder] Mask Sliver [6.567mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.567mil < 10mil) Between Pad U2-4(589.409mil,182.598mil) on Top Layer And Pad U2-5(589.409mil,220mil) on Top Layer [Top Solder] Mask Sliver [6.567mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.567mil < 10mil) Between Pad U2-5(589.409mil,220mil) on Top Layer And Pad U2-6(589.409mil,257.402mil) on Top Layer [Top Solder] Mask Sliver [6.567mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.939mil < 10mil) Between Pad U3-1(254.575mil,128.819mil) on Top Layer And Pad U3-5(190mil,128.819mil) on Top Layer [Top Solder] Mask Sliver [6.939mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Minimum Solder Mask Sliver Constraint: (6.939mil < 10mil) Between Pad U3-3(254.575mil,180mil) on Top Layer And Pad U3-4(190mil,180mil) on Top Layer [Top Solder] Mask Sliver [6.939mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+Waived Violations :20
+
+Waived Violations Of Rule : Silk To Solder Mask (Clearance=10mil) (IsPad),(All)
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C1-1(750mil,506.929mil) on Top Layer And Track (731.102mil,470.315mil)(731.102mil,509.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C1-1(750mil,506.929mil) on Top Layer And Track (768.898mil,470.315mil)(768.898mil,509.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C1-2(750mil,473.071mil) on Top Layer And Track (731.102mil,470.315mil)(731.102mil,509.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C1-2(750mil,473.071mil) on Top Layer And Track (768.898mil,470.315mil)(768.898mil,509.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C2-1(480mil,342.071mil) on Top Layer And Track (461.102mil,339.315mil)(461.102mil,378.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C2-1(480mil,342.071mil) on Top Layer And Track (498.898mil,339.315mil)(498.898mil,378.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C2-2(480mil,375.929mil) on Top Layer And Track (461.102mil,339.315mil)(461.102mil,378.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C2-2(480mil,375.929mil) on Top Layer And Track (498.898mil,339.315mil)(498.898mil,378.685mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C3-1(189.929mil,285mil) on Top Layer And Track (153.315mil,266.102mil)(192.685mil,266.102mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C3-1(189.929mil,285mil) on Top Layer And Track (153.315mil,303.898mil)(192.685mil,303.898mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C3-2(156.071mil,285mil) on Top Layer And Track (153.315mil,266.102mil)(192.685mil,266.102mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+   Waived Violation between Silk To Solder Mask Clearance Constraint: (4.582mil < 10mil) Between Pad C3-2(156.071mil,285mil) on Top Layer And Track (153.315mil,303.898mil)(192.685mil,303.898mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.582mil]Waived by Michael Marais at 11/6/2023 5:09:07 PMPart of Footprint Design
+Waived Violations :12
+
+
+Violations Detected : 0
+Waived Violations : 42
+PCB Health Issues : 0
+Time Elapsed        : 00:00:01

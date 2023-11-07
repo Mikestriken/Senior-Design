@@ -1,0 +1,141 @@
+Added Component: Designator=C1(CAPC1005X55N)
+Add component (AddParameter): Name = "Digi-Key_Part_Number"; Value = "311-1047-1-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "CC0402ZRY5V7BB104"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "0402 Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/CC0402ZRY5V7BB104/Yageo/view-part/1821018/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0.1 µF"; VariantName = "[No Variations]"
+Added Component: Designator=C2(CAPC1005X55N)
+Add component (AddParameter): Name = "Digi-Key_Part_Number"; Value = "311-1047-1-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "CC0402ZRY5V7BB104"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "0402 Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/CC0402ZRY5V7BB104/Yageo/view-part/1821018/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0.1 µF"; VariantName = "[No Variations]"
+Added Component: Designator=C3(CAPC1005X55N)
+Add component (AddParameter): Name = "Digi-Key_Part_Number"; Value = "311-1047-1-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "CC0402ZRY5V7BB104"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "0402 Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/CC0402ZRY5V7BB104/Yageo/view-part/1821018/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0.1 µF"; VariantName = "[No Variations]"
+Added Component: Designator=J1(CON-WURTH_61300611121)
+Add component (AddParameter): Name = "Body Breadth"; Value = "0.1inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Body Length"; Value = "0.8inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Category"; Value = "Connectors"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/61300611121/Wurth+Electronics+Inc./view-part/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1Description"; Value = "https://datasheet.ciiva.com:443/pdfs/VipMasterIC/IC/SAMI/SAMI-S-A0001504555/SAMI-S-A0001504555-1.pdf?src-supplier=IHS+Markit"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink1URL"; Value = "https://datasheet.ciiva.com:443/pdfs/VipMasterIC/IC/SAMI/SAMI-S-A0001504555/SAMI-S-A0001504555-1.pdf?src-supplier=IHS+Markit"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2Description"; Value = "https://datasheet.ciiva.com/410/tx-1xx-x-x-mkt1-410208.pdf?src-supplier=Digi-Key"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "ComponentLink2URL"; Value = "https://datasheet.ciiva.com/410/tx-1xx-x-x-mkt1-410208.pdf?src-supplier=Digi-Key"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Connector Type"; Value = "BOARD CONNECTOR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Finish - Mating"; Value = "TIN OVER COPPER (100)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Finish - Termination"; Value = "TIN OVER COPPER (100)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Gender"; Value = "Male"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Material"; Value = "Brass"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Pattern"; Value = "RECTANGULAR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Contact Style"; Value = "RND PIN-SKT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "DIN Conformance"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Filter Feature"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "IEC Conformance"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Insulation Color"; Value = "Black"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Insulation Material"; Value = "Glass"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "JESD-609 Code"; Value = "e3"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer"; Value = "Samtec"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Part Number"; Value = "TS-108-T-A"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer Series"; Value = "TS"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mating Contact Pitch"; Value = "0.1inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mating Information"; Value = "MULTIPLE MATING PARTS AVAILABLE"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Operating Temperature"; Value = "105°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MIL Conformance"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Min Operating Temperature"; Value = "-55°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mixed Contacts"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mounting Style"; Value = "STRAIGHT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mounting Technology"; Value = "Board"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "61300611121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number Of Connectors"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Contacts"; Value = "48"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number Of PCB Rows"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Number of Rows Loaded"; Value = "1"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Option"; Value = "General Purpose"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PCB Contact Pattern"; Value = "RECTANGULAR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Plating Thickness"; Value = "200uin"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Pricing 1"; Value = "1=1.5, 50=1.17, 100=0.94, 500=0.8, 1000=0.64, 2000=0.58, 5000=0.47 (USD)"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Reach SVHC Compliant"; Value = "No"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Reference Standard"; Value = "UL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Reliability"; Value = "COMMERCIAL"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS Compliant"; Value = "Yes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/61300611121/Wurth+Electronics+Inc./view-part/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Stock 1"; Value = "10"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier 1"; Value = "Arrow Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Supplier Part Number 1"; Value = "TS-108-T-A"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Terminal Length"; Value = "0.156inch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Terminal Pitch"; Value = "2.54mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Termination"; Value = "Solder"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=R1(RESC1005X40X25ML05T10)
+Add component (AddParameter): Name = "Manufacturer"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Part Number"; Value = "RC0402FR-071K13L"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1130 O"; VariantName = "[No Variations]"
+Added Component: Designator=R2(RESC1005X40X25ML05T10)
+Add component (AddParameter): Name = "Manufacturer"; Value = "Yageo"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Part Number"; Value = "RC0402FR-071K33L"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "1330 O"; VariantName = "[No Variations]"
+Added Component: Designator=U1(FP-DCK0005A-IPC_A)
+Add component (AddParameter): Name = "RoHS Compliant"; Value = "Yes"; VariantName = "[No Variations]"
+Added Component: Designator=U2(ADC-SOT95P280X145-6N)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "{'manufacturer': u'Texas Instruments'}"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "ADC101S021CIMFX/NOPB"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=U3(TMP-FP-DCK0005A-IPC_B)
+Add component (AddParameter): Name = "Interface"; Value = "Analog"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Max Operating Temperature"; Value = "150°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Min Operating Temperature"; Value = "-40°C"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mount"; Value = "Surface Mount"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Output Type"; Value = "Analog Voltage"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Packaging"; Value = "Tape and Reel"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RoHS Compliant"; Value = "Yes"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=+5 Pin=C1-1
+Added Pin To Net: NetName=+5 Pin=C3-2
+Added Pin To Net: NetName=+5 Pin=J1-01
+Added Pin To Net: NetName=+5 Pin=R1-2
+Added Pin To Net: NetName=+5 Pin=U1-5
+Added Pin To Net: NetName=+5 Pin=U3-4
+Added Net: Name=+5
+Added Pin To Net: NetName=\C\S\ Pin=J1-04
+Added Pin To Net: NetName=\C\S\ Pin=U2-6
+Added Net: Name=\C\S\
+Added Pin To Net: NetName=GND Pin=C1-2
+Added Pin To Net: NetName=GND Pin=C2-1
+Added Pin To Net: NetName=GND Pin=C3-1
+Added Pin To Net: NetName=GND Pin=J1-06
+Added Pin To Net: NetName=GND Pin=R2-2
+Added Pin To Net: NetName=GND Pin=U1-2
+Added Pin To Net: NetName=GND Pin=U2-2
+Added Pin To Net: NetName=GND Pin=U3-2
+Added Net: Name=GND
+Added Pin To Net: NetName=MISO Pin=J1-02
+Added Pin To Net: NetName=MISO Pin=U2-5
+Added Net: Name=MISO
+Added Pin To Net: NetName=NetC2_2 Pin=C2-2
+Added Pin To Net: NetName=NetC2_2 Pin=U1-3
+Added Pin To Net: NetName=NetC2_2 Pin=U1-4
+Added Pin To Net: NetName=NetC2_2 Pin=U2-1
+Added Net: Name=NetC2_2
+Added Pin To Net: NetName=NetR1_1 Pin=R1-1
+Added Pin To Net: NetName=NetR1_1 Pin=R2-1
+Added Pin To Net: NetName=NetR1_1 Pin=U1-1
+Added Net: Name=NetR1_1
+Added Pin To Net: NetName=NetU2_3 Pin=U2-3
+Added Pin To Net: NetName=NetU2_3 Pin=U3-3
+Added Net: Name=NetU2_3
+Added Pin To Net: NetName=SCLK Pin=J1-05
+Added Pin To Net: NetName=SCLK Pin=U2-4
+Added Net: Name=SCLK
+Added Class: Name=Sheet1

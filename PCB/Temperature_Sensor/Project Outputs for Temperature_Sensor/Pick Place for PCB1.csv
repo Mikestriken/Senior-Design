@@ -1,0 +1,22 @@
+Altium Designer Pick and Place Locations
+C:\Users\micha\Desktop\School_Stuff\Classes\Senior-Design\PCB\Temperature_Sensor\Project Outputs for Temperature_Sensor\Pick Place for PCB1.csv
+
+========================================================================================================================
+File Design Information:
+
+Date:       06/11/23
+Time:       19:55
+Revision:   f1e9ef1239338ec6216c3bf787134cebd96b45a5
+Variant:    No variations
+Units used: mil
+
+"Designator","Comment","Layer","Footprint","Center-X(mil)","Center-Y(mil)","Rotation","Description"
+"U3","TMP235A2DCKR","TopLayer","TMP-FP-DCK0005A-IPC_B","222.287","154.409","180","SENSOR ANALOG -40C-150C SC70-5"
+"U2","ADC101S021CIMF","TopLayer","ADC-SOT95P280X145-6N","540.000","220.000","0",""
+"U1","LM321LVIDCKR","TopLayer","FP-DCK0005A-IPC_A","624.409","544.034","270","IC OPAMP GP 1 CIRCUIT SC70-5"
+"R2","RC0402FR-071K33L","TopLayer","RESC1005X40X25ML05T10","910.000","490.000","270",""
+"R1","RC0402FR-071K13L","TopLayer","RESC1005X40X25ML05T10","910.000","620.000","90",""
+"J1","61300611121","TopLayer","CON-WURTH_61300611121","1110.000","390.000","270","Board Connector, 48 Contact(s), 1 Row(s), Male, Straight, 0.1 inch Pitch, Solder Terminal, Black Insulator"
+"C3","CC0402ZRY5V7BB104","TopLayer","CAPC1005X55N","173.000","285.000","180","0.1µF -20%, +80% 16V Ceramic Capacitor Y5V (F) 0402 (1005 Metric)"
+"C2","CC0402ZRY5V7BB104","TopLayer","CAPC1005X55N","480.000","359.000","90","0.1µF -20%, +80% 16V Ceramic Capacitor Y5V (F) 0402 (1005 Metric)"
+"C1","CC0402ZRY5V7BB104","TopLayer","CAPC1005X55N","750.000","490.000","270","0.1µF -20%, +80% 16V Ceramic Capacitor Y5V (F) 0402 (1005 Metric)"
