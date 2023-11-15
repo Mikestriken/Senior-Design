@@ -49,7 +49,11 @@ PrefsVaultGUID=
 PrefsRevisionGUID=
 
 [Document1]
+<<<<<<< HEAD:PCB/Temperature_Sensor/Temperature_Sensor.PrjPcb
 DocumentPath=PcbLib1.PcbLib
+=======
+DocumentPath=Sheet1.SchDoc
+>>>>>>> Weather_Station_PCB:PCB/Weather_Station/Weather_Station.PrjPcb
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -63,7 +67,11 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
+<<<<<<< HEAD:PCB/Temperature_Sensor/Temperature_Sensor.PrjPcb
 DocumentUniqueId=DNNADRHD
+=======
+DocumentUniqueId=QPENMJZH
+>>>>>>> Weather_Station_PCB:PCB/Weather_Station/Weather_Station.PrjPcb
 
 [Document2]
 DocumentPath=Schlib1.SchLib
@@ -80,6 +88,7 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
+<<<<<<< HEAD:PCB/Temperature_Sensor/Temperature_Sensor.PrjPcb
 DocumentUniqueId=TQMJNHQT
 
 [Document3]
@@ -101,6 +110,12 @@ DocumentUniqueId=IXMKTGWU
 
 [Document4]
 DocumentPath=PCB1.PcbDoc
+=======
+DocumentUniqueId=YHENPRET
+
+[Document3]
+DocumentPath=PcbLib1.PcbLib
+>>>>>>> Weather_Station_PCB:PCB/Weather_Station/Weather_Station.PrjPcb
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -114,6 +129,7 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
+<<<<<<< HEAD:PCB/Temperature_Sensor/Temperature_Sensor.PrjPcb
 DocumentUniqueId=XGEOWXTL
 
 [Document5]
@@ -250,6 +266,9 @@ DItemRevisionGUID=
 [GeneratedDocument21]
 DocumentPath=Project Outputs for Temperature_Sensor\Pick Place for PCB1.csv
 DItemRevisionGUID=
+=======
+DocumentUniqueId=YSRVYGPQ
+>>>>>>> Weather_Station_PCB:PCB/Weather_Station/Weather_Station.PrjPcb
 
 [Configuration1]
 Name=Sources
@@ -271,7 +290,7 @@ ConfigParameters0=OP_Analysis=False|TRAN_Analysis=True|DC_Analysis=False|AC_Anal
 [OutputGroup1]
 Name=Netlist Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=CadnetixNetlist
 OutputName1=Cadnetix Netlist
@@ -382,7 +401,7 @@ OutputDefault21=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=AdvSimNetlist
 OutputName1=Mixed Sim
@@ -395,7 +414,7 @@ Configuration1_Item1=OP_Analysis=False|TRAN_Analysis=True|DC_Analysis=False|AC_A
 [OutputGroup3]
 Name=Documentation Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=Composite
 OutputName1=Composite Drawing
@@ -491,7 +510,7 @@ PageOptions15=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|Print
 [OutputGroup4]
 Name=Assembly Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=Test Points For Assembly
 OutputName1=Test Point Report
@@ -517,7 +536,7 @@ PageOptions3=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintS
 [OutputGroup5]
 Name=Fabrication Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=CompositeDrill
 OutputName1=Composite Drill Drawing
@@ -637,7 +656,7 @@ Configuration12_Item2=AddToAllLayerClasses.Set= |AddToAllPlots.Set=SerializeLaye
 [OutputGroup6]
 Name=Report Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=BOM_PartType
 OutputName1=Bill of Materials
@@ -692,7 +711,7 @@ OutputDefault9=0
 [OutputGroup7]
 Name=Other Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=Text Print
 OutputName1=Text Print
@@ -800,7 +819,7 @@ PageOptions17=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|Print
 [OutputGroup8]
 Name=Validation Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=BOM_Violations
 OutputName1=BOM Checks Report
@@ -844,7 +863,7 @@ OutputDefault7=0
 [OutputGroup9]
 Name=Export Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=AutoCAD dwg/dxf PCB
 OutputName1=AutoCAD dwg/dxf File PCB
@@ -910,7 +929,7 @@ OutputDefault12=0
 [OutputGroup10]
 Name=PostProcess Outputs
 Description=
-TargetPrinter=HP97E38C (HP OfficeJet Pro 6960)
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputType1=Copy Files
 OutputName1=Copy Files
