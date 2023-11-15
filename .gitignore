@@ -1,3 +1,9 @@
+# Archives
+*.zip
+
+# Altium Outputs
+Project Outputs for Temperature_Sensor/
+
 # Windows default autosave extension
 *.asv
 
