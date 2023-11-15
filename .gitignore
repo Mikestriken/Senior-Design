@@ -1,5 +1,6 @@
 # Archives
 *.zip
+*.Zip
 
 # Altium Outputs
 Project Outputs for Temperature_Sensor/
