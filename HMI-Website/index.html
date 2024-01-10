@@ -12,36 +12,81 @@
 </head>
 <body>
     <main class="container">
-        <h1>Docking Station</h1>
-        <section>
+        <section id="dockingStation">
+            <h1>Docking Station</h1>
+            
             <article id="door">
                 <span class="label">Door Controls</span>
-                <button>Open</button>
-                <button>Close</button>
+                <div id="doorButtons">
+                    <button class="input" id="openDoorButton">Open</button>
+                    <button class="input" id="closeDoorButton">Close</button>
+                </div>
             </article>
 
             <article id="internalTemperature">
                 <span class="label">Internal Temperature:</span>
-                <span class="output"></span>
+                <span class="output" id="internalTemperatureOutput"></span>
                 <span>°C</span>
             </article>
 
             <article id="powerStatus">
                 <span class="label">Power:</span>
-                <span class="output"></span>
+                <span class="output" id="powerStatusOutput"></span>
             </article>
 
             <article id="chargerStatus">
                 <span class="label">Charger Status:</span>
-                <span class="output"></span>
+                <span class="output" id="chargerStatusOutput"></span>
             </article>
         </section>
 
-        <h1>Spot</h1>
-        
-        
-        <h1>Weather Station</h1>
+        <section id="spot">
+            <h1>Spot</h1>
+            
+            <article id="battery">
+                <figure class="batteryGraphic" id="batteryGraphicOutput"></figure>
+                <figcaption class="output" id="batteryPercentageOutput"></figcaption>
+            </article>
+    
+            <article id="mission">
+                <span class="label">Current Mission:</span>
+                <span class="output" id="currentMissionOutput"></span>
+            </article>
 
+            <article id="task">
+                <span class="label">Current Task:</span>
+                <span class="output" id="currentTaskOutput"></span>
+            </article>
+        </section>
+        
+        <section id="weatherStation">
+            <h1>Weather Station</h1>
+            
+            <article class="externalTemperature">
+                <span class="label">Temperature:</span>
+                <span class="output" id="externalTemperatureOutput"></span>
+                <span class="label">°C</span>
+            </article>
+
+            <article class="windSpeed">
+                <span class="label">Wind Speed:</span>
+                <span class="output" id="windSpeedOutput"></span>
+                <span class="label">kts</span>
+                <span class="output" id="windDirectionOutput"></span>
+            </article>
+            
+            <article class="precipitation">
+                <span class="label">Precipitation:</span>
+                <span class="output" id="precipitationOutput"></span>
+                <span class="label">in</span>
+            </article>
+            
+            <article class="extra">
+                <span class="label">Weather Output 4:</span>
+                <span class="output" id="extraOutput"></span>
+                <span class="label">unit</span>
+            </article>
+        </section>
 
     </main>
 </body>

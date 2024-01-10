@@ -1,0 +1,115 @@
+/** Debug Styles **/
+#dockingStation * {
+    /* border: 1px solid red; */
+}
+
+#door * {
+    /* border: 1px solid blue; */
+}
+
+/** Universal Styles **/
+html {
+    font-size: 10px;
+}
+
+h1 {
+    text-align: center;
+    margin: 0rem;
+    text-decoration: underline;
+}
+
+.output {
+    /* Positioning */
+    display: inline-block;
+    position: relative;
+    /* top: .5rem; */
+
+    border: .1rem solid black;
+    background-color: whitesmoke;
+    min-height: 2rem;
+    min-width: 2rem;
+}
+
+/** Main Container **/
+.container {
+    /* Grid Style */
+    display: grid;
+    margin: auto;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: "dockingStation spot"
+                         "weatherStation weatherStation";
+    
+    /* Sizing */
+    font-size: 2rem;
+}
+
+.container section {
+    /* Alignment */
+    padding: 2rem;
+}
+
+/** Docking Station Section **/
+#dockingStation {
+    /* Grid Style */
+    grid-area: dockingStation;
+    display: grid;
+
+    /* Border Style */
+    border-right: .1rem solid black;
+    border-bottom: .1rem solid black;
+    
+}
+
+#door {
+    /* Grid Style */
+    display: grid;
+    justify-self: center;
+}
+#door .label {text-align: center;}
+#doorButtons {
+    display: flex;
+    justify-content: center;
+}
+#doorButtons button {
+    /* Sizing */
+    margin: 1rem;
+    min-width: 20rem;
+    min-height: 5rem;
+
+    /* Styling */
+    box-shadow: 0rem .25rem;
+    border-radius: 1rem;
+    background-color: hsl(0, 0%, 96%);
+}
+#doorButtons button:active {
+    /* Positioning */
+    position: relative;
+    top: .25rem;
+
+    /* Styling */
+    box-shadow: 0rem 0rem;
+    background-color: hsl(0, 0%, 90%);
+}
+
+
+/** Spot Section **/
+#spot {
+    /* Grid Style */
+    grid-area: spot;
+    display: grid;
+
+    /* Border Style */
+    border-left: .1rem solid black;
+    border-bottom: .1rem solid black;
+}
+
+/** Weather Station Section **/
+#weatherStation {
+    /* Grid Style */
+    grid-area: weatherStation;
+    display: grid;
+
+    /* Border Style */
+    border-top: .1rem solid black;
+}
