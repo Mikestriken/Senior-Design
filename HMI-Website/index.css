@@ -1,13 +1,17 @@
-/** Debug Styles **/
-#dockingStation * {
+                                        /** Debug Styles **/
+#spot * {
     /* border: 1px solid red; */
 }
 
-#door * {
+#dockingStation * {
     /* border: 1px solid blue; */
 }
 
-/** Universal Styles **/
+#weatherStation * {
+    /* border: 1px solid blue; */
+}
+
+                                        /** Universal Styles **/
 html {
     font-size: 10px;
 }
@@ -18,19 +22,27 @@ h1 {
     text-decoration: underline;
 }
 
+.label {
+    font-size: 2.5rem;
+}
+
 .output {
     /* Positioning */
     display: inline-block;
-    position: relative;
+    margin-left: 1rem;
+    /* position: relative; */
     /* top: .5rem; */
 
+    /* Coloring */
     border: .1rem solid black;
     background-color: whitesmoke;
+
+    /* Sizing */
     min-height: 2rem;
-    min-width: 2rem;
+    min-width: 5rem;
 }
 
-/** Main Container **/
+                                        /** Main Container **/
 .container {
     /* Grid Style */
     display: grid;
@@ -49,67 +61,133 @@ h1 {
     padding: 2rem;
 }
 
-/** Docking Station Section **/
+                                        /** Docking Station Section **/
 #dockingStation {
     /* Grid Style */
     grid-area: dockingStation;
     display: grid;
+    grid-template-rows: 5rem 9rem 5rem 5rem 5rem;
 
     /* Border Style */
     border-right: .1rem solid black;
     border-bottom: .1rem solid black;
     
 }
-
 #door {
     /* Grid Style */
     display: grid;
-    justify-self: center;
-}
-#door .label {text-align: center;}
-#doorButtons {
-    display: flex;
-    justify-content: center;
-}
-#doorButtons button {
-    /* Sizing */
-    margin: 1rem;
-    min-width: 20rem;
-    min-height: 5rem;
-
-    /* Styling */
-    box-shadow: 0rem .25rem;
-    border-radius: 1rem;
-    background-color: hsl(0, 0%, 96%);
-}
-#doorButtons button:active {
-    /* Positioning */
     position: relative;
-    top: .25rem;
-
-    /* Styling */
-    box-shadow: 0rem 0rem;
-    background-color: hsl(0, 0%, 90%);
+    bottom: 1rem;
+    margin: 1rem 0rem;
+    justify-content: center;
+    align-content: center;
+}
+#internalTemperature, #powerStatus, #chargerStatus {
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    margin: 1rem 0rem;
 }
 
+/** door **/
+    /** Sub-Containers **/
+    #door .label {text-align: center;}
+    #doorButtons {
+        display: flex;
+        justify-content: center;
+    }
 
-/** Spot Section **/
+    /** Button Styling **/
+    #doorButtons button {
+        /* Sizing */
+        margin: 0rem 1rem;
+        min-width: 20rem;
+        min-height: 5rem;
+
+        /* Styling */
+        box-shadow: 0rem .25rem;
+        border-radius: 1rem;
+        background-color: hsl(0, 0%, 96%);
+    }
+    #doorButtons button:active {
+        /* Positioning */
+        position: relative;
+        top: .25rem;
+
+        /* Styling */
+        box-shadow: 0rem 0rem;
+        background-color: hsl(0, 0%, 90%);
+    }
+
+/** Internal Temperature **/
+
+/** Power Status **/
+
+/** Charger Status **/
+
+                                        /** Spot Section **/
 #spot {
     /* Grid Style */
     grid-area: spot;
     display: grid;
+    grid-template-rows: repeat(4, 5rem);
 
     /* Border Style */
     border-left: .1rem solid black;
     border-bottom: .1rem solid black;
 }
+#mission, #task, #battery {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 1rem 0rem;
+    align-content: center;
+}
+#battery {
+    justify-content: center;
+}
 
-/** Weather Station Section **/
+/** Battery **/
+#batteryGraphicOutput {
+    /* Grid Style */
+    display: inline-block;
+
+    /* Battery Style */
+    background-color: lime;
+    border: 1;
+    min-width: 6rem;
+    min-height: 2rem;
+    margin: 0rem;
+}
+#batteryPercentageOutput {
+    display: inline-block;
+}
+
+/** Mission Status **/
+
+
+/** Task Status **/
+
+                                        /** Weather Station Section **/
 #weatherStation {
     /* Grid Style */
     grid-area: weatherStation;
     display: grid;
+    grid-template-rows: repeat(5, 5rem);
 
     /* Border Style */
     border-top: .1rem solid black;
 }
+#externalTemperature, #windSpeed, #precipitation, #extra {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 1rem 0rem;
+    align-content: center;
+}
+
+/** External Temperature **/
+
+/** Wind Speed **/
+
+/** Precipitation **/
+
+/** Weather Output 4 **/
