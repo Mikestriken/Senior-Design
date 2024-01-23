@@ -1,8 +1,12 @@
 import unittest
+import ultrasonic
 
-class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, False)  # add assertion here
+class UltraSonicTest(unittest.TestCase):
+    def test(self):
+        for reading in range(0,5):
+            distance = ultrasonic.get_distance()
+            print("Distance Reading #" + str(reading) + ": %.1f cm" % distance)
+
 
 if __name__ == '__main__':
     unittest.main()
