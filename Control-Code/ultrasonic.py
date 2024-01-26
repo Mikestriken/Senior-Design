@@ -23,13 +23,18 @@ GPIO.setup(GPIO_ECHO, GPIO.IN)
 def trigger_pulse(trigger):
     GPIO.output(trigger, True)
     time.sleep(0.00001)
-    GPIO.output(trigger, True)
+    GPIO.output(trigger, False)
 
 def measure_time(echo):
     start = time.time()
     stop = time.time()
 
+    count = 0
+
     while GPIO.input(echo) == 0:
+        count = count + 1
+        if count > 3000:
+            break
         start = time.time()
 
     while GPIO.input(echo) == 1:
@@ -41,8 +46,11 @@ def distance_calc(time):
     return (time * SONIC_SPEED)/2
 
 def get_distance():
-    trigger_pulse(GPIO_TRIGGER)
-    return distance_calc(measure_time())
+    distance = -1
+    while distance < 0:
+        trigger_pulse(GPIO_TRIGGER)
+        distance = distance_calc(measure_time(GPIO_ECHO))
+    return distance
 
 
 
