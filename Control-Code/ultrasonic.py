@@ -10,15 +10,17 @@
 import RPi.GPIO as GPIO
 import time
 
-SONIC_SPEED = 34300
+# Enter BCM trigger and echo pin numbers 26, 6
+def ultrasonic_setup(trigger, echo):
+    global SONIC_SPEED, GPIO_TRIGGER, GPIO_ECHO
 
-GPIO.setmode(GPIO.BCM)  # BCM For GPIO numbering instead of pin numbering
+    SONIC_SPEED = 34300
+    GPIO_TRIGGER = trigger
+    GPIO_ECHO = echo
 
-GPIO_TRIGGER = 26       # Regular Pin
-GPIO_ECHO = 6           # Regular Pin
-
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
+    GPIO.setmode(GPIO.BCM)  # BCM For GPIO numbering instead of pin numbering
+    GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
+    GPIO.setup(GPIO_ECHO, GPIO.IN)
 
 def trigger_pulse(trigger):
     GPIO.output(trigger, True)

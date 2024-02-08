@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Boiler Plate -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot (good dawg) House Control</title>
+
+    <!-- Links -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    
+    
+</head>
+<body>
+    <main class="container">
+        <section id="dockingStation">
+            <h1>Docking Station</h1>
+            
+            <article id="door">
+                <span class="label">Door Controls</span>
+                <div id="doorButtons">
+                    <button class="input" id="openDoorButton">Open</button>
+                    <button class="input" id="closeDoorButton">Close</button>
+                </div>
+            </article>
+
+            <article id="internalTemperature">
+                <span class="label">Internal Temperature:</span>
+                <span class="output" id="internalTemperatureOutput"></span>
+                <span class="label">°C</span>
+            </article>
+
+            <article id="powerStatus">
+                <span class="label">Power:</span>
+                <span class="output" id="powerStatusOutput"></span>
+            </article>
+
+            <article id="chargerStatus">
+                <span class="label">Charger Status:</span>
+                <span class="output" id="chargerStatusOutput"></span>
+            </article>
+        </section>
+
+        <section id="spot">
+            <h1>Spot</h1>
+            
+            <article id="battery">
+                <figure class="batteryGraphic output" id="batteryGraphicOutput"></figure>
+                <figcaption class="output" id="batteryPercentageOutput">XX.X%</figcaption>
+            </article>
+    
+            <article id="mission">
+                <span class="label">Current Mission:</span>
+                <span class="output" id="currentMissionOutput"></span>
+            </article>
+
+            <article id="task">
+                <span class="label">Current Task:</span>
+                <span class="output" id="currentTaskOutput"></span>
+            </article>
+        </section>
+        
+        <section id="weatherStation">
+            <h1>Weather Station</h1>
+            
+            <article id="externalTemperature">
+                <span class="label">Temperature:</span>
+                <span class="output" id="externalTemperatureOutput"></span>
+                <span class="label">°C</span>
+            </article>
+
+            <article id="windSpeed">
+                <span class="label">Wind Speed:</span>
+                <span class="output" id="windSpeedOutput"></span>
+                <span class="label">kts</span>
+                <span class="output" id="windDirectionOutput"></span>
+            </article>
+            
+            <article id="precipitation">
+                <span class="label">Precipitation:</span>
+                <span class="output" id="precipitationOutput"></span>
+                <span class="label">in</span>
+            </article>
+            
+            <article id="extra">
+                <span class="label">Weather Output 4:</span>
+                <span class="output" id="extraOutput">{{distance}}</span>
+                <span class="label">unit</span>
+                <p align="center"><button><a href="/pin1/on" style="color: teal"> Click Here </a></button></p>
+            </article>
+        </section>
+
+    </main>
+</body>
+</html>
