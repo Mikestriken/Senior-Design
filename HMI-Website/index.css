@@ -152,15 +152,27 @@ h1 {
 }
 
 /** Battery **/
+#batteryGraphicBackground {
+    /* Grid Style */
+    display: inline-grid;
+    /* justify-content: start; */
+
+    /* Battery Style */
+    background-color: white;
+    border: 1;
+    min-width: 10rem;
+    min-height: 2rem;
+    margin: 0rem;
+}
 #batteryGraphicOutput {
     /* Grid Style */
-    display: inline-block;
+    display: block;
+    width: 10%;
 
     /* Battery Style */
     background-color: lime;
-    border: 1;
-    min-width: 6rem;
-    min-height: 2rem;
+    min-width: 0%;
+    max-width: 100%;
     margin: 0rem;
 }
 #batteryPercentageOutput {

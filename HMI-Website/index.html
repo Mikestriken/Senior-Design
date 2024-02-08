@@ -8,6 +8,7 @@
 
     <!-- Links -->
 	<link rel="stylesheet" href="index.css">
+    <script src="./index.js" defer></script>
     
 </head>
 <body>
@@ -44,8 +45,10 @@
             <h1>Spot</h1>
             
             <article id="battery">
-                <figure class="batteryGraphic output" id="batteryGraphicOutput"></figure>
-                <figcaption class="output" id="batteryPercentageOutput">XX.X%</figcaption>
+                <figure class="output" id="batteryGraphicBackground">
+                    <figure class="batteryGraphic output" id="batteryGraphicOutput"></figure>
+                </figure>
+                <figcaption class="output" id="batteryPercentageOutput"></figcaption>
             </article>
     
             <article id="mission">
