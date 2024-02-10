@@ -9,7 +9,8 @@ function updateBattery() {
         batteryPercentage.innerHTML = i + '%';
         i++;
     } else {
-        clearInterval(intervalId); // Stop the interval when battery reaches 100%
+        // clearInterval(intervalId); // Stop the interval when battery reaches 100%
+        i = 0;
     }
 }
 
