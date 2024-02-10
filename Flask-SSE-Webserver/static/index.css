@@ -35,8 +35,7 @@ h1 {
     /* Positioning */
     display: inline-block;
     margin-left: 1rem;
-    /* position: relative; */
-    /* top: .5rem; */
+    text-align: center;
 
     /* Coloring */
     border: .1rem solid black;
@@ -55,7 +54,7 @@ h1 {
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
     grid-template-areas: "dockingStation spot"
-                            "weatherStation weatherStation";
+                         "weatherStation camera";
     
     /* Sizing */
     font-size: 2rem;
@@ -193,8 +192,11 @@ h1 {
 
     /* Border Style */
     border-top: .1rem solid black;
+    border-right: .1rem solid black;
 }
+
 #externalTemperature, #windSpeed, #precipitation, #extra {
+    border: .1rem solid red;
     display: flex;
     flex-wrap: nowrap;
     margin: 1rem 0rem;
@@ -208,3 +210,85 @@ h1 {
 /** Precipitation **/
 
 /** Weather Output 4 **/
+
+                                        /** Camera Section **/
+#camera {
+    /* Grid Style */
+    grid-area: camera;
+    display: grid;
+    grid-template-rows: 5rem 20rem;
+    justify-content: center;
+    /* grid-template-areas: "heading"
+                         "form"; */
+    
+    /* Border Style */
+    border-top: .1rem solid black;
+    border-left: .1rem solid black;
+}
+
+#camera * {
+    width: 100%;
+    border: .1rem solid red;
+}
+
+#cameraArea {
+    /* Grid Style */
+    display: grid;
+    grid-template-rows: 7fr 2fr;
+    
+    /* Container Style */
+    margin: 1rem 0rem;
+}
+#textField, #submitButton {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+}
+
+/** textField **/
+#textField {
+    /* Container Style */
+    height: 300%;
+    margin: 1rem 0rem;
+}
+
+/** submitButton **/
+#submitButton {
+    /* Sizing */
+    height: 100%;
+    margin: 0rem 1rem;
+    width: 20%;
+
+    /* Styling */
+    box-shadow: 0rem .25rem;
+    border-radius: 1rem;
+    background-color: hsl(0, 0%, 96%);
+}
+
+#cameraArea input[type*=submit]:active {
+
+    /* Styling */
+    box-shadow: 0rem 0rem;
+    background-color: hsl(0, 0%, 90%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

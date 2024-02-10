@@ -11,6 +11,7 @@
     <script src="{{ url_for('static', filename='index.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexButtons.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexBatteryGraphic.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='serverSentEventHandler.js') }}" defer></script>
     
     
 </head>
@@ -92,6 +93,18 @@
                 <span class="output" id="extraOutput"></span>
                 <span class="label">unit</span>
             </article>
+        </section>
+        
+        <section id="camera">
+            <h1>Camera (Testing Area For Now)</h1>
+            
+            <article>
+                <form id="cameraArea"> <!-- action="/example.html" method="POST" -->
+                    <input class="output" id="textField" type="text" name="first-text-field" value="">
+                    <input class="input" id="submitButton" type="submit" >
+                </form>
+            </article>
+
         </section>
 
     </main>

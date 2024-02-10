@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, Response
+from flask import Flask, redirect, url_for, render_template, Response, jsonify
 
 import time
 
@@ -21,7 +21,7 @@ import time
 
 app = Flask(__name__, template_folder='static')
 
-# * ----------------------------------------------------- Landing Page Functionality
+# * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
 @app.route("/")
 def root():
@@ -31,7 +31,31 @@ def root():
 def main():
     return render_template('index.html')
 
-# * ----------------------------------------------------- Control Modules
+# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
+def generate_events():
+   with app.app_context():
+      while True:
+         # * Simulate JSON data from microcontroller
+         data = { "timestamp": time.time(), "value": 42 }
+         
+         # * Convert the JSON data to a string and format as an SSE message
+         # .get_data(as_text=True)
+         json_data = jsonify(data)
+         sse_message = f"data: {json_data}\n\n"
+         
+         # * Yield the SSE message
+         yield sse_message
+         
+         # * Wait for a brief interval before sending the next event
+         time.sleep(1)
+
+# * Route for SSE endpoint
+@app.route('/events')
+def events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(), content_type='text/event-stream')
+
+# * ----------------------------------------------------- Control Modules -----------------------------------------------------
 # * Dummy function to simulate camera frame captured
 def dummy_camera_frame():
     # * This function would capture a frame from a camera (simulated here)
@@ -80,6 +104,6 @@ def action(pin, action):
     }
     return render_template('index.html', **templateData)
 
-# * ----------------------------------------------------- Host Local Website with Debugging Enabled
+# * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
