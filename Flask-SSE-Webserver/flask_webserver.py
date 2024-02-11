@@ -39,8 +39,7 @@ def generate_events():
          data = { "timestamp": time.time(), "value": 42 }
          
          # * Convert the JSON data to a string and format as an SSE message
-         # .get_data(as_text=True)
-         json_data = jsonify(data)
+         json_data = jsonify(data).get_data(as_text=True).replace('\n', '')
          sse_message = f"data: {json_data}\n\n"
          
          # * Yield the SSE message

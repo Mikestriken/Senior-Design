@@ -51,8 +51,10 @@ h1 {
     /* Grid Style */
     display: grid;
     margin: auto;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(2, 1fr);
+    
+    /* dEFINE */
+    grid-template-rows: repeat(2, calc(50vh - 0rem));
+    grid-template-columns: repeat(2, calc(50vw - 0rem));
     grid-template-areas: "dockingStation spot"
                          "weatherStation camera";
     
@@ -65,48 +67,74 @@ h1 {
     padding: 2rem;
 }
 
+/** Sizing for left 2 cells **/
+#dockingStation, #weatherStation {
+    /* Sizing */
+    min-width: 31rem;
+}
+
+/** Sizing for right 2 cells **/
+#spot, #camera {
+    /* Sizing */
+    min-width: 24rem;
+}
+
                                         /** Docking Station Section **/
 #dockingStation {
     /* Grid Style */
     grid-area: dockingStation;
     display: grid;
-    grid-template-rows: 5rem 9rem 5rem 5rem 5rem;
+    grid-template-rows: 3rem 9rem 5rem 5rem 5rem;
+
+    /* Sizing */
+    /* min-width: 31rem; */
 
     /* Border Style */
     border-right: .1rem solid black;
     border-bottom: .1rem solid black;
     
 }
+
 #door {
     /* Grid Style */
-    display: grid;
-    position: relative;
-    bottom: 1rem;
-    margin: 1rem 0rem;
-    justify-content: center;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
+
+    /* Positioning */
+
+    /* Grid Content Positioning / Sizing */
+
+    /* Border Style */
 }
+
 #internalTemperature, #powerStatus, #chargerStatus {
     display: flex;
-    flex-wrap: nowrap;
-    align-content: center;
     margin: 1rem 0rem;
 }
 
 /** door **/
-    /** Sub-Containers **/
-    #door .label {text-align: center;}
-    #doorButtons {
+    #door > * {
+        /* Grid Style */
         display: flex;
+        margin: .5rem 0rem;
+        
+        /* Grid Content Positioning / Sizing */
         justify-content: center;
+        justify-content: space-evenly;
+        width: 100%;
+        
+        /* Border Style */
     }
 
     /** Button Styling **/
     #doorButtons button {
+        /* Grid Style */
+        flex-grow: 1;
+        margin: 0rem 2rem;
+
         /* Sizing */
-        margin: 0rem 1rem;
-        min-width: 20rem;
-        min-height: 5rem;
+        min-width: 12rem;
+        min-height: 4rem;
 
         /* Styling */
         box-shadow: 0rem .25rem;
@@ -135,6 +163,9 @@ h1 {
     grid-area: spot;
     display: grid;
     grid-template-rows: repeat(4, 5rem);
+
+    /* Sizing */
+    /* min-width: 24rem; */
 
     /* Border Style */
     border-left: .1rem solid black;
@@ -196,9 +227,7 @@ h1 {
 }
 
 #externalTemperature, #windSpeed, #precipitation, #extra {
-    border: .1rem solid red;
     display: flex;
-    flex-wrap: nowrap;
     margin: 1rem 0rem;
     align-content: center;
 }
@@ -216,50 +245,56 @@ h1 {
     /* Grid Style */
     grid-area: camera;
     display: grid;
-    grid-template-rows: 5rem 20rem;
-    justify-content: center;
-    /* grid-template-areas: "heading"
-                         "form"; */
+    grid-template-rows: 3rem 20rem;
+    row-gap: 1rem;
+    /* grid-template-rows: 1fr auto; */
     
     /* Border Style */
     border-top: .1rem solid black;
     border-left: .1rem solid black;
 }
 
-#camera * {
-    width: 100%;
-    border: .1rem solid red;
-}
-
 #cameraArea {
     /* Grid Style */
-    display: grid;
-    grid-template-rows: 7fr 2fr;
-    
-    /* Container Style */
-    margin: 1rem 0rem;
-}
-#textField, #submitButton {
-    margin: 0 auto;
+
+    /* Positioning */
+
+    /* Grid Content Positioning / Sizing */
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-content: center;
-    flex-wrap: nowrap;
+    align-items: center;
+    height: 100%;
+
+    /* Border Style */
+}
+#cameraArea > * {
+    /* Grid Style */
+    display: flex;
+    margin: .5rem 0rem;
+    
+    /* Grid Content Positioning / Sizing */
+    justify-content: center;
+    justify-content: space-evenly;
+    width: 100%;
+    
+    /* Border Style */
 }
 
 /** textField **/
 #textField {
-    /* Container Style */
-    height: 300%;
-    margin: 1rem 0rem;
+    flex-grow: 1;
+    width: 90%;
 }
 
 /** submitButton **/
 #submitButton {
+    /* Grid Style */
+    /* flex-grow: 1;
+    margin: 0rem 2rem; */
+
     /* Sizing */
-    height: 100%;
-    margin: 0rem 1rem;
-    width: 20%;
+    width: 10rem;
 
     /* Styling */
     box-shadow: 0rem .25rem;
@@ -274,21 +309,42 @@ h1 {
     background-color: hsl(0, 0%, 90%);
 }
 
+/** Media Queries to change layout when screen size gets too small **/
+@media screen and (max-width: 739px) {
+    .container {
+        /* Grid Style */
+        display: grid;
+        margin: auto;
+        
+        /* Adjust the margin based on the viewport width */
+        /* grid-template-rows: repeat(2, calc(50vh - 0rem));
+        grid-template-columns: repeat(2, calc(50vw - 2rem)); */
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-areas: "dockingStation"
+                             "spot"
+                             "weatherStation"
+                             "camera";
+        
+        /* Sizing */
+        font-size: 2rem;
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@media screen and (max-height: 620px) and (min-width: 740px) {
+    .container {
+        /* Grid Style */
+        display: grid;
+        margin: auto;
+        
+        /* Adjust the margin based on the viewport width */
+        grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(2, calc(50vw - 0rem));
+        /* grid-template-columns: repeat(2, 1fr); */
+        grid-template-areas: "dockingStation spot"
+                             "weatherStation camera";
+        
+        /* Sizing */
+        font-size: 2rem;
+    }
+}
