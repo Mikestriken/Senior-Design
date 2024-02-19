@@ -4,3 +4,7 @@
 `pip install RPi.GPIO` -- Raspberry Pi GPIO Access  
 `pip install picamera` -- Raspberry Pi Camera Access  
 `pip install greenlet` -- Multi-Threading to Stream the Pi Camera  
+
+### Hardware
+Raspberry Pi 4B
+Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
