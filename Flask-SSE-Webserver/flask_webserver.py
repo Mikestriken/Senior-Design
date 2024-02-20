@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
-
 import time
+import paho.mqtt.client as mqtt
+import json
 
 """ # * Commented out RPi.GPIO import for Windows compatibility
 # import RPi.GPIO as GPIO
@@ -20,6 +21,80 @@ import time
 # ultrasonic.ultrasonic_setup(26,6) """
 
 app = Flask(__name__, template_folder='static')
+# * ----------------------------------------------------- MQTT Events -----------------------------------------------------
+# * Dictionary to store the incomming data from MQTT topics
+currentData = {
+    'weather_data': {
+        'wind': {
+            'speed': "TBD",
+            'direction': "TBD",
+            'status': "TBD"
+        },
+        'heading': "TBD",
+        'meteorological': {
+            'pressureMercury': "TBD",
+            'pressureBars': "TBD",
+            'temperature': "TBD",
+            'humidity' : "TBD",
+            'dewPoint': "TBD"
+        }
+    }
+}
+
+# Initialize previousData with None values
+previousData = copy.deepcopy(currentData)
+
+# MQTT broker details
+broker_address = "localhost"
+port = 1883
+
+# * Callback function for when a message is received
+def on_message(client, userdata, msg):
+    # Deserialize JSON data
+    deserialized_data = json.loads(msg.payload)
+    
+    if msg.topic == "weather_topic":
+        currentData['weather_data'] = deserialized_data
+        print("Updated weather_data.")
+
+# Create MQTT client instance
+client = mqtt.Client()
+
+# Set up message callback
+client.on_message = on_message
+
+# Connect to broker
+client.connect(broker_address, port, 60)
+
+# Subscribe to topic
+client.subscribe("weather_topic")
+
+# Start the MQTT client loop
+client.loop_forever()
+
+# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
+def generate_events():
+   with app.app_context():
+      while True:
+         # * Simulate JSON data from microcontroller
+        #  data = { "timestamp": time.time(), "value": 42 }
+         
+         # * Convert the JSON data to a string and format as an SSE message
+         if previousData != currentData:
+            json_data = jsonify(currentData).get_data(as_text=True).replace('\n', '')
+            sse_message = f"data: {json_data}\n\n"
+            
+            # * Yield the SSE message
+            yield sse_message
+         
+         # * Wait for a brief interval before sending the next event
+         time.sleep(1)
+
+# * Route for SSE endpoint
+@app.route('/events')
+def events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(), content_type='text/event-stream')
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -31,28 +106,6 @@ def root():
 def main():
     return render_template('index.html')
 
-# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
-def generate_events():
-   with app.app_context():
-      while True:
-         # * Simulate JSON data from microcontroller
-         data = { "timestamp": time.time(), "value": 42 }
-         
-         # * Convert the JSON data to a string and format as an SSE message
-         json_data = jsonify(data).get_data(as_text=True).replace('\n', '')
-         sse_message = f"data: {json_data}\n\n"
-         
-         # * Yield the SSE message
-         yield sse_message
-         
-         # * Wait for a brief interval before sending the next event
-         time.sleep(1)
-
-# * Route for SSE endpoint
-@app.route('/events')
-def events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(), content_type='text/event-stream')
 
 # * ----------------------------------------------------- Control Modules -----------------------------------------------------
 # * Dummy function to simulate camera frame captured

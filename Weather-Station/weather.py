@@ -1,7 +1,36 @@
+import paho.mqtt.client as mqtt
+import time
+import json
+
 import serial
 import re
 import copy
 
+# todo: What should happen if client disconnects accidentally from MQTT network.
+
+# * ----------------------------------------- MQTT Setup -----------------------------------------
+# MQTT broker details
+broker_address = "localhost"
+port = 1883
+
+# Callback function for when the publisher connects to the broker
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+
+# Create MQTT client instance
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+
+# Set up connection callback
+client.on_connect = on_connect
+
+# Connect to broker
+client.connect(broker_address, port, 60)
+
+# Start the background MQTT client loop thread
+client.loop_start()
+
+
+# * ----------------------------------------- Weather Station Setup -----------------------------------------
 # * Specify the serial port and its baud rate.
 ser = serial.Serial('/dev/ttyUSB0', 4800)
 
@@ -46,7 +75,7 @@ def check_none(obj):
                     return True
     return False
 
-# * Main Loop:
+# * ----------------------------------------- Main Loop -----------------------------------------
 try:
     while True:
         # * Read a line of data from the serial port
@@ -101,7 +130,10 @@ try:
         # * 2. Check that currentData doesn't have any properties with the value "None"
         # * 3. Print / Send data
         if previousData != currentData and not check_none(currentData):
-            print(currentData)
+            jsonData = json.dumps(currentData)
+            client.publish("weather_topic", jsonData)
+            print("Object Published:\n", currentData)
+            print("\n\nJSON Published:\n", jsonData)
 
         # * Update previousData for the next iteration
         previousData = copy.deepcopy(currentData)
@@ -112,4 +144,9 @@ except KeyboardInterrupt:
 
 finally:
     print("PORT CLOSED!")
+    # Disconnect MQTT client
+    client.loop_stop()
+    client.disconnect()
+    
+    # Close Serial Port
     ser.close()
