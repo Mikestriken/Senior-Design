@@ -11,20 +11,26 @@ import copy
 # * ----------------------------------------- MQTT Setup -----------------------------------------
 # MQTT broker details
 broker_address = "localhost"
+mqtt_topic = "weather_topic"
 port = 1883
 
-# Callback function for when the publisher connects to the broker
-def on_connect(client, userdata, flags, rc):
-    print("Connected with result code "+str(rc))
-
 # Create MQTT client instance
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+client = mqtt.Client()
+
+# Callback function for when the publisher connects to the broker
+def on_connect(client, userdata, flags, reason_code, properties):
+    print("Connected!")
+    
+def on_publish(client, userdata, mid):
+    # reason_code and properties will only be present in MQTTv5. It's always unset in MQTTv3
+    print("Published Something...")
 
 # Set up connection callback
 client.on_connect = on_connect
+client.on_publish = on_publish
 
 # Connect to broker
-client.connect(broker_address, port, 60)
+client.connect(broker_address, port)
 
 # Start the background MQTT client loop thread
 client.loop_start()
@@ -131,7 +137,7 @@ try:
         # * 3. Print / Send data
         if previousData != currentData and not check_none(currentData):
             jsonData = json.dumps(currentData)
-            client.publish("weather_topic", jsonData)
+            client.publish(mqtt_topic, jsonData)
             print("Object Published:\n", currentData)
             print("\n\nJSON Published:\n", jsonData)
 
