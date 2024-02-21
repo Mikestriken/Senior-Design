@@ -38,6 +38,9 @@ currentData = {
             'humidity' : "TBD",
             'dewPoint': "TBD"
         }
+    },
+    'New_Subsystem_Data' : {
+        
     }
 }
 
@@ -89,6 +92,8 @@ def generate_events():
          
          # * Wait for a brief interval before sending the next event
          time.sleep(1)
+         
+         previousData = currentData
 
 # * Route for SSE endpoint
 @app.route('/events')
