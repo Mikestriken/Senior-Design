@@ -3,6 +3,7 @@ import time
 import paho.mqtt.client as mqtt
 import json
 import copy
+import threading
 
 
 """ # * Commented out RPi.GPIO import for Windows compatibility
@@ -24,7 +25,7 @@ import copy
 
 app = Flask(__name__, template_folder='static')
 # * ----------------------------------------------------- MQTT Events -----------------------------------------------------
-# * Dictionary to store the incomming data from MQTT topics
+""" # * Dictionary to store the incomming data from MQTT topics
 currentData = {
     'weather_data': {
         'wind': {
@@ -47,7 +48,41 @@ currentData = {
 }
 
 # Initialize previousData with None values
-previousData = copy.deepcopy(currentData)
+previousData = copy.deepcopy(currentData) """
+
+class DataHandler:
+    def __init__(self):
+        self.current_data = {
+            'weather_data': {
+                'wind': {
+                    'speed': "TBD",
+                    'direction': "TBD",
+                    'status': "TBD"
+                },
+                'heading': "TBD",
+                'meteorological': {
+                    'pressureMercury': "TBD",
+                    'pressureBars': "TBD",
+                    'temperature': "TBD",
+                    'humidity' : "TBD",
+                    'dewPoint': "TBD"
+                }
+            },
+            'New_Subsystem_Data': {}
+        }
+        self.previous_data = copy.deepcopy(self.current_data)
+        self.lock = threading.Lock()
+
+    def update_current_data(self, new_data):
+        with self.lock:
+            self.previous_data = self.current_data
+            self.current_data = new_data
+
+    def get_current_data(self):
+        with self.lock:
+            return self.current_data
+
+data_handler = DataHandler()
 
 # MQTT broker details
 broker_address = "localhost"
@@ -59,7 +94,8 @@ def on_message(client, userdata, msg):
     deserialized_data = json.loads(msg.payload)
     
     if msg.topic == "weather_topic":
-        currentData['weather_data'] = deserialized_data
+        data_handler.update_current_data({'weather_data': deserialized_data})
+        # currentData['weather_data'] = deserialized_data
         print("Updated weather_data.")
 
 # Create MQTT client instance
@@ -75,7 +111,7 @@ client.connect(broker_address, port, 60)
 client.subscribe("weather_topic")
 
 # Start the MQTT client loop
-client.loop_forever()
+client.loop_start()
 
 # * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
 def generate_events():
@@ -83,10 +119,11 @@ def generate_events():
       while True:
         # * Simulate JSON data from microcontroller
         #  data = { "timestamp": time.time(), "value": 42 }
+        current_data = data_handler.get_current_data()
          
         # * Convert the JSON data to a string and format as an SSE message
-        if previousData != currentData:
-            json_data = jsonify(currentData).get_data(as_text=True).replace('\n', '')
+        if data_handler.previous_data != current_data:
+            json_data = jsonify(current_data).get_data(as_text=True).replace('\n', '')
             sse_message = f"data: {json_data}\n\n"
         
             # * Yield the SSE message
@@ -96,7 +133,7 @@ def generate_events():
             time.sleep(1)
         
             #  * Update State
-            previousData = currentData
+            # previousData = currentData
 
 # * Route for SSE endpoint
 @app.route('/events')
