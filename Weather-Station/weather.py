@@ -15,7 +15,7 @@ mqtt_topic = "weather_topic"
 port = 1883
 
 # Create MQTT client instance
-client = mqtt.Client()
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
 # Callback function for when the publisher connects to the broker
 def on_connect(client, userdata, flags, reason_code, properties):
