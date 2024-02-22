@@ -73,6 +73,7 @@ class BaseCamera(object):
             # wait until first frame is available
             BaseCamera.event.wait()
 
+
     def get_frame(self):
         """Return the current camera frame."""
         BaseCamera.last_access = time.time()
@@ -100,7 +101,7 @@ class BaseCamera(object):
 
             # if there hasn't been any clients asking for frames in
             # the last 10 seconds then stop the thread
-            if time.time() - BaseCamera.last_access > 10:
+            if time.time() - BaseCamera.last_access > 0.1:
                 frames_iterator.close()
                 print('Stopping camera thread due to inactivity.')
                 break

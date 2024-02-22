@@ -15,7 +15,7 @@ def limit_isr(self):
 
 def lsw_setup(pin_number):
     global GPIO_NUMBER
-    GPIO_NUMBER =  pin_number
+    GPIO_NUMBER = pin_number
 
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(GPIO_NUMBER, GPIO.IN)

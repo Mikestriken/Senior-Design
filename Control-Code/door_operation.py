@@ -63,7 +63,7 @@ def open_door():
     GPIO.output(IN1, True)
     
     #test_funct()
-    time.sleep(23.636)
+    time.sleep(60)
 
     # Break and wait, IN1 -> 0, IN2 -> 0
     GPIO.output(IN1, False)
@@ -78,7 +78,7 @@ def close_door():
     GPIO.output(IN1, False)
     GPIO.output(IN2, True)
     
-    time.sleep(26)
+    time.sleep(66)
 
     # Break and wait, IN1 -> 0, IN2 -> 0
     GPIO.output(IN2, False)
