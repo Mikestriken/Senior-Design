@@ -2,6 +2,8 @@ from flask import Flask, redirect, url_for, render_template, Response, jsonify
 import time
 import paho.mqtt.client as mqtt
 import json
+import copy
+
 
 """ # * Commented out RPi.GPIO import for Windows compatibility
 # import RPi.GPIO as GPIO
@@ -61,7 +63,7 @@ def on_message(client, userdata, msg):
         print("Updated weather_data.")
 
 # Create MQTT client instance
-client = mqtt.Client()
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
 # Set up message callback
 client.on_message = on_message
@@ -79,21 +81,22 @@ client.loop_forever()
 def generate_events():
    with app.app_context():
       while True:
-         # * Simulate JSON data from microcontroller
+        # * Simulate JSON data from microcontroller
         #  data = { "timestamp": time.time(), "value": 42 }
          
-         # * Convert the JSON data to a string and format as an SSE message
-         if previousData != currentData:
+        # * Convert the JSON data to a string and format as an SSE message
+        if previousData != currentData:
             json_data = jsonify(currentData).get_data(as_text=True).replace('\n', '')
             sse_message = f"data: {json_data}\n\n"
-            
+        
             # * Yield the SSE message
             yield sse_message
-         
-         # * Wait for a brief interval before sending the next event
-         time.sleep(1)
-         
-         previousData = currentData
+            
+            # * Wait for a brief interval before sending the next event
+            time.sleep(1)
+        
+            #  * Update State
+            previousData = currentData
 
 # * Route for SSE endpoint
 @app.route('/events')
