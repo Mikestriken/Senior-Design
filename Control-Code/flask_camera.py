@@ -1,38 +1,57 @@
-from flask import Flask, Response
+
+import os
 import cv2
+from base_camera import BaseCamera
 
-app = Flask(__name__)
-video = cv2.VideoCapture(0)
-face_cascade = cv2.CascadeClassifier()
-face_cascade.load(cv2.samples.findFile("static/haarcascade_frontalface_alt.xml"))
+class Camera_outdoor(BaseCamera):
+    video_source = 0
 
-@app.route('/')
-def index():
-    return "Default Message"
+    def __init__(self):
+        if os.environ.get('OPENCV_CAMERA_SOURCE'):
+            Camera_outdoor.set_video_source(int(os.environ['OPENCV_CAMERA_SOURCE']))
+        super(Camera_outdoor, self).__init__()
 
-def gen(video):
-    while True:
-        success, image = video.read()
-        frame_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        frame_gray = cv2.equalizeHist(frame_gray)
+    @staticmethod
+    def set_video_source(source):
+        Camera_outdoor.video_source = source
 
-        faces = face_cascade.detectMultiScale(frame_gray)
+    @staticmethod
+    def frames():
+        camera = cv2.VideoCapture(Camera_outdoor.video_source)
+        if not camera.isOpened():
+            raise RuntimeError('Could not start camera.')
 
-        for (x, y, w, h) in faces:
-            center = (x + w//2, y + h//2)
-            cv2.putText(image, "X: " + str(center[0]) + " Y: " + str(center[1]), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 3)
-            image = cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        while True:
+            # read current frame
+            _, img = camera.read()
 
-            faceROI = frame_gray[y:y+h, x:x+w]
-        ret, jpeg = cv2.imencode('.jpg', image)
+            # encode as a jpeg image and return it
+            yield cv2.imencode('.jpg', img)[1].tobytes()
 
-        frame = jpeg.tobytes()
-        
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+# def take_outdoor_picture():
+#     # Open the default camera (usually the webcam)
+#     cap = cv2.VideoCapture(0)
 
-@app.route('/video_feed')
-def video_feed():
-    global video
-    return Response(gen(video),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+#     # Check if the camera opened successfully
+#     if not cap.isOpened():
+#         print("Error: Could not open camera.")
+#         return
+
+#     # Capture a frame
+#     success, frame = cap.read()
+#     ret, buffer = cv2.imencode('.jpg', cv2.flip(frame,1))
+#     frame = buffer.tobytes()
+
+#     # Check if the frame was captured successfully
+#     if not ret:
+#         print("Error: Failed to capture image.")
+#         return
+
+#     # Save the captured frame as an image file
+#     # cv2.imwrite('captured_image.jpg', frame)
+
+#     # Release the camera
+#     cap.release()
+
+#     # print("Image captured successfully.")
+#     return frame
