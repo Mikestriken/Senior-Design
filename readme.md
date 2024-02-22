@@ -12,4 +12,8 @@ Python 3.12.2
 `pip3 install typing_extensions` -- paho-mqtt dependency
 
 All in 1:
-`pip3 install pyserial Flask RPi.GPIO picamera greenlet paho-mqtt typing_extensions`
+Windows:  
+`pip3 install pyserial Flask greenlet paho-mqtt typing_extensions`
+
+Raspberry Pi:  
+`pip3 install pyserial Flask greenlet paho-mqtt typing_extensions RPi.GPIO picamera`
