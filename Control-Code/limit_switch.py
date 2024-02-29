@@ -3,25 +3,20 @@
 # Limit switch module
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
-# dependant on door_operation.stop_door method
 ##############################################################################
 
-import door_operation
 import RPi.GPIO as GPIO
 
-def limit_isr(self):
-    door_operation.stop_door()
-    print("collision detected")
+class LimitSwitch:
+    def __init__(self, limit_isr, pin_number = 5):
+        self.pin_number = pin_number
 
-def lsw_setup(pin_number):
-    global GPIO_NUMBER
-    GPIO_NUMBER = pin_number
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.pin_number, GPIO.IN)
 
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(GPIO_NUMBER, GPIO.IN)
+        GPIO.add_event_detect(self.pin_number, GPIO.FALLING, 
+            callback=limit_isr, bouncetime=300)
 
-    GPIO.add_event_detect(GPIO_NUMBER, GPIO.FALLING, 
-        callback=limit_isr, bouncetime=300)
 
 
         
