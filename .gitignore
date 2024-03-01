@@ -39,6 +39,9 @@ codegen/
 
 # Octave session info
 octave-workspace
+
+.venv
+
 Spot-API/battery_status.py
 Spot-API/bosdyn-client/LICENSE
 Spot-API/bosdyn-client/README.md

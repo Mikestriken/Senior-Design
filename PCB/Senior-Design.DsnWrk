@@ -1,6 +1,0 @@
-[ProjectGroup]
-Version=1.0
-[Project1]
-ProjectPath=Temperature_Sensor\Temperature_Sensor.PrjPcb
-[Project2]
-ProjectPath=Weather_Station\Weather_Station.PrjPcb
