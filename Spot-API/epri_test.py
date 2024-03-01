@@ -20,4 +20,4 @@ state = robot_state_client.get_robot_state()
 # print(state.battery_states[0].charge_percentage.value)
 # print(state.battery_states[0].current.value) # pos - charging, neg - not
 
-print(robot.GetDockingState)
+print(state)
