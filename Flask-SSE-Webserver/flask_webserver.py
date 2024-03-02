@@ -1,6 +1,10 @@
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
-
 import time
+import paho.mqtt.client as mqtt
+import json
+import copy
+import threading
+
 
 """ # * Commented out RPi.GPIO import for Windows compatibility
 # import RPi.GPIO as GPIO
@@ -20,6 +24,122 @@ import time
 # ultrasonic.ultrasonic_setup(26,6) """
 
 app = Flask(__name__, template_folder='static')
+# * ----------------------------------------------------- MQTT Events -----------------------------------------------------
+""" # * Dictionary to store the incomming data from MQTT topics
+currentData = {
+    'weather_data': {
+        'wind': {
+            'speed': "TBD",
+            'direction': "TBD",
+            'status': "TBD"
+        },
+        'heading': "TBD",
+        'meteorological': {
+            'pressureMercury': "TBD",
+            'pressureBars': "TBD",
+            'temperature': "TBD",
+            'humidity' : "TBD",
+            'dewPoint': "TBD"
+        }
+    },
+    'New_Subsystem_Data' : {
+        
+    }
+}
+
+# Initialize previousData with None values
+previousData = copy.deepcopy(currentData) """
+
+class DataHandler:
+    def __init__(self):
+        self.current_data = {
+            'weather_data': {
+                'wind': {
+                    'speed': "TBD",
+                    'direction': "TBD",
+                    'status': "TBD"
+                },
+                'heading': "TBD",
+                'meteorological': {
+                    'pressureMercury': "TBD",
+                    'pressureBars': "TBD",
+                    'temperature': "TBD",
+                    'humidity' : "TBD",
+                    'dewPoint': "TBD"
+                }
+            },
+            'New_Subsystem_Data': {}
+        }
+        self.previous_data = copy.deepcopy(self.current_data)
+        self.lock = threading.Lock()
+
+    def update_current_data(self, new_data):
+        with self.lock:
+            self.previous_data = self.current_data
+            self.current_data = new_data
+
+    def get_current_data(self):
+        with self.lock:
+            return self.current_data
+
+data_handler = DataHandler()
+
+# MQTT broker details
+broker_address = "localhost"
+port = 1883
+
+# * Callback function for when a message is received
+def on_message(client, userdata, msg):
+    # Deserialize JSON data
+    deserialized_data = json.loads(msg.payload)
+    
+    if msg.topic == "weather_topic":
+        data_handler.update_current_data({'weather_data': deserialized_data})
+        # currentData['weather_data'] = deserialized_data
+        print("Updated weather_data.")
+
+# Create MQTT client instance
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+
+# Set up message callback
+client.on_message = on_message
+
+# Connect to broker
+client.connect(broker_address, port, 60)
+
+# Subscribe to topic
+client.subscribe("weather_topic")
+
+# Start the MQTT client loop
+client.loop_start()
+
+# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
+def generate_events():
+   with app.app_context():
+      while True:
+        # * Simulate JSON data from microcontroller
+        #  data = { "timestamp": time.time(), "value": 42 }
+        current_data = data_handler.get_current_data()
+         
+        # * Convert the JSON data to a string and format as an SSE message
+        if data_handler.previous_data != current_data:
+            json_data = jsonify(current_data).get_data(as_text=True).replace('\n', '')
+            sse_message = f"data: {json_data}\n\n"
+        
+            # * Yield the SSE message
+            yield sse_message
+            
+            # * Wait for a brief interval before sending the next event
+            time.sleep(1)
+        
+            #  * Update State
+            # previousData = currentData
+
+# * Route for SSE endpoint
+@app.route('/events')
+def events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(), content_type='text/event-stream')
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -31,28 +151,6 @@ def root():
 def main():
     return render_template('index.html')
 
-# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
-def generate_events():
-   with app.app_context():
-      while True:
-         # * Simulate JSON data from microcontroller
-         data = { "timestamp": time.time(), "value": 42 }
-         
-         # * Convert the JSON data to a string and format as an SSE message
-         json_data = jsonify(data).get_data(as_text=True).replace('\n', '')
-         sse_message = f"data: {json_data}\n\n"
-         
-         # * Yield the SSE message
-         yield sse_message
-         
-         # * Wait for a brief interval before sending the next event
-         time.sleep(1)
-
-# * Route for SSE endpoint
-@app.route('/events')
-def events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(), content_type='text/event-stream')
 
 # * ----------------------------------------------------- Control Modules -----------------------------------------------------
 # * Dummy function to simulate camera frame captured
