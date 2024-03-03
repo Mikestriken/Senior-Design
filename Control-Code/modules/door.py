@@ -11,6 +11,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import threading
 
 
 class Door:
@@ -35,14 +36,24 @@ class Door:
         self.PWMSet.ChangeDutyCycle(self.duty_cycle)
         self.PWMSet.start(self.duty_cycle)
 
-    def open_door(self):
+    def test_funct(self):
+        c_scale = [260, 293, 330, 350, 392, 440, 493, 523]
+        
+        sandstorm = [440, 493, 493, 493, 493, 493, 523, 493, 493, 493, 493, 493, 659, 659, 659, 587, 587, 587, 440, 493, 493, 493, 493, 493, 659, 493, 493, 493, 493, 493, 659, 659, 659, 587, 587, 587, 440, 493, 493, 493, 493, 493, 659, 493, 493, 493, 493, 493, 659, 987]
+
+        for i in sandstorm:
+            self.PWMSet.ChangeFrequency(i)
+            print("Changing Frequency to: "+ str(i))
+            time.sleep(2)
+
+    def open_door(self, exit_event):
         print("opening...")
 
         # Set IN1 -> 1, IN2 -> 0
         GPIO.output(self.in1, True)
         GPIO.output(self.in2, False)
 
-        while(self.percent_open < 100):
+        while(self.percent_open < 100 and not exit_event.is_set()):
             time.sleep(0.6)
             self.percent_open += 1
 
@@ -51,14 +62,14 @@ class Door:
         GPIO.output(self.in1, False)
         time.sleep(1)
 
-    def close_door(self):
+    def close_door(self, exit_event):
         print("closing...")
 
         # Set IN1 -> 0, IN2 -> 1
         GPIO.output(self.in1, False)
         GPIO.output(self.in2, True)
         
-        while(self.percent_open > 0):
+        while(self.percent_open > 0 and not exit_event.is_set()):
             time.sleep(0.66)
             self.percent_open -= 1
 
@@ -74,3 +85,6 @@ class Door:
     def door_collision_isr(self, door):
         self.stop_door()
         print("collision detected")
+
+    def get_percent_open(self):
+        return self.percent_open

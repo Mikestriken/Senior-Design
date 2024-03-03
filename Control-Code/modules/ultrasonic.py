@@ -52,6 +52,16 @@ class Ultrasonic:
             self.trigger_pulse()
             distance = self.distance_calc(self.measure_time())
         return distance
+    
+    def get_average_distance(self, num_readings):
+        average = 0
+        for _ in range(num_readings):
+            distance = -1
+            while distance < 0:
+                self.trigger_pulse()
+                distance = self.distance_calc(self.measure_time())
+            average += distance
+        return average
 
 
 
