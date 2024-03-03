@@ -2,8 +2,8 @@ import bosdyn.client
 import bosdyn.client.util
 from bosdyn.client.robot_state import RobotStateClient
 
-from bosdyn.client.docking import DockingClient
-from bosdyn.client.graph_nav import GraphNavClient
+from bosdyn.client.docking import DockingClient, get_dock_id
+from bosdyn.client.graph_nav import GraphNavClient, get_localization_state
 
 def robot_setup():
     robot = sdk.create_robot('192.168.80.3')
@@ -17,7 +17,7 @@ def robot_setup():
     return robot, id_client
 
 ##############
-test = 0
+test = 2
 ##############
 
 if test == 0:
@@ -61,18 +61,15 @@ elif test == 2:
 
     graph_nav_client = robot.ensure_client(GraphNavClient.default_service_name)
 
-    state = graph_nav_client.get_localization_state(request_live_robot_state = True)
+    state = get_localization_state(request_live_robot_state = True)
 
-    gps = graph_nav_client.get_localization_state(request_gps_state = True)
+    #gps = get_localization_state(request_gps_state = True)
 
-    print(graph_nav_client.get_localization_state(request_gps_state = True))
+    print(get_localization_state(request_live_robot_state = True))
 
-    print()
 
     with open('test2_graphnav_state.txt', 'w') as file:
         file.write(state)
 
-    with open('test2_graphnav_gps.txt', 'w') as file:
-        file.write(gps)
 
 

@@ -7,13 +7,42 @@
 # webserver imports
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
 
+import json
+import data_handler
+import mqtt_connection
+
 # camera imports
 import time
-import picamera2, cv2
 import indoor_camera, outdoor_camera
 
-
 app = Flask(__name__, template_folder='static')
+
+template_data = {
+            'weather_data': {
+                'wind': {
+                    'speed': "TBD",
+                    'direction': "TBD",
+                    'status': "TBD"
+                },
+                'heading': "TBD",
+                'meteorological': {
+                    'pressureMercury': "TBD",
+                    'pressureBars': "TBD",
+                    'temperature': "TBD",
+                    'humidity' : "TBD",
+                    'dewPoint': "TBD"
+                }
+            },
+            'indoor_weather': {
+                'temperature' : "TBD",
+                'relative_humidity' : "TBD"
+            }
+        }
+
+webserver_topics = ['weather_data', 'indoor_weather']
+
+data_handler = data_handler.DataHandler(template_data)
+mqtt_connect = mqtt_connection.MQTT_Connection(data_handler, topics=webserver_topics)
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -41,20 +70,18 @@ def gen2(camera):
 def generate_events():
    with app.app_context():
       while True:
-         # * Simulate JSON data from microcontroller
-         #indoor_temperature, indoor_relative_humidity = sht.measurements
-
-         data = { "timestamp": time.time(), "value": 42, "indoor_temperature": 1, "indoor_humidity": 1 }
+        current_data = data_handler.get_current_data()
          
-         # * Convert the JSON data to a string and format as an SSE message
-         json_data = jsonify(data).get_data(as_text=True).replace('\n', '')
-         sse_message = f"data: {json_data}\n\n"
+        # * Convert the JSON data to a string and format as an SSE message
+        if data_handler.previous_data != current_data:
+            json_data = jsonify(current_data).get_data(as_text=True).replace('\n', '')
+            sse_message = f"data: {json_data}\n\n"
+        
+            # * Yield the SSE message
+            yield sse_message
          
-         # * Yield the SSE message
-         yield sse_message
-         
-         # * Wait for a brief interval before sending the next event
-         time.sleep(1)
+        # * Wait for a brief interval before sending the next event
+        time.sleep(1)
 
 # * Route for SSE endpoint
 @app.route('/events')
@@ -76,28 +103,10 @@ def outdoor_video_feed():
     #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route("/<pin>/<action>")
-def action(pin, action):
-    distance = ''
-    if pin == "pin1" and action == "on":
-        dist = 18
-        dist = '{0:0.1f}'.format(dist)
-        distance = dist
-
-    # * Dummy print statements
-    if pin == "door" and action == "open":
-        print("door opened")
-
-    if pin == "door" and action == "close":
-        print("door closed")
-
-    if pin == "camera" and action == "still":
-        print()
-
-    templateData = {
-        'distance': distance,
-    }
-    return render_template('index.html', **templateData)
+@app.route("/<object>/<action>")
+def action(object, action):
+    mqtt_connect.publish(object, action)
+    return redirect(url_for('main'))
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":

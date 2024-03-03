@@ -185,3 +185,4 @@ Spot-API/bosdyn-client/tests/test_token_cache.py
 Spot-API/bosdyn-client/tests/test_token_manager.py
 Spot-API/bosdyn-client/tests/test_utils.py
 Spot-API/bosdyn-client/tests/util.py
+bin/python3

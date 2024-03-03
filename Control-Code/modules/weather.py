@@ -17,9 +17,11 @@
 import serial
 import re
 import copy
+import json
+from ..webserver import mqtt_connection
 
 class WeatherStation():
-    def __init__(self):
+    def __init__(self, mqtt_client = mqtt_connection.MQTT_Connection()):
         # * Specify the serial port and its baud rate.
         self.ser = serial.Serial('/dev/ttyUSB0', 4800)
 
@@ -40,6 +42,8 @@ class WeatherStation():
             }
         }
 
+        self.client = mqtt_client
+
         # Initialize previousData with None values
         self.previousData = copy.deepcopy(self.currentData)
 
@@ -47,9 +51,6 @@ class WeatherStation():
         self.wind_pattern = re.compile(r'\$WIMWV,(-?[\d.]+),R,(-?[\d.]+),N,([AV])\*(?:\w{2})')           
         self.heading_pattern = re.compile(r'\$HCHDT,(-?[\d.]+),T\*(?:\w{2})')                       
         self.meteorological_pattern = re.compile(r'\$WIMDA,(-?[\d.]+),I,(-?[\d.]+),B,(-?[\d.]+),C,,,(-?[\d.]+),,(-?[\d.]+),C,,,,,,,,\*(?:\w{2})')
-
-        while(1):
-            self.read_and_update()
 
     # * function to check that 'obj' doesn't have any properties or nested objects with value 'None'.
     def check_none(self, obj):
@@ -96,7 +97,8 @@ class WeatherStation():
         # * 2. Check that currentData doesn't have any properties with the value "None"
         # * 3. Print / Send data
         if self.previousData != self.currentData and not self.check_none(self.currentData):
-            print(self.currentData)
+            jsonData = json.dumps(self.currentData)
+            self.client.publish('weather_topic', jsonData)
 
         # * Update previousData for the next iteration
         self.previousData = copy.deepcopy(self.currentData)

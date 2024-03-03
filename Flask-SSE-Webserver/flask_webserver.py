@@ -1,88 +1,22 @@
+##############################################################################
+#                                 Flask Web Server
+#
+# Created by Joelle Bailey, Michael Marais for EPRI_SPOT, Spring 2024
+##############################################################################
+
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
 import time
 import paho.mqtt.client as mqtt
 import json
-import copy
-import threading
 
 
-""" # * Commented out RPi.GPIO import for Windows compatibility
-# import RPi.GPIO as GPIO
+import data_handler
 
-# * Commented out Raspberry Pi specific imports for Windows compatibility
-# import time, picamera2
-# from camera_still import Camera
-# import ultrasonic, door_operation, limit_switch, camera_still
-
-# * Commented out GPIO setup for Raspberry Pi
-# GPIO.setwarnings(False)
-# GPIO.setmode(GPIO.BCM)
-
-# * Commented out Raspberry Pi GPIO setup code
-# door_operation.door_motor_setup()
-# limit_switch.lsw_setup(5)
-# ultrasonic.ultrasonic_setup(26,6) """
 
 app = Flask(__name__, template_folder='static')
 # * ----------------------------------------------------- MQTT Events -----------------------------------------------------
-""" # * Dictionary to store the incomming data from MQTT topics
-currentData = {
-    'weather_data': {
-        'wind': {
-            'speed': "TBD",
-            'direction': "TBD",
-            'status': "TBD"
-        },
-        'heading': "TBD",
-        'meteorological': {
-            'pressureMercury': "TBD",
-            'pressureBars': "TBD",
-            'temperature': "TBD",
-            'humidity' : "TBD",
-            'dewPoint': "TBD"
-        }
-    },
-    'New_Subsystem_Data' : {
-        
-    }
-}
 
-# Initialize previousData with None values
-previousData = copy.deepcopy(currentData) """
-
-class DataHandler:
-    def __init__(self):
-        self.current_data = {
-            'weather_data': {
-                'wind': {
-                    'speed': "TBD",
-                    'direction': "TBD",
-                    'status': "TBD"
-                },
-                'heading': "TBD",
-                'meteorological': {
-                    'pressureMercury': "TBD",
-                    'pressureBars': "TBD",
-                    'temperature': "TBD",
-                    'humidity' : "TBD",
-                    'dewPoint': "TBD"
-                }
-            },
-            'New_Subsystem_Data': {}
-        }
-        self.previous_data = copy.deepcopy(self.current_data)
-        self.lock = threading.Lock()
-
-    def update_current_data(self, new_data):
-        with self.lock:
-            self.previous_data = self.current_data
-            self.current_data = new_data
-
-    def get_current_data(self):
-        with self.lock:
-            return self.current_data
-
-data_handler = DataHandler()
+data_handler = data_handler.DataHandler()
 
 # MQTT broker details
 broker_address = "localhost"
@@ -95,7 +29,6 @@ def on_message(client, userdata, msg):
     
     if msg.topic == "weather_topic":
         data_handler.update_current_data({'weather_data': deserialized_data})
-        # currentData['weather_data'] = deserialized_data
         print("Updated weather_data.")
 
 # Create MQTT client instance
