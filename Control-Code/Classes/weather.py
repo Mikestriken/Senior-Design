@@ -4,13 +4,13 @@
 # Created by Michael Marais refactored by Joelle Bailey for EPRI_SPOT, Spring 2024
 #
 # * Regex patterns for parsing relevant NMEA sentences
-# Sample Data: $WIMWV,   181.1  ,R,    0.3   ,N,  A    *    29
+# Sample Data:   $WIMWV,   181.1  ,R,    0.3   ,N,  A    *    29
 #              '\$WIMWV,(-?[\d.]+),R,(-?[\d.]+),N,([AV])\*(?:\w{2})'
 #
-# Sample Data: $HCHDT,   81.1   ,T *   11
+# Sample Data:   $HCHDT,   81.1   ,T *   11
 #              '\$HCHDT,(-?[\d.]+),T\*(?:\w{2})'
 #
-# Sample Data: $WIMDA,  29.2554 ,I,  0.9907  ,B,  23.9    ,C,,,   14.4   ,,  -4.8    ,C,,,,,,,, *   61
+# Sample Data:   $WIMDA,  29.2554 ,I,  0.9907  ,B,  23.9    ,C,,,   14.4   ,,  -4.8    ,C,,,,,,,, *   61
 #              '\$WIMDA,(-?[\d.]+),I,(-?[\d.]+),B,(-?[\d.]+),C,,,(-?[\d.]+),,(-?[\d.]+),C,,,,,,,,\*(?:\w{2})'
 #############################################################################################################
 
@@ -18,10 +18,12 @@ import serial
 import re
 import copy
 import json
-from ..webserver import mqtt_connection
+# Even though mqtt_connection is in the same directory (Classes) as weather.py,
+# weather.py gets called from a different directory and so the system path is not located in the Classes subdirectory
+import Classes.mqtt_connection as mqtt_connection
 
 class WeatherStation():
-    def __init__(self, mqtt_client = mqtt_connection.MQTT_Connection()):
+    def __init__(self, mqtt_client = mqtt_connection.MQTT_Connection("publisher")):
         # * Specify the serial port and its baud rate.
         self.ser = serial.Serial('/dev/ttyUSB0', 4800)
 
@@ -52,7 +54,7 @@ class WeatherStation():
         self.heading_pattern = re.compile(r'\$HCHDT,(-?[\d.]+),T\*(?:\w{2})')                       
         self.meteorological_pattern = re.compile(r'\$WIMDA,(-?[\d.]+),I,(-?[\d.]+),B,(-?[\d.]+),C,,,(-?[\d.]+),,(-?[\d.]+),C,,,,,,,,\*(?:\w{2})')
 
-    # * function to check that 'obj' doesn't have any properties or nested objects with value 'None'.
+    # * function to check that an 'object' doesn't have any properties or nested objects with value 'None'.
     def check_none(self, obj):
         if isinstance(obj, dict):
             for k, v in obj.items():

@@ -65,11 +65,11 @@ class MQTT_Connection():
         for topic in self.topics:
             if topic == msg.topic:
                 # Convert payload from JSON into a python equivalent
-                deserialized_data = json.loads(msg.payload)
+                deserialized_data = json.loads(json.loads(msg.payload))
                 
                 # Update the data_handler
                 self.data_handler.update_current_data({topic: deserialized_data})
-                print(f"Updated {topic} with: {deserialized_data}")
+                # print(f"Updated {topic} with: {deserialized_data}")
                 
                 break # There can only be topic in a message, break out of for loop.
     

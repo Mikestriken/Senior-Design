@@ -22,17 +22,17 @@ eventSource.onmessage = function(event) {
   // * heading
     // * Update the webpage with the received JSON data
     // textField.value = `Timestamp: ${jsonData.timestamp}, Value: ${jsonData.value}`;
-    textField.value = `The Weather Station is Currently Pointing: ${jsonData.weather_data.heading}°`;
+    textField.value = `The Weather Station is Currently Pointing: ${jsonData.weather_topic.heading}°`;
 
   // * wind
-    windSpeedOutput.innerHTML = jsonData.weather_data.wind.speed;
-    windDirectionOutput.innerHTML = jsonData.weather_data.wind.direction;
+    windSpeedOutput.innerHTML = jsonData.weather_topic.wind.speed;
+    windDirectionOutput.innerHTML = jsonData.weather_topic.wind.direction;
 
   // * meteorological
-    pressureOutputHG.innerHTML = jsonData.weather_data.meteorological.pressureMercury;
-    pressureOutputBar.innerHTML = jsonData.weather_data.meteorological.pressureBars;
-    externalTemperatureOutput.innerHTML = jsonData.weather_data.meteorological.temperature;
-    humidityOutput.innerHTML = jsonData.weather_data.meteorological.humidity;
-    dewPointOutput.innerHTML = jsonData.weather_data.meteorological.dewPoint;
+    pressureOutputHG.innerHTML = jsonData.weather_topic.meteorological.pressureMercury;
+    pressureOutputBar.innerHTML = jsonData.weather_topic.meteorological.pressureBars;
+    externalTemperatureOutput.innerHTML = jsonData.weather_topic.meteorological.temperature;
+    humidityOutput.innerHTML = jsonData.weather_topic.meteorological.humidity;
+    dewPointOutput.innerHTML = jsonData.weather_topic.meteorological.dewPoint;
   
 };

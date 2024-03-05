@@ -8,41 +8,52 @@
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
 
 import json
-import data_handler
-import mqtt_connection
+import Classes.data_handler as data_handler
+import Classes.mqtt_connection as mqtt_connection
+import sys
+
+# * flag to remove camera code via command-line using --no-camera
+cameraCode = True
+if "--no-camera" in sys.argv:
+    cameraCode = False
 
 # camera imports
 import time
-import indoor_camera, outdoor_camera
+if cameraCode:
+    import indoor_camera, outdoor_camera
 
 app = Flask(__name__, template_folder='static')
 
+# * ----------------------------------------------------- MQTT and state storage -----------------------------------------------------
+# * Template for how the data should be formatted.
 template_data = {
-            'weather_data': {
+            'weather_topic': {
                 'wind': {
-                    'speed': "TBD",
-                    'direction': "TBD",
-                    'status': "TBD"
+                    'speed': "...",
+                    'direction': "...",
+                    'status': "..."
                 },
-                'heading': "TBD",
+                'heading': "...",
                 'meteorological': {
-                    'pressureMercury': "TBD",
-                    'pressureBars': "TBD",
-                    'temperature': "TBD",
-                    'humidity' : "TBD",
-                    'dewPoint': "TBD"
+                    'pressureMercury': "...",
+                    'pressureBars': "...",
+                    'temperature': "...",
+                    'humidity' : "...",
+                    'dewPoint': "..."
                 }
             },
-            'indoor_weather': {
-                'temperature' : "TBD",
-                'relative_humidity' : "TBD"
+            'indoor_weather_topic': {
+                'temperature' : "...",
+                'relative_humidity' : "..."
             }
         }
 
-webserver_topics = ['weather_data', 'indoor_weather']
+# * MQTT topics to subscribe to that will update the states.
+webserver_topics = ['weather_topic', 'indoor_weather_topic']
 
+# * data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 data_handler = data_handler.DataHandler(template_data)
-mqtt_connect = mqtt_connection.MQTT_Connection(data_handler, topics=webserver_topics)
+mqtt_connect = mqtt_connection.MQTT_Connection("both", webserver_topics, data_handler)
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -53,18 +64,18 @@ def root():
 @app.route("/index.html")
 def main():
     return render_template('index.html')
-
-def gen(camera):
-    while True:
-        frame = indoor_camera.Camera().get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-def gen2(camera):
-    while True:
-        frame = outdoor_camera.Camera_outdoor().get_frame()
-        yield (b'--frame\r\n'
+if cameraCode:
+    def gen(camera):
+        while True:
+            frame = indoor_camera.Camera().get_frame()
+            yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+    def gen2(camera):
+        while True:
+            frame = outdoor_camera.Camera_outdoor().get_frame()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
 def generate_events():
@@ -74,7 +85,9 @@ def generate_events():
          
         # * Convert the JSON data to a string and format as an SSE message
         if data_handler.previous_data != current_data:
-            json_data = jsonify(current_data).get_data(as_text=True).replace('\n', '')
+            # print(f"sending {current_data.heading}\n\n")
+            json_data = jsonify(**current_data).get_data(as_text=True).replace('\n', '')
+            # print(f"as {json_data}\n\n")
             sse_message = f"data: {json_data}\n\n"
         
             # * Yield the SSE message
@@ -91,22 +104,23 @@ def events():
 
 # * ----------------------- Control Modules ------------------------------------------
 
-@app.route('/indoor_video_feed')
-def indoor_video_feed():
-    return Response(gen(indoor_camera.Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+if cameraCode:
+    @app.route('/indoor_video_feed')
+    def indoor_video_feed():
+        return Response(gen(indoor_camera.Camera()),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/outdoor_video_feed')
-def outdoor_video_feed():
-    return Response(gen2(outdoor_camera.Camera_outdoor()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-    #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    @app.route('/outdoor_video_feed')
+    def outdoor_video_feed():
+        return Response(gen2(outdoor_camera.Camera_outdoor()),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
+        #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route("/<object>/<action>")
-def action(object, action):
-    mqtt_connect.publish(object, action)
-    return redirect(url_for('main'))
+    @app.route("/<object>/<action>")
+    def action(object, action):
+        mqtt_connect.publish(object, action)
+        return redirect(url_for('main'))
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":
