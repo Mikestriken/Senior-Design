@@ -23,10 +23,16 @@ import json
 import Classes.mqtt_connection as mqtt_connection
 
 class WeatherStation():
-    def __init__(self, mqtt_client = mqtt_connection.MQTT_Connection("publisher")):
+    def __init__(self, baud=4800, port="ttyUSB0", mqtt_client = mqtt_connection.MQTT_Connection("publisher")):
         # * Specify the serial port and its baud rate.
-        self.ser = serial.Serial('/dev/ttyUSB0', 4800)
-
+        try:
+            self.ser = serial.Serial('/dev/' + port, baud)
+        except Exception as e:
+            raise ValueError(f"Serial port couldn't be instantiated with \'/dev/{port}\' at {baud} baud")
+        
+        # * UNICODE Decode Error Flag, used in get_line method
+        self.UNICODE_ERROR = False
+        
         # * Dictionary to store the parsed data
         self.currentData = {
             'wind': {
@@ -44,10 +50,11 @@ class WeatherStation():
             }
         }
 
-        self.client = mqtt_client
-
         # Initialize previousData with None values
         self.previousData = copy.deepcopy(self.currentData)
+
+        # Add MQTT client to properties of this instance.
+        self.client = mqtt_client
 
         # * Regex patterns for parsing relevant NMEA sentences
         self.wind_pattern = re.compile(r'\$WIMWV,(-?[\d.]+),R,(-?[\d.]+),N,([AV])\*(?:\w{2})')           
@@ -66,13 +73,31 @@ class WeatherStation():
         return False
     
     def get_line(self):
-        # * Read a line of data from the serial port
-        line = self.ser.readline().decode().strip()
+        # * On startup ASCII art is displayed with the AIRMAR Logo that cannot be decoded with UTF-8,
+        # * this will handle that exception but not decoding it if it cannot.
+        
+        # Clear UNICODE_ERROR Flag because we are about to try again.
+        self.UNICODE_ERROR = False
+        
+        try:
+            # Read a line of data from the serial port and decode it
+            line = self.ser.readline().decode().strip()
+        except UnicodeDecodeError:
+            # Handle the exception by skipping decoding and directly returning the bytes
+            self.UNICODE_ERROR = True
+            line = self.ser.readline().strip()
+        
+        # line = self.ser.readline().decode().strip()
+            
         return line
     
     def read_and_update(self):
-        
+        # * Attempt to decode a line from the serial port
         line = self.get_line()
+        
+        # * If failed to decode, break out early.
+        if self.UNICODE_ERROR:
+            return -1
 
         # * Parse the line using regex patterns
         wind_match = self.wind_pattern.match(line)
@@ -99,7 +124,7 @@ class WeatherStation():
         # * 2. Check that currentData doesn't have any properties with the value "None"
         # * 3. Print / Send data
         if self.previousData != self.currentData and not self.check_none(self.currentData):
-            self.client.publish('weather_topic', self.currentData)
+            self.client.publishAsJSON('weather_topic', self.currentData)
 
         # * Update previousData for the next iteration
         self.previousData = copy.deepcopy(self.currentData)

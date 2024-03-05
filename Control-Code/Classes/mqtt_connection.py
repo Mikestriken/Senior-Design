@@ -74,7 +74,7 @@ class MQTT_Connection():
                 break # There can only be topic in a message, break out of for loop.
     
     # * Publish data method
-    def publish(self, topic, data):
+    def publishAsJSON(self, topic, data):
         # Convert data to JSON Format
         jsonData = json.dumps(data)
         
