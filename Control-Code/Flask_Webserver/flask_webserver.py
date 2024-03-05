@@ -29,17 +29,18 @@ app = Flask(__name__, template_folder='static')
 template_data = {
             'weather_topic': {
                 'wind': {
-                    'speed': "...",
-                    'direction': "...",
-                    'status': "..."
+                    'speed': None,
+                    'rawDirection': None,
+                    'trueDirection:': None,
+                    'status': None
                 },
-                'heading': "...",
+                'heading': None,
                 'meteorological': {
-                    'pressureMercury': "...",
-                    'pressureBars': "...",
-                    'temperature': "...",
-                    'humidity' : "...",
-                    'dewPoint': "..."
+                    'pressureMercury': None,
+                    'pressureBars': None,
+                    'temperature': None,
+                    'humidity' : None,
+                    'dewPoint': None
                 }
             },
             'indoor_weather_topic': {

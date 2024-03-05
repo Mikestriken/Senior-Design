@@ -26,7 +26,7 @@ eventSource.onmessage = function(event) {
 
   // * wind
     windSpeedOutput.innerHTML = jsonData.weather_topic.wind.speed;
-    windDirectionOutput.innerHTML = jsonData.weather_topic.wind.direction;
+    windDirectionOutput.innerHTML = jsonData.weather_topic.wind.trueDirection;
 
   // * meteorological
     pressureOutputHG.innerHTML = jsonData.weather_topic.meteorological.pressureMercury;

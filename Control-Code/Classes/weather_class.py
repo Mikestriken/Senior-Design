@@ -45,7 +45,8 @@ class WeatherStation():
         self.currentData = {
             'wind': {
                 'speed': None,
-                'direction': None,
+                'rawDirection': None,
+                'trueDirection': None,
                 'status': None
             },
             'heading': None,
@@ -116,14 +117,20 @@ class WeatherStation():
     
     async def publish_data(self, displayPublishedDataFlag = False):
         while True:
-            # * 1. Check if previousData is not equal to currentData
-            # * 2. Check that currentData doesn't have any properties with the value "None"
-            # * 3. Print / Send data
-            with self.lock:
-                if self.NEW_DATA_FLAG:
-                    
-                    # * Debugging Flag to show the published data
+            # * 1. Check if new valid data is available to publish
+            # * 2. Print / Send data
+            # * 3. Wait 2 seconds before doing so again.
+            # Note: displayPublishedDataFlag will enable these print statements
+
+            if displayPublishedDataFlag:
+                print(f"Attempting to Publish...")
+                print(f"New Data Flag: {self.NEW_DATA_FLAG}")
+                
+            if self.NEW_DATA_FLAG:
+                
+                with self.lock:
                     if displayPublishedDataFlag:
+                        print(f"Obtained Lock...")
                         print(f"Published:\n{self.currentData}\n")
                     
                     # Publish
@@ -159,7 +166,7 @@ class WeatherStation():
             with self.lock:
                 # * Update currentData Properties 
                 if wind_match:
-                    self.currentData['wind']['direction'] = float(wind_match.group(1))
+                    self.currentData['wind']['rawDirection'] = float(wind_match.group(1))
                     self.currentData['wind']['speed'] = float(wind_match.group(2))
                     self.currentData['wind']['status'] = str(wind_match.group(3))
                     
@@ -172,6 +179,15 @@ class WeatherStation():
                     self.currentData['meteorological']['temperature'] = float(meteorological_match.group(3))
                     self.currentData['meteorological']['humidity'] = float(meteorological_match.group(4))
                     self.currentData['meteorological']['dewPoint'] = float(meteorological_match.group(5))
+                    
+                if (self.currentData['wind']['rawDirection'] != None) and (self.currentData['heading'] != None):
+                    
+                    # * Calculate true wind direction:
+                    # Note: The rawDirection points to where the wind is hitting the weather station relative to where it's pointing (not magnetic heading).
+                    trueDirection = (self.currentData['heading'] + self.currentData['wind']['rawDirection'] - 180 + 360) % 360
+                    
+                    # * Round to first decimal and update:
+                    self.currentData['wind']['trueDirection'] = round(trueDirection, 1)
                 
                 # * Debugging Flag to show the latest internal data
                 if displayUpdatedDataFlag:
