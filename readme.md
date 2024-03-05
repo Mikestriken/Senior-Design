@@ -1,6 +1,13 @@
 ### Language Versions:
 Python 3.12.2
 
+### Python Virtual Environment
+**Linux:**  
+`source .venv/bin/activate`  
+
+**Windows:**  
+`.venv\Scripts\Activate.ps1`
+
 ### PIP Dependencies
 `pip install pyserial` -- For weather station communication  
 `pip install Flask` -- For Flask web server  
@@ -8,14 +15,6 @@ Python 3.12.2
 `pip install picamera` -- Raspberry Pi Camera Access  
 `pip install greenlet` -- Multi-Threading to Stream the Pi Camera  
 `pip install paho-mqtt` -- MQTT communication between different applications running on the Pi
-`pip install typing_extensions` -- paho-mqtt dependency
-
-All in 1:
-Windows:  
-`pip3 install pyserial Flask greenlet paho-mqtt typing_extensions`
-
-Raspberry Pi:  
-`pip3 install pyserial Flask greenlet paho-mqtt typing_extensions RPi.GPIO picamera`
 
 ### Hardware
 Raspberry Pi 4B
