@@ -10,12 +10,12 @@ const int ledPin = 0; // This code uses the built-in led for visual feedback tha
 
 // WiFi
 // Make sure to update this for your own WiFi network!
-const char* ssid = "NinerWiFi-Guest";
-const char* wifi_password = "";
+const char* ssid = "ATTpaVgVyW";
+const char* wifi_password = "t8sifnfygs%f";
 
 // MQTT
 // Make sure to update this for your own MQTT Broker!
-const char* mqtt_server = "10.143.196.35";
+const char* mqtt_server = "192.168.1.70";
 const char* mqtt_topic = "rssi";
 // The client id identifies the ESP8266 device. Think of it a bit like a hostname (Or just a name, like Greg).
 const char* clientID = "SpotCollar";
@@ -71,7 +71,7 @@ void loop() {
   const char* rssi_string = buffer;
 
   if (client.publish(mqtt_topic, rssi_string)) {
-    Serial.println("Button pushed and message sent!");
+    Serial.println("message sent!");
   }
   // Again, client.publish will return a boolean value depending on whether it succeded or not.
   // If the message failed to send, we will try again, as the connection may have broken.
@@ -79,7 +79,7 @@ void loop() {
     Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
     client.connect(clientID);
     delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
-    client.publish(mqtt_topic, "Button pressed!");
+    client.publish(mqtt_topic, rssi_string);
   }
   
   delay(100);
