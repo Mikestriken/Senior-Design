@@ -10,8 +10,8 @@ const int ledPin = 0; // This code uses the built-in led for visual feedback tha
 
 // WiFi
 // Make sure to update this for your own WiFi network!
-const char* ssid = "ATTpaVgVyW";
-const char* wifi_password = "t8sifnfygs%f";
+const char* ssid = "";
+const char* wifi_password = "";
 
 // MQTT
 // Make sure to update this for your own MQTT Broker!
