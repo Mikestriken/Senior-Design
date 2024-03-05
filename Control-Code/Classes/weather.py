@@ -99,8 +99,7 @@ class WeatherStation():
         # * 2. Check that currentData doesn't have any properties with the value "None"
         # * 3. Print / Send data
         if self.previousData != self.currentData and not self.check_none(self.currentData):
-            jsonData = json.dumps(self.currentData)
-            self.client.publish('weather_topic', jsonData)
+            self.client.publish('weather_topic', self.currentData)
 
         # * Update previousData for the next iteration
         self.previousData = copy.deepcopy(self.currentData)
