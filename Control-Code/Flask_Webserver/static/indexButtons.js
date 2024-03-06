@@ -5,7 +5,8 @@ const closeButton = document.getElementById("closeDoorButton");
 
 // * Define what happens when the open button is pressed
 function openButtonEventHandler() {
-    window.location.href = "/index.html";
+    window.close();
+    // window.location.href = "/index.html";
 }
 
 // * Define what happens when the close button is pressed

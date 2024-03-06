@@ -22,4 +22,4 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
 ### Apt Installs
 `sudo apt install mosquitto` -- Broker used to allow use of paho-mqtt  
-`sudo apt install mosquitto-clients` -- Broker used to help debug MQTT clients 
+`sudo apt install mosquitto-clients` -- Broker used to help debug MQTT clients  

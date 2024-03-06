@@ -13,13 +13,18 @@ import Classes.mqtt_connection as mqtt_connection
 import sys
 
 # * flag to remove camera code via command-line using --no-camera
-cameraCode = True
+cameraCodeFlag = True
 if "--no-camera" in sys.argv:
-    cameraCode = False
+    cameraCodeFlag = False
+    
+# * flag to enable debugging via command-line using --debug
+debugFlag = False
+if "--debug" in sys.argv:
+    debugFlag = True
 
 # camera imports
 import time
-if cameraCode:
+if cameraCodeFlag:
     import indoor_camera, outdoor_camera
 
 app = Flask(__name__, template_folder='static')
@@ -65,7 +70,7 @@ def root():
 @app.route("/index.html")
 def main():
     return render_template('index.html')
-if cameraCode:
+if cameraCodeFlag:
     def gen(camera):
         while True:
             frame = indoor_camera.Camera().get_frame()
@@ -105,7 +110,7 @@ def events():
 
 # * ----------------------- Control Modules ------------------------------------------
 
-if cameraCode:
+if cameraCodeFlag:
     @app.route('/indoor_video_feed')
     def indoor_video_feed():
         return Response(gen(indoor_camera.Camera()),
@@ -125,4 +130,4 @@ if cameraCode:
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=debugFlag)
