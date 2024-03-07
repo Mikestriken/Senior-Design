@@ -29,6 +29,19 @@ if [ ! -d "$user_destination_dir" ]; then
     sudo mkdir -p "$user_destination_dir" || { echo "Error: Failed to create user destination directory."; exit 1; }
 fi
 
+if [ ! -d "$user_destination_dir/default.target.wants" ]; then
+    echo "Creating user default.target.wants directory: $user_destination_dir"
+    sudo mkdir -p "$user_destination_dir/default.target.wants" || { echo "Error: Failed to create user destination directory."; exit 1; }
+    sudo chown $(whoami):$(whoami) "$user_destination_dir/default.target.wants"
+fi
+
+if [ "$(stat -c "%U" "$user_destination_dir/default.target.wants")" != "$(whoami)" ]; then
+    sudo chown $(whoami):$(whoami) "$user_destination_dir/default.target.wants"
+    echo "Ownership of $user_destination_dir/default.target.wants changed to $(whoami)."
+else
+    echo "Ownership of $user_destination_dir/default.target.wants is already $(whoami)."
+fi
+
 if [ ! -d "$root_destination_dir" ]; then
     echo "Creating root destination directory: $root_destination_dir"
     sudo mkdir -p "$root_destination_dir" || { echo "Error: Failed to create root destination directory."; exit 1; }
