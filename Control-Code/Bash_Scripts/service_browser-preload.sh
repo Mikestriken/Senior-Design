@@ -7,4 +7,4 @@ sleep 20
 
 # Load the browser
 echo "Awake"
-firefox --new-window --kiosk "localhost:80"
+firefox
