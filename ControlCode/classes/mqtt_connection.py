@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 
 class MQTT_Connection():
-    def __init__(self, type, topics = None, data_handler = None, on_message = None, broker_address = "localhost", port = 1883):
+    def __init__(self, type = 'both', topics = None, data_handler = None, on_message = None, broker_address = "localhost", port = 1883):
         
         # * Initialize MQTT differently based on type, valid types are "publisher", "subscriber" and "both"
         if type.lower() == "publisher":
@@ -37,7 +37,7 @@ class MQTT_Connection():
                 # * if on_messaged is defined internally,
                 # * a data_handler must be passed by reference,
                 # * and be a class with an `.update_current_data` method
-                if (data_handler == None or isinstance(data_handler, (int, float, str, tuple, list, dict))) and not hasattr(data_handler, 'update_current_data'):
+                if (isinstance(data_handler, (int, float, str, tuple, list, dict))) and not hasattr(data_handler, 'update_current_data'):
                     raise ValueError(f"subscribers reqruire a data_handler class instance: {data_handler != None}, {not isinstance(data_handler, (int, float, str, tuple, list, dict))}\n That has an update_current_data method: {hasattr(data_handler, 'update_current_data')}")
                 
                 self.data_handler = data_handler

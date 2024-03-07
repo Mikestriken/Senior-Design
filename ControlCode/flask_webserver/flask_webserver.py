@@ -2,15 +2,18 @@
 #                                 Flask Web Server
 #
 # Created by Joelle Bailey, Michael Marais for EPRI_SPOT, Spring 2024
+#
+# to run webserver:  python -B -m flask_webserver.flask_webserver
 ##############################################################################
+
+
+from classes.data_handler import DataHandler
+from classes.mqtt_connection import MQTT_Connection
+import sys
+
 
 # webserver imports
 from flask import Flask, redirect, url_for, render_template, Response, jsonify
-
-import json
-import Classes.data_handler as data_handler
-import Classes.mqtt_connection as mqtt_connection
-import sys
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
@@ -55,11 +58,11 @@ template_data = {
         }
 
 # * MQTT topics to subscribe to that will update the states.
-webserver_topics = ['weather_topic', 'indoor_weather_topic']
+webserver_topics = ['weather_topic', 'indoor_weather_topic', 'alert']
 
 # * data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-data_handler = data_handler.DataHandler(template_data)
-mqtt_connect = mqtt_connection.MQTT_Connection("both", webserver_topics, data_handler)
+data_handler = DataHandler(template_data)
+mqtt_connect = MQTT_Connection("both", webserver_topics, data_handler)
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.

@@ -4,8 +4,8 @@
 # Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
 ##################################################################################
 
+from classes import mqtt_connection
 import RPi.GPIO as GPIO
-from ..webserver import mqtt_connection
 
 class Wall_Power():
     def __init__(self, wall_power_isr, mqtt_client = mqtt_connection.MQTT_Connection(), gpio_pin = 23):

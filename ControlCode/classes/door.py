@@ -11,7 +11,6 @@
 
 import RPi.GPIO as GPIO
 import time
-import threading
 
 
 class Door:
@@ -46,15 +45,15 @@ class Door:
             print("Changing Frequency to: "+ str(i))
             time.sleep(2)
 
-    def open_door(self, exit_event):
+    def open_door(self):
         print("opening...")
 
         # Set IN1 -> 1, IN2 -> 0
         GPIO.output(self.in1, True)
         GPIO.output(self.in2, False)
 
-        while(self.percent_open < 100 and not exit_event.is_set()):
-            time.sleep(0.6)
+        while(self.percent_open < 100):
+            time.sleep(0.15)
             self.percent_open += 1
 
         
@@ -62,15 +61,15 @@ class Door:
         GPIO.output(self.in1, False)
         time.sleep(1)
 
-    def close_door(self, exit_event):
+    def close_door(self):
         print("closing...")
 
         # Set IN1 -> 0, IN2 -> 1
         GPIO.output(self.in1, False)
         GPIO.output(self.in2, True)
         
-        while(self.percent_open > 0 and not exit_event.is_set()):
-            time.sleep(0.66)
+        while(self.percent_open > 0):
+            time.sleep(0.17)
             self.percent_open -= 1
 
         # Break and wait, IN1 -> 0, IN2 -> 0
