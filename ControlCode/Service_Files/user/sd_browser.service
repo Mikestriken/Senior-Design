@@ -5,7 +5,7 @@ After=default.target
 [Service]
 Type=exec
 Restart=no
-ExecStart=/home/pi/Desktop/SD_Git/Control-Code/Bash_Scripts/service_browser.sh
+ExecStart=/home/pi/Desktop/SD_Git/ControlCode/Bash_Scripts/linked_service_scripts/user/service_browser.sh
 Environment=DISPLAY=:0
 
 [Install]

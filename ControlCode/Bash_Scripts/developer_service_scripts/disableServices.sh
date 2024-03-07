@@ -9,8 +9,8 @@ cd "$script_dir"
 
 # * Define variables that will be used
 # Source directories
-user_dir="../../install/services/user"
-root_dir="../../install/services/root"
+user_dir="../../Service_Files/user"
+root_dir="../../Service_Files/root"
 
 # Destination directories
 user_destination_dir="$HOME/.config/systemd/user/"
@@ -23,22 +23,22 @@ user_services+=("$user_dir"/*) # add the names of all the files in $user_dir/ to
 root_services=()
 root_services+=("$root_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
 
-# * Stop the services
-# Stop the user services
-echo -e "\nStopping User Services..."
+# * Disable the services
+# Disable the user services
+echo -e "\nDisabling User Services..."
 for service_file in "${user_services[@]}"; do
-    if ! systemctl --user stop "$(basename "$service_file" .service)"; then
-        echo "Error: Stopping $(basename "$service_file" .service) service failed."
+    if ! systemctl --user disable "$(basename "$service_file" .service)"; then
+        echo "Error: Disabling $(basename "$service_file" .service) service failed."
         exit 1
     fi
 done
 echo "done!"
 
-# Stop the root services
-echo -e "\nStopping Root Services..."
+# Disable the root services
+echo -e "\nDisabling Root Services..."
 for service_file in "${root_services[@]}"; do
-    if ! sudo systemctl stop "$(basename "$service_file" .service)"; then
-        echo "Error: Stopping $(basename "$service_file" .service) service failed."
+    if ! sudo systemctl disable "$(basename "$service_file" .service)"; then
+        echo "Error: Disabling $(basename "$service_file" .service) service failed."
         exit 1
     fi
 done

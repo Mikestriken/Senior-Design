@@ -5,7 +5,7 @@ After=default.target
 [Service]
 Type=exec
 Restart=no
-ExecStart=/home/pi/Desktop/SD_Git/Control-Code/Bash_Scripts/service_browser-preload.sh
+ExecStart=/home/pi/Desktop/SD_Git/ControlCode/Service_Files/user/sd_browser-preload.service
 Environment=DISPLAY=:0
 
 [Install]

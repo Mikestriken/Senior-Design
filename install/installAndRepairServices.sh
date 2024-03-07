@@ -9,8 +9,8 @@ cd "$script_dir"
 
 # * Define variables that will be used
 # Source directories
-user_dir="services/user"
-root_dir="services/root"
+user_dir="../ControlCode/Service_Files/user"
+root_dir="../ControlCode/Service_Files/root"
 
 # Destination directory
 user_destination_dir="$HOME/.config/systemd/user/"

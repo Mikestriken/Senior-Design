@@ -7,4 +7,4 @@ script_dir=$(dirname "$(readlink -f "$0")")
 cd "$script_dir"
 
 # Execute the flask webserver
-exec -a "service_webserver" ../../.venv/bin/py ../Flask_Webserver/flask_webserver.py --no-camera
+../../../../.venv/bin/py ../../../Flask_Webserver/flask_webserver.py --no-camera
