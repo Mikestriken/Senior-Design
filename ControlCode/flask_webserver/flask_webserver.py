@@ -2,11 +2,13 @@
 #                                 Flask Web Server
 #
 # Created by Joelle Bailey, Michael Marais for EPRI_SPOT, Spring 2024
+#
+# to run webserver:  python -B -m flask_webserver.flask_webserver
 ##############################################################################
 
 
-import classes.data_handler as data_handler
-import classes.mqtt_connection as mqtt_connection
+from classes.data_handler import DataHandler
+from classes.mqtt_connection import MQTT_Connection
 import sys
 
 
@@ -56,11 +58,11 @@ template_data = {
         }
 
 # * MQTT topics to subscribe to that will update the states.
-webserver_topics = ['weather_topic', 'indoor_weather_topic']
+webserver_topics = ['weather_topic', 'indoor_weather_topic', 'alert']
 
 # * data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-data_handler = data_handler.DataHandler(template_data)
-mqtt_connect = mqtt_connection.MQTT_Connection("both", webserver_topics, data_handler)
+data_handler = DataHandler(template_data)
+mqtt_connect = MQTT_Connection("both", webserver_topics, data_handler)
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -126,7 +128,7 @@ if cameraCodeFlag:
 
     @app.route("/<object>/<action>")
     def action(object, action):
-        mqtt_connect.publish(object, action)
+        mqtt_connect.publishAsJSON(object, action)
         return redirect(url_for('main'))
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------

@@ -1,7 +1,7 @@
 import asyncio
 import sys
 
-import Classes.weather_class as weather_class
+import classes.weather_class as weather_class
 
 # * ----------------------------------------------------- Command Line Debugging Flags -----------------------------------------------------
 # * flag to display raw data from weather station via command line using --raw-data

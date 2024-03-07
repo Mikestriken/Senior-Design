@@ -5,11 +5,12 @@
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 ##############################################################################
 
+from ControlCode import mqtt_connection
+
 import time
 import board
 import adafruit_shtc3
 import json
-from ..webserver import mqtt_connection
 
 class Indoor_Temp():
     def __init__(self, mqtt_connect = mqtt_connection.MQTT_Connection()):
