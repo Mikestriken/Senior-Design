@@ -10,7 +10,7 @@ const int ledPin = 0; // This code uses the built-in led for visual feedback tha
 
 // WiFi
 // Make sure to update this for your own WiFi network!
-const char* ssid = "NinerGuest";
+const char* ssid = "NinerWiFi-Guest";
 const char* wifi_password = "";
 
 // MQTT
