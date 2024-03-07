@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/home/pi/Desktop/SD_Git/ControlCode/Service_Files/root/sd_webserver.service
+ExecStart=/home/pi/Desktop/SD_Git/ControlCode/bash_scripts/linked_service_scripts/root/service_webserver.sh
 Restart=always
 RestartSec=3
 
