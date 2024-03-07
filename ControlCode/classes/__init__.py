@@ -1,3 +1,3 @@
 from ..flask_webserver import *
-from ..classes import *
+from . import *
 from ..operations import *

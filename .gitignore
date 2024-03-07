@@ -42,3 +42,5 @@ octave-workspace
 
 Spot-API/battery_status.py
 Spot-API/bosdyn-client/
+
+ControlCode_old/
