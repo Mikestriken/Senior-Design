@@ -123,10 +123,14 @@ if cameraCodeFlag:
         #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-    @app.route("/<object>/<action>")
-    def action(object, action):
-        mqtt_connect.publish(object, action)
-        return redirect(url_for('main'))
+@app.route("/<object>/<action>")
+def action(object, action):
+    print("Action Called")
+    # * Open Button  → /openButton/click  → openButton_topic,  "click"
+    # * Close Button → /closeButton/click → closeButton_topic, "click"
+    mqtt_connect.publish(object + "_topic", action)
+        
+    return redirect(url_for('main'))
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":

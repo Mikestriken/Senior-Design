@@ -5,13 +5,32 @@ const closeButton = document.getElementById("closeDoorButton");
 
 // * Define what happens when the open button is pressed
 function openButtonEventHandler() {
-    window.close();
-    // window.location.href = "/index.html";
+
+    // * Load this webpage subdirectory asynchronously so that we don't reload the page.
+    fetch('/openButton/click')
+    .then(response => {
+        // Retrieve the HTTP status code of the response
+        console.log('HTTP status code:', response.status);
+    })
+    .catch(error => {
+        // Handle any errors that occurred during the fetch operation
+        console.error('Error:', error);
+    });
 }
 
 // * Define what happens when the close button is pressed
 function closeButtonEventHandler() {
-    window.location.href = "/index.html";
+
+    // * Load this webpage subdirectory asynchronously so that we don't reload the page.
+    fetch('/closeButton/click')
+    .then(response => {
+        // Retrieve the HTTP status code of the response
+        console.log('HTTP status code:', response.status);
+    })
+    .catch(error => {
+        // Handle any errors that occurred during the fetch operation
+        console.error('Error:', error);
+    });
 }
 
 // * Create an event listener (( Interrupt )) for when openButton or closeButton is "clicked".
