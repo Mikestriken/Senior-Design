@@ -1,14 +1,14 @@
-### Language Versions:
+### Language Versions: {#language-versions}
 Python 3.12.2
 
-### Python Virtual Environment
+### Python Virtual Environment {#python-virtual-environment}
 **Linux:**  
 `source .venv/bin/activate`  
 
 **Windows:**  
 `.venv\Scripts\Activate.ps1`
 
-### PIP Dependencies
+### PIP Dependencies {#pip-dependencies}
 `pip install pyserial` -- For weather station communication  
 `pip install Flask` -- For Flask web server  
 `pip install RPi.GPIO` -- Raspberry Pi GPIO Access  
@@ -16,10 +16,17 @@ Python 3.12.2
 `pip install greenlet` -- Multi-Threading to Stream the Pi Camera  
 `pip install paho-mqtt` -- MQTT communication between different applications running on the Pi
 
-### Hardware
+### Hardware {#hardware}
 Raspberry Pi 4B
 Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
-### Apt Installs
+### Apt Installs {#apt-installs}
 `sudo apt install mosquitto` -- Broker used to allow use of paho-mqtt  
-`sudo apt install mosquitto-clients` -- Broker used to help debug MQTT clients  
+`sudo apt install mosquitto-clients` -- Broker used to help debug MQTT clients
+
+### Installation Steps {#installation-steps}
+1. clone this repository.
+2. Activate Python Virtual Environment -- `source .venv/bin/activate`
+3. Ensure the paths in `install/services` are correct for their `ExecStart` commands
+4. Run `install/installAndRepairServices.sh` without sudo (user must have sudo permissions still though)
+5. Run `install/installAndRepairAPTInstalls.sh`

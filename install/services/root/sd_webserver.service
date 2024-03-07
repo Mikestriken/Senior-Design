@@ -1,10 +1,10 @@
 [Unit]
-Description=Automatically loads browser client on startup
+Description=Automatically start webserver on startup
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=sudo /home/pi/Desktop/SD_Git/Control-Code/Bash_Scripts/service_webserver.sh
+ExecStart=/home/pi/Desktop/SD_Git/Control-Code/Bash_Scripts/service_webserver.sh
 Restart=always
 RestartSec=3
 
