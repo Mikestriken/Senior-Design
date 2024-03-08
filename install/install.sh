@@ -21,14 +21,26 @@ fi
 
 # * Run all the installation scripts
 
-./repairScripts.sh
+if ! ./repairScripts.sh; then
+    echo -e "Error: $(basename ./repairScripts.sh) failed!"
+    exit 1
+fi
 
-./installAndRepairAPTInstalls.sh
+if ! ./installAndRepairAPTInstalls.sh; then
+    echo -e "Error: $(basename ./installAndRepairAPTInstalls.sh) failed!"
+    exit 1
+fi
 
-./installAndRepairVEnv.sh
+if ! ./installAndRepairVEnv.sh; then
+    echo -e "Error: $(basename ./installAndRepairVEnv.sh) failed!"
+    exit 1
+fi
 
 if [ windows != true ]; then # Only install services on linux environment
 
-    ./installAndRepairServices.sh
+    if ! ./installAndRepairServices.sh; then
+        echo -e "Error: $(basename ./installAndRepairServices.sh) failed!"
+        exit 1
+    fi
 
 fi
