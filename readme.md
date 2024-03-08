@@ -26,7 +26,8 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
 ### Installation Steps {#installation-steps}
 1. clone this repository.
-2. Run `install/installAndRepairVEnv.sh`
-3. Ensure the paths in `install/services` are correct for their `ExecStart` commands
-4. Run `install/installAndRepairServices.sh` without sudo (user must have sudo permissions still though)
-5. Run `install/installAndRepairAPTInstalls.sh`
+2. Run `install/repairScripts.sh`
+3. Run `install/installAndRepairVEnv.sh`
+4. Ensure the paths in `install/services` are correct for their `ExecStart` commands
+5. Run `install/installAndRepairServices.sh` without sudo (user must have sudo permissions still though)
+6. Run `install/installAndRepairAPTInstalls.sh`
