@@ -21,14 +21,14 @@ fi
 
 # * Run all the installation scripts
 
-repairScripts.sh
+./repairScripts.sh
 
-installAndRepairAPTInstalls.sh
+./installAndRepairAPTInstalls.sh
 
-installAndRepairVEnv.sh
+./installAndRepairVEnv.sh
 
 if [ windows != true ]; then # Only install services on linux environment
 
-    installAndRepairServices.sh
+    ./installAndRepairServices.sh
 
 fi
