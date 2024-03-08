@@ -12,16 +12,83 @@ cd "$script_dir"
 user_dir="../ControlCode/service_files/user"
 root_dir="../ControlCode/service_files/root"
 
+# Compiled Source Directories
+user_compiled_dir="$user_dir/compiled"
+root_compiled_dir="$root_dir/compiled"
+
 # Destination directory
 user_destination_dir="$HOME/.config/systemd/user/"
 root_destination_dir="/etc/systemd/system/"
 
-# Arrays to store file names
+# Service file compilation variable values
+gitRepoDir="$(readlink -f "$script_dir/..")"
+
+# * Create the "compiled" subdirectory if they it don't exist
+if [ ! -d "$user_compiled_dir" ]; then
+    echo "Creating user destination directory: $user_compiled_dir"
+    sudo mkdir -p "$user_compiled_dir" || { echo "Error: Failed to create user destination directory."; exit 1; }
+fi
+
+if [ ! -d "$root_compiled_dir" ]; then
+    echo "Creating user destination directory: $root_compiled_dir"
+    sudo mkdir -p "$root_compiled_dir" || { echo "Error: Failed to create user destination directory."; exit 1; }
+fi
+
+# * Attempt to gain ownership of the compiled
+if ! sudo chown $(whoami):$(whoami) "$user_compiled_dir"; then
+    echo -e "\nError: Could not compile $file to $user_compiled_dir"
+    exit 1
+fi
+
+if ! sudo chown $(whoami):$(whoami) "$root_compiled_dir"; then
+    echo -e "\nError: Could not compile $file to $root_compiled_dir"
+    exit 1
+fi
+
+echo "Compiling .service files..."
+
+# Iterate through each user .service file and compile it
+for file in $user_dir/*.service; do
+    echo -n "compiling $(basename "$file")..............."
+    # Check if the file is a regular file
+    if [ -f "$file" ]; then
+        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$user_compiled_dir/$(basename "$file")"; then
+            echo -e "\nError: Could not compile $file to $user_compiled_dir"
+            exit 1
+        fi
+    else
+        echo -e "\nError: Could not compile $file to $user_compiled_dir"
+        exit 1
+    fi
+    echo "ok"
+done
+
+# Iterate through each root .service file and compile it
+for file in $root_dir/*.service; do
+    echo -n "compiling $(basename "$file")..............."
+    # Check if the file is a regular file
+    if [ -f "$file" ]; then
+        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$root_compiled_dir/$(basename "$file")"; then
+            echo -e "\nError: Could not compile $file to $root_compiled_dir"
+            exit 1
+        fi
+    else
+        echo -e "\nError: Could not compile $file to $root_compiled_dir"
+        exit 1
+    fi
+    echo "ok"
+done
+
+echo -e "done.\n"
+
+# Arrays to store file names, this is used to call systemctl commands later with the file names as arguments
 user_services=()
-user_services+=("$user_dir"/*) # add the names of all the files in $user_dir/ to the user_services array
+user_services+=("$user_compiled_dir"/*) # add the names of all the files in $user_compiled_dir/ to the user_services array
 
 root_services=()
-root_services+=("$root_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
+root_services+=("$root_compiled_dir"/*) # add the names of all the files in $root_compiled_dir/ to the user_services array
 
 # * Check if the destination directories exist and create them if they don't
 if [ ! -d "$user_destination_dir" ]; then
@@ -48,9 +115,9 @@ if [ ! -d "$root_destination_dir" ]; then
 fi
 
 # * Copy all the service files
-# Loop through each file in the user_dir
+# Loop through each file in the user_compiled_dir
 echo -e "\nCopying User Services..."
-for file in "$user_dir"/*; do
+for file in "$user_compiled_dir"/*; do
     # Get the filename without the path
     filename=$(basename "$file")
     
@@ -71,9 +138,9 @@ for file in "$user_dir"/*; do
     fi
 done
 
-# Loop through each file in the root_dir
+# Loop through each file in the root_compiled_dir
 echo -e "\nCopying Root Services..."
-for file in "$root_dir"/*; do
+for file in "$root_compiled_dir"/*; do
     # Get the filename without the path
     filename=$(basename "$file")
     

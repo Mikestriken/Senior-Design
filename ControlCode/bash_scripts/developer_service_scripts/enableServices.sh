@@ -12,16 +12,34 @@ cd "$script_dir"
 user_dir="../../service_files/user"
 root_dir="../../service_files/root"
 
+# Compiled Source Directories
+user_compiled_dir="$user_dir/compiled"
+root_compiled_dir="$root_dir/compiled"
+
 # Destination directories
 user_destination_dir="$HOME/.config/systemd/user/"
 root_destination_dir="/etc/systemd/system/"
 
+# Service file compilation variable values
+gitRepoDir="$(readlink -f "$script_dir/..")"
+
+# * Create the "compiled" subdirectory if they it don't exist
+if [ ! -d "$user_compiled_dir" ]; then
+    echo -e "Error: $user_compiled_dir does not exist!\nMaybe run install/install.sh first?"
+    exit 1
+fi
+
+if [ ! -d "$root_compiled_dir" ]; then
+    echo -e "Error: $root_compiled_dir does not exist!\nMaybe run install/install.sh first?"
+    exit 1
+fi
+
 # Arrays to store file names
 user_services=()
-user_services+=("$user_dir"/*) # add the names of all the files in $user_dir/ to the user_services array
+user_services+=("$user_compiled_dir"/*) # add the names of all the files in $user_dir/ to the user_services array
 
 root_services=()
-root_services+=("$root_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
+root_services+=("$root_compiled_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
 
 # * Enable the services
 # Enable the user services

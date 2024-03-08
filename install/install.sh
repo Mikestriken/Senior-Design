@@ -9,8 +9,8 @@ cd "$script_dir"
 
 repairScripts.sh
 
-installAndRepairVEnv.sh
-
 installAndRepairAPTInstalls.sh
+
+installAndRepairVEnv.sh
 
 installAndRepairServices.sh
