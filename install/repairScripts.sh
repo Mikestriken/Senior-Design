@@ -16,7 +16,10 @@ find "$SEARCH_DIR" -type f -name "*.sh" | while read -r file; do
     echo -n -e "Checking $(basename "$file")..............."
     if [ "$(stat -c %a "$file")" != "700" ]; then
         # If not, set permissions to 700
-        chmod 700 "$file"
+        if ! chmod 700 "$file"; then
+        echo "Error: Couldn't enable rwx permissions on $file!"
+        exit 1
+    fi
         echo -e "Set to 700\n"
     else
         echo -e "ok"
