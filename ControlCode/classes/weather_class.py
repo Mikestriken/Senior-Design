@@ -22,7 +22,7 @@ import asyncio
 import threading
 # Even though mqtt_connection is in the same directory (Classes) as weather.py,
 # weather.py gets called from a different directory and so the system path is not located in the Classes subdirectory
-import Classes.mqtt_connection as mqtt_connection
+import classes.mqtt_connection as mqtt_connection
 
 class WeatherStation():
     def __init__(self, baud=4800, port="ttyUSB0", mqtt_client = mqtt_connection.MQTT_Connection("publisher")):
