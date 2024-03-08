@@ -1,6 +1,12 @@
 # Folder Ignores Keyword
 *-ignore/
 
+# Python virutal environment
+venv/
+
+# Python binarys
+**/__pycache__/
+
 # Archives
 *.zip
 *.Zip
