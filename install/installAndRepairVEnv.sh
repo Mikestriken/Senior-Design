@@ -8,7 +8,8 @@ script_dir=$(dirname "$(readlink -f "$0")")
 cd "$script_dir"
 
 # List of modules to install
-packages=("pyserial" "RPi.GPIO" "picamera" "Flask" "greenlet" "paho-mqtt")
+# Note: if package is raspberry specific, add it to raspberryPackages... Otherwise, just add it to packages.
+packages=("Flask" "greenlet" "paho-mqtt")
 raspberryPackages=("pyserial" "RPi.GPIO" "picamera")
 
 # Specify the directory for the virtual environment
