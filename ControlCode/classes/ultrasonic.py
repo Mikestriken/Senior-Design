@@ -60,7 +60,7 @@ class Ultrasonic:
             while distance < 0:
                 self.trigger_pulse()
                 distance = self.distance_calc(self.measure_time())
-            average += distance
+            average = (average + distance)/2
         return average
 
 

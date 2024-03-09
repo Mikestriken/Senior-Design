@@ -12,10 +12,16 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setwarnings(False)
 
 class Door:
     def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60):
-        self.percent_open = 0
+        try:
+            self.percent_open = self.get_percent_open()
+        except:
+            self.percent_open = 0
+            print('Door Read Error, watch door for over-open')
+
         self.in1 = in1
         self.in2 = in2
         self.ena = ena
@@ -47,43 +53,90 @@ class Door:
 
     def open_door(self):
         print("opening...")
+        self.percent_open = self.get_percent_open()
 
         # Set IN1 -> 1, IN2 -> 0
         GPIO.output(self.in1, True)
         GPIO.output(self.in2, False)
 
         while(self.percent_open < 100):
-            time.sleep(0.15)
+            time.sleep(0.18)
             self.percent_open += 1
+            self.write_percent_open()
 
         
         # Break and wait, IN1 -> 0, IN2 -> 0
         GPIO.output(self.in1, False)
+        print('opened')
         time.sleep(1)
 
     def close_door(self):
         print("closing...")
+        self.percent_open = self.get_percent_open()
 
         # Set IN1 -> 0, IN2 -> 1
         GPIO.output(self.in1, False)
         GPIO.output(self.in2, True)
         
         while(self.percent_open > 0):
-            time.sleep(0.17)
+            time.sleep(0.19)
             self.percent_open -= 1
+            self.write_percent_open()
 
         # Break and wait, IN1 -> 0, IN2 -> 0
         GPIO.output(self.in2, False)
+        print('closed')
+        time.sleep(1)
+
+    def open_door_multithreading(self, exit_event):
+        print("opening...")
+        self.percent_open = self.get_percent_open()
+
+        # Set IN1 -> 1, IN2 -> 0
+        GPIO.output(self.in1, True)
+        GPIO.output(self.in2, False)
+
+        while(self.percent_open < 100 and not exit_event.is_set()):
+            time.sleep(0.18)
+            self.percent_open += 1
+            self.write_percent_open()
+
+        
+        # Break and wait, IN1 -> 0, IN2 -> 0
+        GPIO.output(self.in1, False)
+        if not exit_event.is_set():
+            print('opened')
+        time.sleep(1)
+
+    def close_door_multithreading(self, exit_event):
+        print("closing...")
+        self.percent_open = self.get_percent_open()
+
+        # Set IN1 -> 0, IN2 -> 1
+        GPIO.output(self.in1, False)
+        GPIO.output(self.in2, True)
+        
+        while(self.percent_open > 0 and not exit_event.is_set()):
+            time.sleep(0.19)
+            self.percent_open -= 1
+            self.write_percent_open()
+
+        # Break and wait, IN1 -> 0, IN2 -> 0
+        GPIO.output(self.in2, False)
+        if not exit_event.is_set():
+            print('closed')
         time.sleep(1)
         
     def stop_door(self):
         GPIO.output(self.in1, False)
         GPIO.output(self.in2, False)
-        print("door stopped! Percent Open: " + self.percent_open)
-
-    def door_collision_isr(self, door):
-        self.stop_door()
-        print("collision detected")
+        print("door stopped! Percent Open: " + str(self.percent_open))
 
     def get_percent_open(self):
+        with open('/home/eprispot/Desktop/classes/data/door_open_percent.txt', "r") as f:
+            self.percent_open = int(f.read())
         return self.percent_open
+
+    def write_percent_open(self):
+        with open('/home/eprispot/Desktop/classes/data/door_open_percent.txt', 'w') as f:
+            f.write(str(self.percent_open))

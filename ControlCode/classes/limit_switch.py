@@ -16,9 +16,3 @@ class LimitSwitch:
 
         GPIO.add_event_detect(self.pin_number, GPIO.FALLING, 
             callback=limit_isr, bouncetime=300)
-
-
-
-        
-
-    

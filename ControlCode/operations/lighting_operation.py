@@ -52,9 +52,11 @@ def calculate_sunset():
 
 
 # Schedule the task at the sunrise time
-schedule.every().day.at(calculate_sunrise.strftime("%H:%M")).do(outdoor_light.power_on)
-schedule.every().day.at(calculate_sunset.strftime("%H:%M")).do(outdoor_light.power_on)
+#schedule.every().day.at(calculate_sunrise.strftime("%H:%M")).do(outdoor_light.power_on)
+#schedule.every().day.at(calculate_sunset.strftime("%H:%M")).do(outdoor_light.power_on)
 
 while True:
-    schedule.run_pending()
-    time.sleep(10)
+    indoor_light.power_on()
+    time.sleep(0.005)
+    indoor_light.power_off()
+    time.sleep(0.01)
