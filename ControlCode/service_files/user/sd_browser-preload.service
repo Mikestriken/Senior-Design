@@ -5,7 +5,7 @@ After=default.target
 [Service]
 Type=exec
 Restart=no
-ExecStart=/home/pi/Desktop/SD_Git/ControlCode/bash_scripts/linked_service_scripts/user/service_browser-preload.sh
+ExecStart=$gitRepoDir/ControlCode/bash_scripts/linked_service_scripts/user/service_browser-preload.sh
 Environment=DISPLAY=:0
 
 [Install]

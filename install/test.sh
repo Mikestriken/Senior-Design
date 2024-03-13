@@ -7,49 +7,86 @@ script_dir=$(dirname "$(readlink -f "$0")")
 # Change the current directory to the script's directory
 cd "$script_dir"
 
-# List of modules to install
-packages=("pyserial" "RPi.GPIO" "picamera"  "Flask" "greenlet" "paho-mqtt")
-raspberryPackages=("pyserial" "RPi.GPIO" "picamera")
+# * Define variables that will be used
+# Source directories
+user_dir="../ControlCode/service_files/user"
+root_dir="../ControlCode/service_files/root"
 
-# Specify the directory for the virtual environment
-venv_dir="../venv"
+# Compiled Source Directories
+user_compiled_dir="$user_dir/compiled"
+root_compiled_dir="$root_dir/compiled"
 
-# Flag if venv folder detected
-venvDetected=false
-if [ -d "$venv_dir" ]; then
-    venvDetected=true
+# Destination directory
+user_destination_dir="$HOME/.config/systemd/user/"
+root_destination_dir="/etc/systemd/system/"
+
+# Service file compilation variable values
+gitRepoDir="$(readlink -f "$script_dir/..")"
+
+# Arrays to store file names
+user_services=()
+user_services+=("$user_dir"/*) # add the names of all the files in $user_dir/ to the user_services array
+
+root_services=()
+root_services+=("$root_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
+
+
+# * Create the "compiled" subdirectory if they it don't exist
+if [ ! -d "$user_compiled_dir" ]; then
+    echo "Creating user destination directory: $user_compiled_dir"
+    sudo mkdir -p "$user_compiled_dir" || { echo "Error: Failed to create user destination directory."; exit 1; }
 fi
 
-# * Check for "--windows" command line argument and update packages list to match OS.
-echo -e "Updating packages list for specified OS...\n"
-windows=false
+if [ ! -d "$root_compiled_dir" ]; then
+    echo "Creating user destination directory: $root_compiled_dir"
+    sudo mkdir -p "$root_compiled_dir" || { echo "Error: Failed to create user destination directory."; exit 1; }
+fi
 
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --windows)
-            # Set the 'windows' variable to true
-            windows=true
+# * Attempt to gain ownership of the compiled
+if ! sudo chown $(whoami):$(whoami) "$user_compiled_dir"; then
+    echo -e "\nError: Could not compile $file to $user_compiled_dir"
+    exit 1
+fi
 
-            # Loop through each element in 'packages'
-            new_packages=()
-            for package in "${packages[@]}"; do
-                if [[ ! " ${raspberryPackages[@]} " =~ " ${package} " ]]; then
-                    new_packages+=("$package")
-                else
-                    echo "Removed $package from packages"
-                fi
-            done
+if ! sudo chown $(whoami):$(whoami) "$root_compiled_dir"; then
+    echo -e "\nError: Could not compile $file to $root_compiled_dir"
+    exit 1
+fi
 
-            # Update the 'packages' array
-            packages=("${new_packages[@]}")
+echo "Compiling .service files..."
 
-            ;;
-        *)
-            # Ignore other command line arguments
-            ;;
-    esac
-    # Move to the next argument
-    shift
+# Iterate through each user .service file and compile it
+for file in $user_dir/*.service; do
+    echo -n "compiling $(basename "$file")..............."
+    # Check if the file is a regular file
+    if [ -f "$file" ]; then
+        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$user_compiled_dir/$(basename "$file")"; then
+            echo -e "\nError: Could not compile $file to $user_compiled_dir"
+            exit 1
+        fi
+    else
+        echo -e "\nError: Could not compile $file to $user_compiled_dir"
+        exit 1
+    fi
+    echo "ok"
 done
 
-echo "Updated 'packages' array: ${packages[@]}"
+# Iterate through each root .service file and compile it
+for file in $root_dir/*.service; do
+    echo -n "compiling $(basename "$file")..............."
+    # Check if the file is a regular file
+    if [ -f "$file" ]; then
+        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$root_compiled_dir/$(basename "$file")"; then
+            echo -e "\nError: Could not compile $file to $root_compiled_dir"
+            exit 1
+        fi
+    else
+        echo -e "\nError: Could not compile $file to $root_compiled_dir"
+        exit 1
+    fi
+    echo "ok"
+done
+
+echo -e "done.\n"
