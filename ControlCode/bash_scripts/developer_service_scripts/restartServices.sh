@@ -41,22 +41,22 @@ user_services+=("$user_compiled_dir"/*) # add the names of all the files in $use
 root_services=()
 root_services+=("$root_compiled_dir"/*) # add the names of all the files in $root_dir/ to the user_services array
 
-# * Disable the services
-# Disable the user services
-echo -e "\nDisabling User Services..."
+# * Restart the services
+# Restart the user services
+echo -e "\nRestarting User Services..."
 for service_file in "${user_services[@]}"; do
-    if ! systemctl --user disable "$(basename "$service_file" .service)"; then
-        echo "Error: Disabling $(basename "$service_file" .service) service failed."
+    if ! systemctl --user restart "$(basename "$service_file" .service)"; then
+        echo "Error: Restarting $(basename "$service_file" .service) service failed."
         exit 1
     fi
 done
 echo "done!"
 
-# Disable the root services
-echo -e "\nDisabling Root Services..."
+# Restart the root services
+echo -e "\nRestarting Root Services..."
 for service_file in "${root_services[@]}"; do
-    if ! sudo systemctl disable "$(basename "$service_file" .service)"; then
-        echo "Error: Disabling $(basename "$service_file" .service) service failed."
+    if ! sudo systemctl restart "$(basename "$service_file" .service)"; then
+        echo "Error: Restarting $(basename "$service_file" .service) service failed."
         exit 1
     fi
 done

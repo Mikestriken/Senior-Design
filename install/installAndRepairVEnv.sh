@@ -8,7 +8,8 @@ script_dir=$(dirname "$(readlink -f "$0")")
 cd "$script_dir"
 
 # List of modules to install
-packages=("pyserial" "RPi.GPIO" "picamera" "Flask" "greenlet" "paho-mqtt")
+# Note: if package is raspberry specific, add it to raspberryPackages... Otherwise, just add it to packages.
+packages=("Flask" "greenlet" "paho-mqtt")
 raspberryPackages=("pyserial" "RPi.GPIO" "picamera")
 
 # Specify the directory for the virtual environment
@@ -20,37 +21,24 @@ if [ -d "$venv_dir" ]; then
     venvDetected=true
 fi
 
-# * Check for "--windows" command line argument and update packages list to match OS.
-echo -e "Updating packages list for specified OS...\n"
+# * Check current OS
 windows=false
+OS=$(uname)
+# Check if the output of uname is not "Linux"
+if [ "$OS" != "Linux" ]; then
+    # If it's not Linux, set windows=true
+    windows=true
+else
+    # Otherwise, set windows=false or leave it unset (your choice)
+    windows=false
+fi
 
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --windows)
-            # Set the 'windows' variable to true
-            windows=true
-
-            # Loop through each element in 'packages'
-            new_packages=()
-            for package in "${packages[@]}"; do
-                if [[ ! " ${raspberryPackages[@]} " =~ " ${package} " ]]; then
-                    new_packages+=("$package")
-                else
-                    echo "Removed $package from packages"
-                fi
-            done
-
-            # Update the 'packages' array
-            packages=("${new_packages[@]}")
-
-            ;;
-        *)
-            # Ignore other command line arguments
-            ;;
-    esac
-    # Move to the next argument
-    shift
-done
+# * Update packages list based on OS
+echo -e "Updating packages list for specified OS...\n"
+if [ "$windows" = false ]; then
+    # If not on Windows, append raspberryPackages to packages
+    packages+=("${raspberryPackages[@]}")
+fi
 
 echo -e "\ndone.\n"
 
