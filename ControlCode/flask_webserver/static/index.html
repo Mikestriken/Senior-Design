@@ -8,119 +8,209 @@
 
     <!-- Links -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='indexSlider.css') }}">
+
     <script src="{{ url_for('static', filename='index.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexButtons.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexBatteryGraphic.js') }}" defer></script>
     <script src="{{ url_for('static', filename='serverSentEventHandler.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='indexWeatherStation.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='indexSlider.js') }}" defer></script>
     
     
 </head>
 <body>
+    <header>
+        <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
+        <!-- <section>
+            <button class="button" id="terminalButton">Terminal</button>
+            <button class="button" id="rebootButton">Reboot</button>
+        </section> -->
+    </header>
     <main class="container">
-        <section id="dockingStation">
-            <h1>Docking Station</h1>
-            
-            <article id="door">
-                <span class="label">Door Controls</span>
-                <div id="doorButtons">
-                    <button class="input" id="openDoorButton">Open</button>
-                    <button class="input" id="closeDoorButton">Close</button>
-                </div>
-            </article>
+        <section id="spotContainer">
+            <section id="spot">
+                <h1>Spot</h1>
+                
+                <article id="battery">
+                    <figure style="background-image: url('{{ url_for('static', filename='Assets/battery.png') }}');" class="backgroundContainer" id="batteryContainerGraphic">
+                        <figure class="input progressBarContainer" id="batteryGraphicBackground">
+                            <figcaption class="progressBarOverlay" id="batteryPercentageOutput"></figcaption>
+                            <figure class="progressBar" id="batteryGraphicOutput"></figure>
+                        </figure>
+                    </figure>
+                </article>
 
-            <article id="internalTemperature">
-                <span class="label">Internal Temperature:</span>
-                <span class="output" id="internalTemperatureOutput"></span>
-                <span class="label">°C</span>
-            </article>
-
-            <article id="powerStatus">
-                <span class="label">Power:</span>
-                <span class="output" id="powerStatusOutput"></span>
-            </article>
-
-            <article id="chargerStatus">
-                <span class="label">Charger Status:</span>
-                <span class="output" id="chargerStatusOutput"></span>
-            </article>
+            </section>
         </section>
 
-        <section id="spot">
-            <h1>Spot</h1>
-            
-            <article id="battery">
-                <figure class="output" id="batteryGraphicBackground">
-                    <figure class="batteryGraphic output" id="batteryGraphicOutput"></figure>
-                </figure>
-                <figcaption class="output" id="batteryPercentageOutput"></figcaption>
-            </article>
+        <section id="cameraContainer">
+            <section id="camera">
+                <h1>Video Feeds</h1>
+                
+                <button class="input button" id="externalCameraButton">External Camera</button>
+                <button class="input button" id="internalCameraButton">Internal Camera</button>
+            </section>
+        </section>
+
+        <section id="weatherStationContainer">
+            <section id="weatherStation">
+                <h1 id="wsTitle">Weather</h1>
+                
+                <!-- <article id="externalTemperature"> -->
+                    <span id="wsTemp1">
+                        <span class="label">Outdoor Temperature:<!-- &nbsp;&nbsp;&nbsp; --></span>
+                    </span>
+                    <span id="wsTemp2">
+                        <span class="output" id="externalTemperatureOutput"></span>
+                        <span class="label">&nbsp;°C</span>
+                    </span>
+                    <span id="wsTemp3">
+                    </span>
+                <!-- </article> -->
     
-            <article id="mission">
-                <span class="label">Current Mission:</span>
-                <span class="output" id="currentMissionOutput"></span>
-            </article>
+                <!-- <article id="windSpeed"> -->
+                    <span id="wsWSpeed1">
+                        <span class="label">Wind Speed:</span>
+                    </span>
+                    <span id="wsWSpeed2">
+                        <span class="output" id="windSpeedOutput"></span>
+                        <span class="label">&nbsp;kts<!-- &nbsp;&nbsp;&nbsp; --></span>
+                    </span>
+                    <span id="wsWSpeed3">
+                        <span class="output" id="windDirectionOutput"></span>
+                        <span class="label">°&nbsp;</span>
+                        <span class="label" id="windDirectionUnit"></span>
+                    </span>
+                <!-- </article> -->
+                
+                <!-- <article id="pressure"> -->
+                    <span id="wsPressure1">
+                        <span class="label">Pressure:<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --></span>
+                    </span>
+                    <span id="wsPressure2">
+                        <span class="output" id="pressureOutputHG"></span>
+                        <span class="label">&nbsp;inHg</span>
+                    </span>
+                    <span id="wsPressure3">
+                        <span class="output" id="pressureOutputBar"></span>
+                        <span class="label">&nbsp;bar</span>
+                    </span>
+                <!-- </article> -->
+                
+                <!-- <article id="humidity"> -->
+                    <span id="wsHumidity1">
+                        <span class="label">Humidity:<!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --></span>
+                    </span>
+                    <span id="wsHumidity2">
+                        <span class="output" id="humidityOutput"></span>
+                        <span class="label">&nbsp;%</span>
+                    </span>
+                    <span id="wsHumidity3">
+                    </span>
+                <!-- </article> -->
+                
+                <!-- <article id="dewPoint"> -->
+                    <span id="wsDewPoint1">
+                        <span class="label">Dew Point:<!-- &nbsp;&nbsp;&nbsp; --></span>
+                    </span>
+                    <span id="wsDewPoint2">
+                        <span class="output" id="dewPointOutput"></span>
+                        <span class="label">&nbsp;°C</span>
+                    </span>
+                    <span id="wsDewPoint3">
+                    </span>
+                <!-- </article> -->
 
-            <article id="task">
-                <span class="label">Current Task:</span>
-                <span class="output" id="currentTaskOutput"></span>
-            </article>
-        </section>
-        
-        <section id="weatherStation">
-            <h1>Weather Station</h1>
-            
-            <article id="externalTemperature">
-                <span class="label">Temperature:</span>
-                <span class="output" id="externalTemperatureOutput"></span>
-                <span class="label">°C</span>
-            </article>
-
-            <article id="windSpeed">
-                <span class="label">Wind Speed:</span>
-                <span class="output" id="windSpeedOutput"></span>
-                <span class="label">kts</span>
-                <span class="output" id="windDirectionOutput"></span>
-            </article>
-            
-            <!-- <article id="precipitation">
-                <span class="label">Precipitation:</span>
-                <span class="output" id="precipitationOutput"></span>
-                <span class="label">in</span>
-            </article> -->
-            
-            <article id="pressure">
-                <span class="label">pressure:</span>
-                <span class="output" id="pressureOutputHG"></span>
-                <span class="label">in/hg</span>
-                <span class="output" id="pressureOutputBar"></span>
-                <span class="label">bar</span>
-            </article>
-            
-            <article id="humidity">
-                <span class="label">humidity:</span>
-                <span class="output" id="humidityOutput"></span>
-                <span class="label">%</span>
-            </article>
-            
-            <article id="dewPoint">
-                <span class="label">Dew Point:</span>
-                <span class="output" id="dewPointOutput"></span>
-                <span class="label">°C</span>
-            </article>
-        </section>
-        
-        <section id="camera">
-            <h1>Camera (Testing Area For Now)</h1>
-            
-            <article>
-                <form id="cameraArea"> <!-- action="/example.html" method="POST" -->
-                    <input class="output" id="textField" type="text" name="first-text-field" value="">
-                    <input class="input" id="submitButton" type="submit" >
-                </form>
-            </article>
-
+            </section>
         </section>
 
+        <section id="dockingStationContainer">
+            <section id="dockingStation">
+                <h1>Docking Station Controls</h1>
+                
+                <span id="indoorLightSubTitle" class="label">Indoor Lights</span>
+                <!-- <button id="indoorLightButton" class="button">Indoor Light: Off</button> -->
+                <article id="indoorLightSlider">
+                    <input class="slider" type="range" min="0" max="1" step="1" value="0">
+
+                    <div class="h4-container">
+                        <div class="h4-subcontainer">
+                            <h4 id="indoorLightPopOut">
+                                OFF<span></span>
+                            </h4>
+                        </div>
+                    </div>
+
+                </article>
+
+                <span id="outdoorLightSubTitle" class="label">Outdoor Lights</span>
+                <!-- <button id="outdoorLightButton" class="button">Outdoor Light: Off</button> -->
+                <article id="outdoorLightSlider">
+                    <input class="slider" type="range" min="0" max="1" step="1" value="0">
+
+                    <div class="h4-container">
+                        <div class="h4-subcontainer">
+                            <h4 id="outdoorLightPopOut">
+                                OFF<span></span>
+                            </h4>
+                        </div>
+                    </div>
+
+                </article>
+
+                <span id="fanSubTitle" class="label">Fan Controls</span>
+                <article id="fanSpeedSlider">
+                    <input class="slider" type="range" min="0" max="2" step="1" value="0">
+
+                    <div class="h4-container">
+                        <div class="h4-subcontainer">
+                            <h4 id="fanPopOut">
+                                OFF<span></span>
+                            </h4>
+                        </div>
+                    </div>
+
+                </article>
+                <!-- <button id="fanSpeedButton" class="input button">Fan Speed: Fast</button>
+                <button id="fanStopButton" class="input button">Fan: Off</button> -->
+                
+                <button class="button" id="stopDoorButton">HALT<br>DOOR</button>
+
+                <button class="button progressBarContainer" id="openDoorButton">
+                    <span class="progressBarOverlay">Open Door</span>
+                    <figure class="progressBar" id="openDoorProgress"></figure>
+                </button>
+                <button class="button progressBarContainer" id="closeDoorButton">
+                    <span class="progressBarOverlay">Close Door</span>
+                    <figure class="progressBar" id="closeDoorProgress"></figure>
+                </button>
+    
+                <article id="internalTemperature">
+                    <span class="label">Indoor Temperature:&nbsp;</span>
+                    <span class="output" id="internalTemperatureOutput"></span>
+                    <span class="label">&nbsp;°C</span>
+                </article>
+    
+                <article id="powerStatus">
+                    <span class="label">Wall Power:</span>
+                    <figure id="powerStatusOutput"></figure>
+                </article>
+            </section>
+        </section>
+
+        <section id="messagesContainer">
+            <section id="messages">
+                <h1>System Messages</h1>
+                
+                <article id="messagesTextbox">
+                    text<br>text<br>text
+                </article>
+                
+                <button class="input button" id="clearTextboxButton">Clear</button>
+    
+            </section>
+        </section>
     </main>
 </body>
 </html>
