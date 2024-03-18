@@ -453,31 +453,30 @@ section > section {
 #messages > h1{grid-area: title;}
 
 #messagesTextbox {
+    /* Position and Sizing */
     grid-area: messageBox;
-    display: flex;
-    flex-direction: column;
-    justify-content: right;
-
-    /* overflow: hidden; */
-    overflow-y: auto;
-    flex-grow: 1;
-
-    text-align: left;
-
-    padding: 0rem 2rem;
-    /* box-shadow: inset .2rem .2rem rgba(0, 0, 0, 0.3); */
-    /* box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 2px 0px inset; */
-
     width: 94%;
     height: 100%;
 
-    border: .1rem solid black;
+    /* Flex */
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
 
+    /* Content */
+    overflow: auto;
+    /* overflow-anchor: auto !important; */
+    text-align: left;
+    padding: 0rem 2rem;
+
+    /* Color */
+    border: .1rem solid black;
     background-color: white;
 }
 
-#messagesTextbox * {
-    border: 1px solid red;
+#messagesTextbox #messageBoxContent span {
+    display: block;
+    transform: translateZ(0); /* fixes a bug in Safari iOS where the scroller doesn't update */
 }
 
 #clearTextboxButton {

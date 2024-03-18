@@ -48,39 +48,64 @@ function updateProgress(button){
 }
 
 // * Define what happens when the open button is pressed
-function openButtonPressedEventHandler() {
-    setPressedStyle(openButton)
+function openButtonPressedEventHandler(event) {
+    setPressedStyle(openButton);
+    setPressedStyle(openButtonProgress);
+    document.addEventListener("mouseup", openButtonReleasedEventHandler);
+    document.addEventListener("touchend", openButtonReleasedEventHandler);
 }
 
 // * Define what happens when the open button is released
-function openButtonReleasedEventHandler() {
-    // setReleasedStyle(openButton)
-
-    // Asynchronously send open button event
-    fetchURL('/openButton/click')
+function openButtonReleasedEventHandler(event) {
+    document.removeEventListener("mouseup", openButtonReleasedEventHandler);
+    document.removeEventListener("touchend", openButtonReleasedEventHandler);
     
-    // Create a new instance of updateProgress for openButton
-    const openButtonUpdateProgress = updateProgress(openButtonProgress);
-    
-    openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
+    if (!openButton.contains(event.target)) {
+        setReleasedStyle(openButton);
+        setReleasedStyle(openButtonProgress);
+    } else {
+        // setReleasedStyle(openButton);
+        setReleasedStyle(openButtonProgress);
+        
+        // Asynchronously send open button event
+        fetchURL('/openButton/click');
+        
+        // Create a new instance of updateProgress for openButton
+        const openButtonUpdateProgress = updateProgress(openButtonProgress);
+        
+        openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
+    }
 }
 
 // * Define what happens when the close button is pressed
 function closeButtonPressedEventHandler() {
-    setPressedStyle(closeButton)
+    setPressedStyle(closeButton);
+    setPressedStyle(closeButtonProgress);
+    document.addEventListener("mouseup", closeButtonReleasedEventHandler);
+    document.addEventListener("touchend", closeButtonReleasedEventHandler);
 }
 
 // * Define what happens when the close button is released
-function closeButtonReleasedEventHandler() {
-    // setReleasedStyle(closeButton)
-    
-    // Asynchronously send close button event
-    fetchURL('/closeButton/click')
-    
-    // Create a new instance of updateProgress for closeButton
-    const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
-    
-    closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
+function closeButtonReleasedEventHandler(event) {
+    document.removeEventListener("mouseup", closeButtonReleasedEventHandler);
+    document.removeEventListener("touchend", closeButtonReleasedEventHandler);
+
+    if (!closeButton.contains(event.target)) {
+        setReleasedStyle(closeButton);
+        setReleasedStyle(closeButtonProgress);
+    }
+    else {
+        // setReleasedStyle(closeButton);
+        setReleasedStyle(closeButtonProgress);
+        
+        // Asynchronously send close button event
+        fetchURL('/closeButton/click')
+        
+        // Create a new instance of updateProgress for closeButton
+        const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
+        
+        closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
+    }
 }
 
 // * Define what happens when the stop button is pressed
@@ -99,13 +124,13 @@ function stopButtonReleasedEventHandler() {
     // * On interrupt run relevant function.
 openButton.addEventListener("mousedown", openButtonPressedEventHandler);
 openButton.addEventListener("touchstart", openButtonPressedEventHandler);
-openButton.addEventListener("mouseup", openButtonReleasedEventHandler);
-openButton.addEventListener("touchend", openButtonReleasedEventHandler);
+// openButton.addEventListener("mouseup", openButtonReleasedEventHandler);
+// openButton.addEventListener("touchend", openButtonReleasedEventHandler);
 
 closeButton.addEventListener("mousedown", closeButtonPressedEventHandler);
 closeButton.addEventListener("touchstart", closeButtonPressedEventHandler);
-closeButton.addEventListener("mouseup", closeButtonReleasedEventHandler);
-closeButton.addEventListener("touchend", closeButtonReleasedEventHandler);
+// closeButton.addEventListener("mouseup", closeButtonReleasedEventHandler);
+// closeButton.addEventListener("touchend", closeButtonReleasedEventHandler);
 
 stopButton.addEventListener("mousedown", stopButtonPressedEventHandler);
 stopButton.addEventListener("touchstart", stopButtonPressedEventHandler);
