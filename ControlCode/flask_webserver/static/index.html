@@ -23,10 +23,15 @@
 <body>
     <header>
         <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
-        <!-- <section>
+
+        {% if request.remote_addr == "127.0.0.1" %}
+        <script src="{{ url_for('static', filename='localhostButtons.js') }}" defer></script>
+        <section>
             <button class="button" id="terminalButton">Terminal</button>
             <button class="button" id="rebootButton">Reboot</button>
-        </section> -->
+        </section>
+        {% endif %}
+        
     </header>
     <main class="container">
         <section id="spotContainer">

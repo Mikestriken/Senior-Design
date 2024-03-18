@@ -12,7 +12,8 @@ import sys
 
 
 # webserver imports
-from flask import Flask, redirect, url_for, render_template, Response, jsonify
+from flask import Flask, request, redirect, url_for, render_template, Response, jsonify
+import socket
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
@@ -46,7 +47,6 @@ alert_topic = 'alert'
 # * alert_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 alert_data_handler = DataHandler(alert_template_data)
 alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handler, "string")
-# alert_mqtt_connect.client.loop_start()
 
                                                         # * Weather MQTT
 # * Template for how the data should be formatted.
@@ -79,7 +79,6 @@ weather_topics = ['weather_topic', 'indoor_weather_topic']
 # * weather_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 weather_data_handler = DataHandler(weather_template_data)
 weather_mqtt_connect = MQTT_Connection("subscriber", weather_topics, weather_data_handler, "json")
-# weather_mqtt_connect.client.loop_start()
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
 # * Redirect to index.html if trying to load root page.
@@ -90,18 +89,6 @@ def root():
 @app.route("/index.html")
 def main():
     return render_template('index.html')
-if cameraCodeFlag:
-    def gen(camera):
-        while True:
-            frame = indoor_camera.Camera().get_frame()
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-    def gen2(camera):
-        while True:
-            frame = outdoor_camera.Camera_outdoor().get_frame()
-            yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 # * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
 def generate_events(data_handler):
@@ -142,6 +129,18 @@ def alert_events():
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
 if cameraCodeFlag:
+    def gen(camera):
+        while True:
+            frame = indoor_camera.Camera().get_frame()
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+    def gen2(camera):
+        while True:
+            frame = outdoor_camera.Camera_outdoor().get_frame()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            
     @app.route('/indoor_video_feed')
     def indoor_video_feed():
         return Response(gen(indoor_camera.Camera()),
