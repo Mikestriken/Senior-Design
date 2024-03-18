@@ -455,6 +455,11 @@ section > section {
 #messagesTextbox {
     grid-area: messageBox;
     display: flex;
+    flex-direction: column;
+    justify-content: right;
+
+    /* overflow: hidden; */
+    overflow-y: auto;
     flex-grow: 1;
 
     text-align: left;
@@ -469,6 +474,10 @@ section > section {
     border: .1rem solid black;
 
     background-color: white;
+}
+
+#messagesTextbox * {
+    border: 1px solid red;
 }
 
 #clearTextboxButton {

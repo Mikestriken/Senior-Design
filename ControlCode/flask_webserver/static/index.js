@@ -1,7 +1,4 @@
 {
-    // * Define textField Object
-    const textField = document.getElementById('textField');
-  
     const windSpeedOutput = document.getElementById('windSpeedOutput');
     const windDirectionOutput = document.getElementById('windDirectionOutput');
     const windDirectionUnit = document.getElementById('windDirectionUnit');

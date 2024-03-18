@@ -49,36 +49,38 @@ function updateProgress(button){
 
 // * Define what happens when the open button is pressed
 function openButtonPressedEventHandler() {
-    // Asynchronously send open button event
-    fetchURL('/openButton/click')
     setPressedStyle(openButton)
-
-    // Create a new instance of updateProgress for openButton
-    const openButtonUpdateProgress = updateProgress(openButtonProgress);
-
-    openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
 }
 
 // * Define what happens when the open button is released
 function openButtonReleasedEventHandler() {
     // setReleasedStyle(openButton)
+
+    // Asynchronously send open button event
+    fetchURL('/openButton/click')
+    
+    // Create a new instance of updateProgress for openButton
+    const openButtonUpdateProgress = updateProgress(openButtonProgress);
+    
+    openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
 }
 
 // * Define what happens when the close button is pressed
 function closeButtonPressedEventHandler() {
-    // Asynchronously send close button event
-    fetchURL('/closeButton/click')
     setPressedStyle(closeButton)
-    
-    // Create a new instance of updateProgress for closeButton
-    const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
-
-    closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
 }
 
 // * Define what happens when the close button is released
 function closeButtonReleasedEventHandler() {
     // setReleasedStyle(closeButton)
+    
+    // Asynchronously send close button event
+    fetchURL('/closeButton/click')
+    
+    // Create a new instance of updateProgress for closeButton
+    const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
+    
+    closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
 }
 
 // * Define what happens when the stop button is pressed

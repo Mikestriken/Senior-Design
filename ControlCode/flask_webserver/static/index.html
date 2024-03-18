@@ -4,7 +4,7 @@
     <!-- Boiler Plate -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spot (good dawg) House Control</title>
+    <title>Spot (he was a good dawg) House Control</title>
 
     <!-- Links -->
 	<link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
@@ -16,6 +16,7 @@
     <script src="{{ url_for('static', filename='serverSentEventHandler.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexWeatherStation.js') }}" defer></script>
     <script src="{{ url_for('static', filename='indexSlider.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='messages.js') }}" defer></script>
     
     
 </head>
@@ -204,7 +205,18 @@
                 <h1>System Messages</h1>
                 
                 <article id="messagesTextbox">
-                    text<br>text<br>text
+                    <span>
+                        text1
+                    </span>
+                    <span>
+                        text2
+                    </span>
+                    <span>
+                        text3
+                    </span>
+                    <span>
+                        text4
+                    </span>
                 </article>
                 
                 <button class="input button" id="clearTextboxButton">Clear</button>
