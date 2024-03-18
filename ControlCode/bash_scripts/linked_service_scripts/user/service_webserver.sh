@@ -10,4 +10,4 @@ cd "$script_dir"
 cd "../../../"
 
 # Execute the flask webserver
-../venv/bin/python -m flask_webserver.flask_webserver --no-camera
+sudo ../venv/bin/python -m flask_webserver.flask_webserver --no-camera
