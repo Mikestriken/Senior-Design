@@ -22,7 +22,7 @@ else
 fi
 
 # Execute the flask webserver
-if [ windows==true ]; then
+if [ $windows==true ]; then
     ../venv/Scripts/python.exe -m flask_webserver.flask_webserver $@
 else
     sudo ../venv/bin/python -m flask_webserver.flask_webserver $@
