@@ -8,12 +8,13 @@
 
 from classes.data_handler import DataHandler
 from classes.mqtt_connection import MQTT_Connection
-import sys
 
 
 # webserver imports
 from flask import Flask, request, redirect, url_for, render_template, Response, jsonify
+import sys
 import socket
+import subprocess
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
@@ -161,6 +162,21 @@ def action(object, action):
     # * Open Button  → /openButton/click  → openButton_topic,  "click"
     # * Close Button → /closeButton/click → closeButton_topic, "click"
     door_mqtt_connect.publish(object + "_topic", action)
+        
+    return redirect(url_for('main'))
+
+                    # localhost Buttons
+door_mqtt_connect = MQTT_Connection("publisher")
+
+@app.route("/localhost/<action>")
+def action(action):
+    # * Terminal Button  → /localhost/terminal  → Open Terminal
+    # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
+    if action == "terminal":
+        subprocess.Popen(["lxterminal"])
+        
+    elif action == "reboot":
+        subprocess.run(['sudo', 'reboot'])
         
     return redirect(url_for('main'))
 
