@@ -168,11 +168,7 @@ def action(object, action):
         door_mqtt_connect.publish(object + "_topic", action)
     
     # localhost button Section
-    # * Terminal Button  → /localhost/terminal  → Open Terminal
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
-    elif object == "localhost" and action == "terminal":
-        subprocess.Popen(["lxterminal"])
-        
     elif object == "localhost" and action == "reboot":
         subprocess.run(['sudo', 'reboot'])
         

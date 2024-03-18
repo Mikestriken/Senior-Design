@@ -4,7 +4,7 @@ import { fetchURL } from './modules.js';
     const rebootButton = document.getElementById("rebootButton");
 
     function terminalButtonReleasedEventHandler() {
-        fetchURL('/localhost/terminal');
+        window.alert('To Open a Terminal Press: Ctrl + Alt + T');
     }
 
     function rebootButtonReleasedEventHandler() {
