@@ -15,6 +15,8 @@ from flask import Flask, request, redirect, url_for, render_template, Response, 
 import sys
 import socket
 import subprocess
+import os
+os.environ["DISPLAY"] = ":0"
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
