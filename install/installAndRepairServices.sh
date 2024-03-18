@@ -54,6 +54,8 @@ no_root_services=false
 
 echo "Checking for user service files to compile..."
 user_files=( "$user_dir"/*.service )
+
+echo "${#user_files[@]}"
 if [ ${#user_files[@]} -eq 0 ]; then
     echo "No user '.service' files found in $user_dir"
     echo "Setting no_user_services flag..."
@@ -62,6 +64,8 @@ fi
 
 echo "Checking for root service files to compile..."
 root_files=( "$root_dir"/*.service )
+
+echo "${#root_files[@]}"
 if [ ${#root_files[@]} -eq 0 ]; then
     echo "No root '.service' files found in $root_dir"
     echo "Setting no_root_services flag..."
