@@ -23,6 +23,18 @@ root_destination_dir="/etc/systemd/system/"
 # Service file compilation variable values
 gitRepoDir="$(readlink -f "$script_dir/..")"
 
+echo "Removing old compiled directory..."
+if ! sudo rm -rf "$user_compiled_dir" ; then
+    echo -e "\nError: Could not remove $user_compiled_dir"
+    exit 1
+fi
+
+if ! sudo rm -rf "$root_compiled_dir" ; then
+    echo -e "\nError: Could not remove $user_compiled_dir"
+    exit 1
+fi
+echo "Successfully removed old compiled directory."
+
 # * Create the "compiled" subdirectory if they it don't exist
 if [ ! -d "$user_compiled_dir" ]; then
     echo "Creating user destination directory: $user_compiled_dir"
@@ -44,6 +56,8 @@ if ! sudo chown $(whoami):$(whoami) "$root_compiled_dir"; then
     echo -e "\nError: Could not compile $file to $root_compiled_dir"
     exit 1
 fi
+
+
 
 echo "Compiling .service files..."
 
