@@ -159,23 +159,19 @@ door_mqtt_connect = MQTT_Connection("publisher")
 @app.route("/<object>/<action>")
 def action(object, action):
     print("Action Called")
+    # MQTT Section
     # * Open Button  → /openButton/click  → openButton_topic,  "click"
     # * Close Button → /closeButton/click → closeButton_topic, "click"
-    door_mqtt_connect.publish(object + "_topic", action)
-        
-    return redirect(url_for('main'))
-
-                    # localhost Buttons
-door_mqtt_connect = MQTT_Connection("publisher")
-
-@app.route("/localhost/<action>")
-def action(action):
+    if object == "openButton" or object == "closeButton":
+        door_mqtt_connect.publish(object + "_topic", action)
+    
+    # localhost button Section
     # * Terminal Button  → /localhost/terminal  → Open Terminal
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
-    if action == "terminal":
+    elif object == "localhost" and action == "terminal":
         subprocess.Popen(["lxterminal"])
         
-    elif action == "reboot":
+    elif object == "localhost" and action == "reboot":
         subprocess.run(['sudo', 'reboot'])
         
     return redirect(url_for('main'))
