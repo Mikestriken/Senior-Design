@@ -11,7 +11,9 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='slider.css') }}">
 
     <script src="{{ url_for('static', filename='index.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='doorButtons.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='modules.js') }}" type="module" defer></script>
+
+    <script src="{{ url_for('static', filename='doorButtons.js') }}" type="module" defer></script>
     <script src="{{ url_for('static', filename='batteryGraphic.js') }}" defer></script>
     <script src="{{ url_for('static', filename='serverSentEventHandler.js') }}" defer></script>
     <script src="{{ url_for('static', filename='weather.js') }}" defer></script>
@@ -25,7 +27,7 @@
         <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
 
         {% if request.remote_addr == "127.0.0.1" %}
-        <script src="{{ url_for('static', filename='localhostButtons.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='localhostButtons.js') }}" type="module" defer></script>
         <section>
             <button class="button" id="terminalButton">Terminal</button>
             <button class="button" id="rebootButton">Reboot</button>

@@ -1,3 +1,5 @@
+import { fetchURL } from './modules.js';
+
 {
     // * JS Code for Buttons
     // * Get button objects and assign them to aliases
@@ -9,20 +11,20 @@
 
     const stopButton = document.getElementById("stopDoorButton");
 
-    // * Basic Fetch Function
-    async function fetchURL(url) {
-        try {
-            // * Load this webpage subdirectory asynchronously so that we don't reload the page.
-            const response = await fetch(url)
+    // // * Basic Fetch Function
+    // async function fetchURL(url) {
+    //     try {
+    //         // * Load this webpage subdirectory asynchronously so that we don't reload the page.
+    //         const response = await fetch(url)
 
-            // * Log the Response
-            console.log('HTTP status code:', response.status);
-        }
-        catch(error) {
-            // * Handle any errors that occurred during the fetch operation
-            console.error('Error:', error);
-        }
-    }
+    //         // * Log the Response
+    //         console.log('HTTP status code:', response.status);
+    //     }
+    //     catch(error) {
+    //         // * Handle any errors that occurred during the fetch operation
+    //         console.error('Error:', error);
+    //     }
+    // }
 
     function setPressedStyle(button) {
         button.style.backgroundColor = 'hsl(228, 66%, 70%)';
