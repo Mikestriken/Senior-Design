@@ -47,39 +47,61 @@ fi
 
 echo "Compiling .service files..."
 
+# Check if any user .service files exist
+no_user_services=false
+no_root_services=false
+
+user_files=( "$user_dir"/*.service )
+if [ ${#user_files[@]} -eq 0 ]; then
+    echo "No user '.service' files found in $user_dir"
+    echo "Setting no_user_services flag..."
+    no_user_services=true
+fi
+
+root_files=( "$root_dir"/*.service )
+if [ ${#root_files[@]} -eq 0 ]; then
+    echo "No root '.service' files found in $root_dir"
+    echo "Setting no_root_services flag..."
+    no_root_services=true
+fi
+
 # Iterate through each user .service file and compile it
-for file in $user_dir/*.service; do
-    echo -n "compiling $(basename "$file")..............."
-    # Check if the file is a regular file
-    if [ -f "$file" ]; then
-        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
-        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$user_compiled_dir/$(basename "$file")"; then
+if [ "$no_user_services" = false ]; then
+    for file in $user_dir/*.service; do
+        echo -n "compiling $(basename "$file")..............."
+        # Check if the file is a regular file
+        if [ -f "$file" ]; then
+            # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+            if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$user_compiled_dir/$(basename "$file")"; then
+                echo -e "\nError: Could not compile $file to $user_compiled_dir"
+                exit 1
+            fi
+        else
             echo -e "\nError: Could not compile $file to $user_compiled_dir"
             exit 1
         fi
-    else
-        echo -e "\nError: Could not compile $file to $user_compiled_dir"
-        exit 1
-    fi
-    echo "ok"
-done
+        echo "ok"
+    done
+fi
 
 # Iterate through each root .service file and compile it
-for file in $root_dir/*.service; do
-    echo -n "compiling $(basename "$file")..............."
-    # Check if the file is a regular file
-    if [ -f "$file" ]; then
-        # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
-        if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$root_compiled_dir/$(basename "$file")"; then
+if [ "$no_root_services" = false ]; then
+    for file in $root_dir/*.service; do
+        echo -n "compiling $(basename "$file")..............."
+        # Check if the file is a regular file
+        if [ -f "$file" ]; then
+            # Replace variables with their values and save the output to a new file in the "compiled" subdirectory
+            if ! sudo sed "s@\$gitRepoDir@$gitRepoDir@g" "$file" > "$root_compiled_dir/$(basename "$file")"; then
+                echo -e "\nError: Could not compile $file to $root_compiled_dir"
+                exit 1
+            fi
+        else
             echo -e "\nError: Could not compile $file to $root_compiled_dir"
             exit 1
         fi
-    else
-        echo -e "\nError: Could not compile $file to $root_compiled_dir"
-        exit 1
-    fi
-    echo "ok"
-done
+        echo "ok"
+    done
+fi
 
 echo -e "done.\n"
 
@@ -117,49 +139,53 @@ fi
 # * Copy all the service files
 # Loop through each file in the user_compiled_dir
 echo -e "\nCopying User Services..."
-for file in "$user_compiled_dir"/*; do
-    # Get the filename without the path
-    filename=$(basename "$file")
-    
-    # Check if the file exists in the user_destination_dir
-    if [ -e "$user_destination_dir/$filename" ]; then
-        # If the file exists, compare contents
-        if sudo cmp -s "$file" "$user_destination_dir/$filename"; then
-            echo "File $filename have the same content. No action needed."
+if [ "$no_user_services" = false ]; then
+    for file in "$user_compiled_dir"/*; do
+        # Get the filename without the path
+        filename=$(basename "$file")
+        
+        # Check if the file exists in the user_destination_dir
+        if [ -e "$user_destination_dir/$filename" ]; then
+            # If the file exists, compare contents
+            if sudo cmp -s "$file" "$user_destination_dir/$filename"; then
+                echo "File $filename have the same content. No action needed."
+            else
+                # If the contents are different, replace the file
+                sudo cp "$file" "$user_destination_dir/$filename"
+                echo "File $filename have different content. Replaced."
+            fi
         else
-            # If the contents are different, replace the file
+            # If the file does not exist in the user_destination_dir, copy it over
             sudo cp "$file" "$user_destination_dir/$filename"
-            echo "File $filename have different content. Replaced."
+            echo "Copied $filename to destination."
         fi
-    else
-        # If the file does not exist in the user_destination_dir, copy it over
-        sudo cp "$file" "$user_destination_dir/$filename"
-        echo "Copied $filename to destination."
-    fi
-done
+    done
+fi
 
 # Loop through each file in the root_compiled_dir
 echo -e "\nCopying Root Services..."
-for file in "$root_compiled_dir"/*; do
-    # Get the filename without the path
-    filename=$(basename "$file")
-    
-    # Check if the file exists in the root_destination_dir
-    if [ -e "$root_destination_dir/$filename" ]; then
-        # If the file exists, compare contents
-        if sudo cmp -s "$file" "$root_destination_dir/$filename"; then
-            echo "File $filename have the same content. No action needed."
+if [ "$no_root_services" = false ]; then
+    for file in "$root_compiled_dir"/*; do
+        # Get the filename without the path
+        filename=$(basename "$file")
+        
+        # Check if the file exists in the root_destination_dir
+        if [ -e "$root_destination_dir/$filename" ]; then
+            # If the file exists, compare contents
+            if sudo cmp -s "$file" "$root_destination_dir/$filename"; then
+                echo "File $filename have the same content. No action needed."
+            else
+                # If the contents are different, replace the file
+                sudo cp "$file" "$root_destination_dir/$filename"
+                echo "File $filename have different content. Replaced."
+            fi
         else
-            # If the contents are different, replace the file
+            # If the file does not exist in the root_destination_dir, copy it over
             sudo cp "$file" "$root_destination_dir/$filename"
-            echo "File $filename have different content. Replaced."
+            echo "Copied $filename to destination."
         fi
-    else
-        # If the file does not exist in the root_destination_dir, copy it over
-        sudo cp "$file" "$root_destination_dir/$filename"
-        echo "Copied $filename to destination."
-    fi
-done
+    done
+fi
 
 echo "Service files coppied!"
 
@@ -179,22 +205,26 @@ echo "done!"
 
 # Enable the user services
 echo -e "\nEnabling User Services..."
-for service_file in "${user_services[@]}"; do
-    if ! systemctl --user enable "$(basename "$service_file" .service)"; then
-        echo "Error: Enabling $(basename "$service_file" .service) service failed."
-        exit 1
-    fi
-done
+if [ "$no_user_services" = false ]; then
+    for service_file in "${user_services[@]}"; do
+        if ! systemctl --user enable "$(basename "$service_file" .service)"; then
+            echo "Error: Enabling $(basename "$service_file" .service) service failed."
+            exit 1
+        fi
+    done
+fi
 echo "done!"
 
 # Enable the root services
 echo -e "\nEnabling Root Services..."
-for service_file in "${root_services[@]}"; do
-    if ! sudo systemctl enable "$(basename "$service_file" .service)"; then
-        echo "Error: Enabling $(basename "$service_file" .service) service failed."
-        exit 1
-    fi
-done
+if [ "$no_root_services" = false ]; then
+    for service_file in "${root_services[@]}"; do
+        if ! sudo systemctl enable "$(basename "$service_file" .service)"; then
+            echo "Error: Enabling $(basename "$service_file" .service) service failed."
+            exit 1
+        fi
+    done
+fi
 echo -e "done!\n"
 
 # * Optionally start the services as well
@@ -237,20 +267,24 @@ done
 
 # Start the user services
 echo -e "\nStarting User Services..."
-for service_file in "${user_services[@]}"; do
-    if ! systemctl --user start "$(basename "$service_file" .service)"; then
-        echo "Error: Enabling $(basename "$service_file" .service) service failed."
-        exit 1
-    fi
-done
+if [ "$no_user_services" = false ]; then
+    for service_file in "${user_services[@]}"; do
+        if ! systemctl --user start "$(basename "$service_file" .service)"; then
+            echo "Error: Enabling $(basename "$service_file" .service) service failed."
+            exit 1
+        fi
+    done
+fi
 echo "done!"
 
 # Start the root services
 echo -e "\nStarting Root Services..."
-for service_file in "${root_services[@]}"; do
-    if ! sudo systemctl start "$(basename "$service_file" .service)"; then
-        echo "Error: Enabling $(basename "$service_file" .service) service failed."
-        exit 1
-    fi
-done
+if [ "$no_root_services" = false ]; then
+    for service_file in "${root_services[@]}"; do
+        if ! sudo systemctl start "$(basename "$service_file" .service)"; then
+            echo "Error: Enabling $(basename "$service_file" .service) service failed."
+            exit 1
+        fi
+    done
+fi
 echo "done!"
