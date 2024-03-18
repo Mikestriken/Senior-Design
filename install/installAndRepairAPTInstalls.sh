@@ -17,7 +17,7 @@ packages=("mosquitto" "mosquitto-clients")
 winPackages=("mosquitto")
 
 # Loop through the list of packages
-if [ windows==true ]; then
+if [ "$windows" == true ]; then
     # Loop through the list of packages
     for pkg in "${winPackages[@]}"; do
         # Check if the package is already installed
