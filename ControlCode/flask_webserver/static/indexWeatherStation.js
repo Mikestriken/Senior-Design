@@ -1,6 +1,6 @@
 {
     // * Create object on html subdirectory to register events on
-    const eventSource = new EventSource('/events');
+    const eventSource = new EventSource('/weather-events');
   
     const windSpeedOutput = document.getElementById('windSpeedOutput');
     const windDirectionOutput = document.getElementById('windDirectionOutput');
