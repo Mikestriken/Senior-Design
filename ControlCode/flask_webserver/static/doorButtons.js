@@ -76,6 +76,7 @@ import { fetchURL } from './modules.js';
             // Create a new instance of updateProgress for openButton
             const openButtonUpdateProgress = updateProgress(openButtonProgress);
             
+            let openInterval;
             openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
         }
     }
@@ -107,6 +108,7 @@ import { fetchURL } from './modules.js';
             // Create a new instance of updateProgress for closeButton
             const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
             
+            let closeInterval;
             closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
         }
     }
