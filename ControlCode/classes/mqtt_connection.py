@@ -68,7 +68,7 @@ class MQTT_Connection():
     # * Default, internal callback function for when a message is received
     def on_message(self, client, userdata, msg):
         # * Find out which topic got a message and update the data_hander with the data.
-        print(f"New message: {msg.payload} → {msg.payload.decode('utf-8')}")
+        # print(f"New message: {msg.payload} → {msg.payload.decode('utf-8')}")
         try:
             for topic in self.topics:
                 if topic == msg.topic:
