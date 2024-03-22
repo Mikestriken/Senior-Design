@@ -86,7 +86,7 @@ weather_template_data = {
                     'dewPoint': None
                 }
             },
-            'indoor_weather_topic': {
+            'indoor_weather': {
                 'temperature' : None,
                 'relative_humidity' : None
             }

@@ -31,7 +31,7 @@ def on_message(self, client, msg):
             else:
                 mqtt_connect.publishAsJSON('indoor_light', "is_off")
         else:
-            print('Invalid action posted to topic: indoor_light ' + str(action))
+            print('Invalid action posted to topic: indoor_light ' + str(msg))
 
     if msg.topic == 'outdoor_light':
         if msg.payload == 'power_on':
