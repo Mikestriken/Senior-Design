@@ -23,7 +23,7 @@ fi
 
 # Execute the flask webserver
 if [ "$windows" == true ]; then
-    ../venv/Scripts/python.exe -m flask_webserver.flask_webserver $@
+    ../venv/Scripts/python.exe -m operations.wall_power_main $@
 else
-    sudo ../venv/bin/python -m flask_webserver.flask_webserver $@
+    sudo ../venv/bin/python -m operations.wall_power_main $@
 fi
