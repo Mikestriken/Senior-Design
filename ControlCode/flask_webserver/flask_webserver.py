@@ -50,6 +50,22 @@ alert_topic = 'alert'
 alert_data_handler = DataHandler(alert_template_data)
 alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handler, "string")
 
+                                                        # * Wall Power MQTT
+# * Template for how the data should be formatted.
+wall_power_template_data = {
+            'wall_power': None
+        }
+
+# * MQTT topics to subscribe to
+wall_power_topic = 'wall_power'
+
+# * alert_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
+wall_power_data_handler = DataHandler(wall_power_template_data)
+wall_power_mqtt_connect = MQTT_Connection("subscriber", wall_power_topic, wall_power_data_handler, "string")
+
+# * Request an update on the current wall power status:
+wall_power_mqtt_connect.publish(wall_power_topic + "_request", "update")
+
                                                         # * Weather MQTT
 # * Template for how the data should be formatted.
 weather_template_data = {
@@ -83,6 +99,20 @@ weather_data_handler = DataHandler(weather_template_data)
 weather_mqtt_connect = MQTT_Connection("subscriber", weather_topics, weather_data_handler, "json")
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
+# * List of datahandler objects
+dataHandlers = [weather_data_handler, wall_power_data_handler]
+
+# * Run code after a template has been rendered and response is about to be sent.
+    # * This code sets the update flag, so that all the SSE generate event generator function instances will send updates to the client
+    # * TL;DR This code syncs the client up whenever refreshes / loads the page.
+@app.after_request
+def after_request(response):
+    for DH in dataHandlers:
+        print("set DH update flag!")
+        DH.set_update_flag()
+    
+    return response
+
 # * Redirect to index.html if trying to load root page.
 @app.route("/")
 def root():
@@ -122,11 +152,17 @@ def weather_events():
     # * Return a response with the SSE content type and the generator function
     return Response(generate_events(weather_data_handler), content_type='text/event-stream')
 
-# * Route for SSE Weather endpoint
+# * Route for SSE alert endpoint
 @app.route('/alert-events')
 def alert_events():
     # * Return a response with the SSE content type and the generator function
     return Response(generate_events(alert_data_handler), content_type='text/event-stream')
+
+# * Route for SSE wall-power endpoint
+@app.route('/wall-power-events')
+def wall_power_events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(wall_power_data_handler), content_type='text/event-stream')
 
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera

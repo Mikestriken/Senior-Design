@@ -15,11 +15,12 @@ class Wall_Power():
 
         GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
+    # * Pin High => No Wall Power (vice versa)
     def powerState(self):
         if GPIO.input(self.gpio_pin):
-            return True
-        else:
             return False
+        else:
+            return True
             
             
     def __del__(self):

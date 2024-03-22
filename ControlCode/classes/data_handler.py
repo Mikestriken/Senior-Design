@@ -23,6 +23,10 @@ class DataHandler:
         with self.lock:
             self.update_flag = False
 
+    def set_update_flag(self):
+        with self.lock:
+            self.update_flag = True
+
     def get_update_flag(self):
         with self.lock:
             return self.update_flag
