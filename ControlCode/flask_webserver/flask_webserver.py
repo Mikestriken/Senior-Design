@@ -6,14 +6,16 @@
 # to run webserver:  python -B -m flask_webserver.flask_webserver
 ##############################################################################
 
-
 from classes.data_handler import DataHandler
 from classes.mqtt_connection import MQTT_Connection
-import sys
 
 
 # webserver imports
-from flask import Flask, redirect, url_for, render_template, Response, jsonify
+from flask import Flask, request, redirect, url_for, render_template, Response, jsonify
+import sys
+import socket
+import subprocess
+import os
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
@@ -21,6 +23,8 @@ if "--no-camera" in sys.argv:
     cameraCodeFlag = False
     
 # * flag to enable debugging via command-line using --debug
+# Note 1: When debugging is enabled, two instances of this python script will be ran in the console, so you may see double the results.
+# Note 2: Enabling debugging makes it so that changes to this python script will automatically reload the server to verify changes
 debugFlag = False
 if "--debug" in sys.argv:
     debugFlag = True
@@ -34,8 +38,38 @@ if cameraCodeFlag:
 app = Flask(__name__, template_folder='static')
 
 # * ----------------------------------------------------- MQTT and state storage -----------------------------------------------------
+                                                        # * Alert MQTT
 # * Template for how the data should be formatted.
-template_data = {
+alert_template_data = {
+            'alert': None
+        }
+
+# * MQTT topics to subscribe to
+alert_topic = 'alert'
+
+# * alert_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
+alert_data_handler = DataHandler(alert_template_data)
+alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handler, "string")
+
+                                                        # * Wall Power MQTT
+# * Template for how the data should be formatted.
+wall_power_template_data = {
+            'wall_power': None
+        }
+
+# * MQTT topics to subscribe to
+wall_power_topic = 'wall_power'
+
+# * alert_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
+wall_power_data_handler = DataHandler(wall_power_template_data)
+wall_power_mqtt_connect = MQTT_Connection("subscriber", wall_power_topic, wall_power_data_handler, "string")
+
+# * Request an update on the current wall power status:
+wall_power_mqtt_connect.publish(wall_power_topic + "_request", "update")
+
+                                                        # * Weather MQTT
+# * Template for how the data should be formatted.
+weather_template_data = {
             'weather_topic': {
                 'wind': {
                     'speed': None,
@@ -53,19 +87,33 @@ template_data = {
                 }
             },
             'indoor_weather_topic': {
-                'temperature' : "...",
-                'relative_humidity' : "..."
+                'temperature' : None,
+                'relative_humidity' : None
             }
         }
 
 # * MQTT topics to subscribe to that will update the states.
-webserver_topics = ['weather_topic', 'indoor_weather_topic', 'alert']
+weather_topics = ['weather_topic', 'indoor_weather_topic']
 
-# * data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-data_handler = DataHandler(template_data)
-mqtt_connect = MQTT_Connection("both", webserver_topics, data_handler)
+# * weather_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
+weather_data_handler = DataHandler(weather_template_data)
+weather_mqtt_connect = MQTT_Connection("subscriber", weather_topics, weather_data_handler, "json")
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
+# * List of datahandler objects
+dataHandlers = [weather_data_handler, wall_power_data_handler]
+
+# * Run code after a template has been rendered and response is about to be sent.
+    # * This code sets the update flag, so that all the SSE generate event generator function instances will send updates to the client
+    # * TL;DR This code syncs the client up whenever refreshes / loads the page.
+@app.after_request
+def after_request(response):
+    for DH in dataHandlers:
+        print("set DH update flag!")
+        DH.set_update_flag()
+    
+    return response
+
 # * Redirect to index.html if trying to load root page.
 @app.route("/")
 def root():
@@ -74,6 +122,51 @@ def root():
 @app.route("/index.html")
 def main():
     return render_template('index.html')
+
+# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
+def generate_events(data_handler):
+   with app.app_context():
+      while True:
+        # * Convert the JSON data to a string and format as an SSE message
+        if data_handler.get_update_flag():
+            data_handler.unset_update_flag()
+            
+            current_data = data_handler.get_current_data()
+            
+            # print(f"sending {current_data.heading}\n\n")
+            
+            json_data = jsonify(**current_data).get_data(as_text=True).replace('\n', '')
+            
+            # print(f"as {json_data}\n\n")
+            
+            sse_message = f"data: {json_data}\n\n"
+        
+            # * Yield the SSE message
+            yield sse_message
+         
+        # * Wait for a brief interval before sending the next event
+        time.sleep(1)
+
+# * Route for SSE Weather endpoint
+@app.route('/weather-events')
+def weather_events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(weather_data_handler), content_type='text/event-stream')
+
+# * Route for SSE alert endpoint
+@app.route('/alert-events')
+def alert_events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(alert_data_handler), content_type='text/event-stream')
+
+# * Route for SSE wall-power endpoint
+@app.route('/wall-power-events')
+def wall_power_events():
+    # * Return a response with the SSE content type and the generator function
+    return Response(generate_events(wall_power_data_handler), content_type='text/event-stream')
+
+# * ------------------------------------------ Control Modules ------------------------------------------
+                    # Camera
 if cameraCodeFlag:
     def gen(camera):
         while True:
@@ -86,35 +179,7 @@ if cameraCodeFlag:
             frame = outdoor_camera.Camera_outdoor().get_frame()
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
-def generate_events():
-   with app.app_context():
-      while True:
-        current_data = data_handler.get_current_data()
-         
-        # * Convert the JSON data to a string and format as an SSE message
-        if data_handler.previous_data != current_data:
-            # print(f"sending {current_data.heading}\n\n")
-            json_data = jsonify(**current_data).get_data(as_text=True).replace('\n', '')
-            # print(f"as {json_data}\n\n")
-            sse_message = f"data: {json_data}\n\n"
-        
-            # * Yield the SSE message
-            yield sse_message
-         
-        # * Wait for a brief interval before sending the next event
-        time.sleep(1)
-
-# * Route for SSE endpoint
-@app.route('/events')
-def events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(), content_type='text/event-stream')
-
-# * ----------------------- Control Modules ------------------------------------------
-
-if cameraCodeFlag:
+            
     @app.route('/indoor_video_feed')
     def indoor_video_feed():
         return Response(gen(indoor_camera.Camera()),
@@ -126,13 +191,22 @@ if cameraCodeFlag:
                         mimetype='multipart/x-mixed-replace; boundary=frame')
         #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+                    # Door
+door_mqtt_connect = MQTT_Connection("publisher")
 
 @app.route("/<object>/<action>")
 def action(object, action):
     print("Action Called")
+    # MQTT Section
     # * Open Button  → /openButton/click  → openButton_topic,  "click"
     # * Close Button → /closeButton/click → closeButton_topic, "click"
-    mqtt_connect.publish(object + "_topic", action)
+    if object == "openButton" or object == "closeButton":
+        door_mqtt_connect.publish(object, action)
+    
+    # localhost button Section
+    # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
+    elif object == "localhost" and action == "reboot":
+        subprocess.run(['sudo', 'reboot'])
         
     return redirect(url_for('main'))
 

@@ -17,7 +17,7 @@ packages=("mosquitto" "mosquitto-clients")
 winPackages=("mosquitto")
 
 # Loop through the list of packages
-if [ windows==true ]; then
+if [ "$windows" == true ]; then
     # Loop through the list of packages
     for pkg in "${winPackages[@]}"; do
         # Check if the package is already installed
@@ -36,6 +36,22 @@ if [ windows==true ]; then
             fi
         fi
     done
+    # Prompt user to press any key
+    echo "Make sure to run the mosquitto client in the background for MQTT and Flask Server Functionality."
+    echo "A good place to look is 'C:\Program Files\mosquitto', run mosquitto.exe when you find it."
+    echo "Press any key to continue..."
+
+    # Disable terminal input buffering and echo
+    stty raw -echo
+
+    # Read a single character
+    keypress=''
+    while [ "x$keypress" = "x" ]; do
+        read -n 1 keypress
+    done
+
+    # Enable terminal input buffering and echo
+    stty -raw echo
 else
     for pkg in "${packages[@]}"; do
         # Check if the package is already installed
@@ -54,6 +70,22 @@ else
             fi
         fi
     done
+    # Prompt user to press any key
+    echo "Make sure to run the mosquitto client status and ensure it's running in the background for MQTT and Flask Server Functionality"
+    echo "Run 'sudo systemctl status mosquitto' to check its status, 'sudo systemctl enable mosquitto' to enable it and 'sudo systemctl start mosquitto' to start it..."
+    echo "Press any key to continue..."
+
+    # Disable terminal input buffering and echo
+    stty raw -echo
+
+    # Read a single character
+    keypress=''
+    while [ "x$keypress" = "x" ]; do
+        read -n 1 keypress
+    done
+
+    # Enable terminal input buffering and echo
+    stty -raw echo
 fi
 
 echo "All packages installed sucessfully!"

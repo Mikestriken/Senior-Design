@@ -1,7 +1,7 @@
 import asyncio
 import sys
 
-import classes.weather_class as weather_class
+from classes.weather_class import WeatherStation
 
 # * ----------------------------------------------------- Command Line Debugging Flags -----------------------------------------------------
 # * flag to display raw data from weather station via command line using --raw-data
@@ -27,7 +27,7 @@ if "--show-updated" in sys.argv:
 # * ----------------------------------------------------- Weather Station Initialization -----------------------------------------------------
 port = "ttyUSB0"
 baud = 4800
-weather_station = weather_class.WeatherStation(baud, port)
+weather_station = WeatherStation(baud, port)
 
 # * ----------------------------------------------------- Weather Station Running -----------------------------------------------------
 

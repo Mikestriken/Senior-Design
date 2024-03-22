@@ -14,9 +14,11 @@ OS=$(uname)
 if [ "$OS" != "Linux" ]; then
     # If it's not Linux, set windows=true
     windows=true
+    echo "Non linux OS detected, windows flag set to $windows"
 else
     # Otherwise, set windows=false or leave it unset (your choice)
     windows=false
+    echo "Linux OS Detected, windows flag unset to $windows"
 fi
 
 # * Run all the installation scripts
@@ -36,7 +38,7 @@ if ! ./installAndRepairVEnv.sh; then
     exit 1
 fi
 
-if [ windows != true ]; then # Only install services on linux environment
+if [ "$windows" != true ]; then # Only install services on linux environment
 
     if ! ./installAndRepairServices.sh; then
         echo -e "Error: $(basename ./installAndRepairServices.sh) failed!"
