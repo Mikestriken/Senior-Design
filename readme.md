@@ -35,3 +35,6 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 3. Run `install/installAndRepairAPTInstalls.sh`
 4. Run `install/installAndRepairVEnv.sh`
 5. Run `install/installAndRepairServices.sh` without sudo (user must have sudo permissions still though)
+
+
+### Mosquitto Configuration Changes

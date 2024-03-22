@@ -60,6 +60,27 @@ def on_message_main(self, client, msg):
                   
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door'], on_message=on_message_main)
 
+
+def rssi_eval(rssi_value):
+    if rssi_value < -80:
+        door_operation('open')
+    elif rssi_value > -60:
+        door_operation('close')
+
+
+def on_message_rssi(self, client, msg):
+        # Deserialize JSON data
+        #deserialized_data = json.loads(msg.payload)
+        
+        with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
+            f.write(msg.payload.decode("utf-8"))
+
+        if msg.topic == 'rssi':
+            print(msg.payload)
+            rssi_eval(int(msg.payload))
+
+rssi_mqtt = mqtt_connection.MQTT_Connection(type='both', topics = ['rssi'], on_message=on_message_rssi, broker_address = "10.143.204.58")
+
 # * ------------------------------Ultrasonic-----------------------------------
 
 def ultrasonic_operation():

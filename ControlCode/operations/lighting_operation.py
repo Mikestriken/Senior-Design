@@ -25,6 +25,13 @@ def on_message(self, client, msg):
             indoor_light.power_off()
         elif msg.payload == 'toggle':
             indoor_light.toggle()
+        elif msg.payload == 'query_state':
+            if outdoor_light.is_on:
+                mqtt_connect.publishAsJSON('indoor_light', "is_on")
+            else:
+                mqtt_connect.publishAsJSON('indoor_light', "is_off")
+        else:
+            print('Invalid action posted to topic: indoor_light ' + str(action))
 
     if msg.topic == 'outdoor_light':
         if msg.payload == 'power_on':
@@ -35,9 +42,11 @@ def on_message(self, client, msg):
             outdoor_light.toggle()
         elif msg.payload == 'query_state':
             if outdoor_light.is_on:
-                self.publish('outdoor_light', "is_on")
+                mqtt_connect.publishAsJSON('outdoor_light', "is_on")
             else:
-                self.publish('outdoor_light', "is_off")
+                mqtt_connect.publishAsJSON('outdoor_light', "is_off")
+        else:
+            print('Invalid action posted to topic: outdoor_light ' + str(action))
 
 mqtt_connect = mqtt_connection.MQTT_Connection(topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
 
@@ -72,5 +81,10 @@ def calculate_sunset():
 schedule.every().day.at(str(calculate_sunrise().strftime('%H:%M'))).do(outdoor_light.power_off)
 schedule.every().day.at(str(calculate_sunset().strftime('%H:%M'))).do(outdoor_light.power_on)
 
-while True:
-    time.sleep(1)
+try:
+    while True:
+        time.sleep(1)
+
+finally:
+    outdoor_light.power_off()
+    mqtt_connect.publishAsJSON('outdoor_light', "is_off")
