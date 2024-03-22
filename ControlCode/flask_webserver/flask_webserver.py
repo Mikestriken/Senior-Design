@@ -16,7 +16,6 @@ import sys
 import socket
 import subprocess
 import os
-os.environ["DISPLAY"] = ":0"
 
 # * flag to remove camera code via command-line using --no-camera
 cameraCodeFlag = True
@@ -165,7 +164,7 @@ def action(object, action):
     # * Open Button  → /openButton/click  → openButton_topic,  "click"
     # * Close Button → /closeButton/click → closeButton_topic, "click"
     if object == "openButton" or object == "closeButton":
-        door_mqtt_connect.publish(object + "_topic", action)
+        door_mqtt_connect.publish(object, action)
     
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
