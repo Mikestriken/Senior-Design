@@ -72,7 +72,7 @@ wall_power_mqtt_connect.publish(wall_power_topic + "_request", "update")
                                                         # * Weather MQTT
 # * Template for how the data should be formatted.
 weather_template_data = {
-            'weather_topic': {
+            'weather': {
                 'wind': {
                     'speed': None,
                     'rawDirection': None,
@@ -88,14 +88,14 @@ weather_template_data = {
                     'dewPoint': None
                 }
             },
-            'indoor_weather_topic': {
+            'indoor_weather': {
                 'temperature' : None,
                 'relative_humidity' : None
             }
         }
 
 # * MQTT topics to subscribe to that will update the states.
-weather_topics = ['weather_topic', 'indoor_weather_topic']
+weather_topics = ['weather', 'indoor_weather']
 
 # * weather_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 weather_data_handler = DataHandler(weather_template_data)
@@ -125,57 +125,55 @@ def root():
 def main():
     return render_template('index.html')
 
-# * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
-def generate_events(socket_topic, data_handler):
-   with app.app_context():
-      while True:
-        # * Convert the JSON data to a string and format as an SSE message
-        if data_handler.get_update_flag():
-            data_handler.unset_update_flag()
-            
-            current_data = data_handler.get_current_data()
-            
-            # print(f"sending {current_data.heading}\n\n")
-            print(f"{socket_topic}: {current_data}")
-            socketio.emit(socket_topic, current_data)
-            
-            json_data = jsonify(**current_data).get_data(as_text=True).replace('\n', '')
-            
-            # print(f"as {json_data}\n\n")
-            
-            sse_message = f"data: {json_data}\n\n"
-        
-            # * Yield the SSE message
-            yield sse_message
-         
-        # * Wait for a brief interval before sending the next event
-        time.sleep(1)
-
-# * Route for SSE Weather endpoint
-@app.route('/weather-events')
-def weather_events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events('weather', weather_data_handler), content_type='text/event-stream')
-
-# * Route for SSE alert endpoint
-@app.route('/alert-events')
-def alert_events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events('alert', alert_data_handler), content_type='text/event-stream')
-
-# * Route for SSE wall-power endpoint
-@app.route('/wall-power-events')
-def wall_power_events():
-    # * Return a response with the SSE content type and the generator function
-    return Response(generate_events('wall', wall_power_data_handler), content_type='text/event-stream')
-
 # * ------------------------------------------ Web Sockets ------------------------------------------
+def generate_socket_events(socket_topic, data_handler):
+    # * Socket_topics should be string or list of strings of topics to send the current state to
+    if isinstance(socket_topic, str):
+        # Convert single string to a list with a single element
+        self_socket_topics = [socket_topic]
+    elif isinstance(socket_topic, list):
+        # Check all elements of the list are of type string before assigning
+        if all(isinstance(s, str) for s in socket_topic):
+            self_socket_topics = socket_topic
+        else:
+            raise TypeError(f"Error: All elements of socket_topic list must be strings. Received: {socket_topic}")
+    else:
+        raise TypeError("Error: topic must be a string or a list of strings")
+    
+    
+    # * data_handler should be DataHandler or list of DataHandlers
+    if isinstance(data_handler, DataHandler):
+        # Convert single DataHandler to a list with a single element
+        self_data_handler = [data_handler]
+    elif isinstance(data_handler, list):
+        # Check length of both data_handler and socket_topic match
+        if (len(socket_topic) != len(data_handler)):
+            raise TypeError(f"Error: Number of elements in data_handler must equal socket_topic:\n{data_handler}\n{socket_topic}")
+            
+        # Check all elements of the list are of type DataHandler before assigning
+        if all(isinstance(DH, DataHandler) for DH in data_handler):
+            self_data_handler = data_handler
+        else:
+            raise TypeError(f"Error: All elements of data_handler list must be type DataHandler. Received: {data_handler}")
+    else:
+        raise TypeError("Error: topic must be a DataHandler or a list of DataHandlers")
+    
+    # * Send data to connected clients
+    for i in range(len(self_data_handler)):
+        if self_data_handler[i].get_update_flag():
+            self_data_handler[i].unset_update_flag()
+            
+            current_data = self_data_handler[i].get_current_data()
+            
+            # print(f"{socket_topic[i]}: {current_data}")
+            socketio.emit(socket_topic[i], current_data)
+        
 socket_thread = None
 socket_thread_lock = threading.Lock()
 
 def background_thread():
     while True:
-        generate_events('alert', alert_data_handler)
+        generate_socket_events(['alert', 'weather', 'wall_power'], [alert_data_handler, weather_data_handler, wall_power_data_handler])
         socketio.sleep(1)
 
 @socketio.on('connect')
