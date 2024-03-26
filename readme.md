@@ -43,30 +43,60 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 ### MQTT Topics {#mqtt-topics}
 
 1. alerts 
-- publishes various messages from GPIO to Webserver
+    - publishes various messages from GPIO to Webserver
 
-2. door
+2. battery_state
+    - publishes charge percentage when Spot is connected
+
+3. door
     - open
     - close
     - stop
     - query_state - returns percent open on mqtt topic
 
-3. outdoor_light
+4. outdoor_light
     - power_on
     - power_off
     - toggle
     - query_state - returns 'is_on'/'is_off' on mqtt topic
 
-4. indoor_light
+5. indoor_light
     - power_on
     - power_off
     - toggle
     - query_state - returns 'is_on'/'is_off' on mqtt topic
 
-5. fan
+6. fan
     - fast
     - slow
     - stop
-    - query_state - returns 'is_on'/'is_off' on mqtt topic
+    - query_state - returns 'is_on'/'is_slow/is_fast' on mqtt topic
+
+7. indoor_weather
+    - SHTC3 publishes on a JSON template of {'temperature': temp, 'relative_humidity': humid}
+
+8. weather
+    - publishes data in the format below:
+    `'weather': {
+                'wind': {
+                    'speed': None,
+                    'rawDirection': None,
+                    'trueDirection:': None,
+                    'status': None
+                },
+                'heading': None,
+                'meteorological': {
+                    'pressureMercury': None,
+                    'pressureBars': None,
+                    'temperature': None,
+                    'humidity' : None,
+                    'dewPoint': None
+                }
+            },`
+
+9. rssi
+    - sent from the Spot Collar ESP32, negative integer representing wifi rssi
+
+
 
 

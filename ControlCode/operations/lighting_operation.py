@@ -50,36 +50,25 @@ def on_message(self, client, msg):
 
 mqtt_connect = mqtt_connection.MQTT_Connection(topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
 
+#-----------------------------------Photoresister Outdoor Light Triggering -----------------------------------------
 
-def calculate_sunrise():
-    # Set the observer's location (latitude, longitude)
-    observer = ephem.Observer()
-    observer.lat = '42.368195'  
-    observer.lon = '-73.285858' 
+def photoresister_isr_on():
+    outdoor_light.power_on()
 
-    observer.date = datetime.now()
+def photoresister_isr_off():
+    outdoor_light.power_off()
 
-    # Calculate sunrise time
-    sun = ephem.Sun()
-    sun.compute(observer)
-    sunrise_time = observer.next_rising(sun)
-    return ephem.localtime(sunrise_time)
+pin_number = 7
 
-def calculate_sunset():
-    # Set the observer's location (latitude, longitude)
-    observer = ephem.Observer()
-    observer.lat = '42.368195'  
-    observer.lon = '-73.285858'
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin_number, GPIO.IN)
 
-    observer.date = datetime.now()
+GPIO.add_event_detect(pin_number, GPIO.RISING, pull_up_down=GPIO.PUD_DOWN,
+    callback=photoresister_isr_on, bouncetime=300)
 
-    # Calculate sunrise time
-    sunset_time = observer.next_setting(ephem.Sun())
-    return ephem.localtime(sunset_time)
+GPIO.add_event_detect(pin_number, GPIO.FALLING, pull_up_down=GPIO.PUD_DOWN,
+    callback=photoresister_isr_off, bouncetime=300)
 
-# Schedule the task at the sunrise time
-schedule.every().day.at(str(calculate_sunrise().strftime('%H:%M'))).do(outdoor_light.power_off)
-schedule.every().day.at(str(calculate_sunset().strftime('%H:%M'))).do(outdoor_light.power_on)
 
 try:
     while True:

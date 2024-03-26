@@ -12,8 +12,11 @@ def fan_operation(action):
     elif action == 'stop':
         fan.power_off()
     elif action == 'query_state':
-        if fan.is_on:
-            mqtt_connect.publishAsJSON('fan', 'is_on')
+        if fan.is_on and fan.is_fast:
+            mqtt_connect.publishAsJSON('fan', 'is_fast')
+            print('published')
+        elif fan.is_on:
+            mqtt_connect.publishAsJSON('fan', 'is_slow')
             print('published')
         else:
             mqtt_connect.publishAsJSON('fan', 'is_off')
