@@ -36,7 +36,8 @@ def door_operation(action):
         
         exit_event = multiprocessing.Event()
         threads = []
-
+    elif action == 'query_state':
+        mqtt_connect.publishAsJSON('door', str(front_door.percent_open()))
     else:
         print('Invalid action posted to topic: door' + str(action))
 

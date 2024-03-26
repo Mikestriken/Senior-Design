@@ -38,3 +38,35 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
 
 ### Mosquitto Configuration Changes
+
+
+### MQTT Topics {#mqtt-topics}
+
+alerts 
+- publishes various messages from GPIO to Webserver
+
+door
+    open
+    close
+    stop
+    query_state - returns percent open on mqtt topic
+
+outdoor_light
+    power_on
+    power_off
+    toggle
+    query_state - returns 'is_on'/'is_off' on mqtt topic
+
+indoor_light
+    power_on
+    power_off
+    toggle
+    query_state - returns 'is_on'/'is_off' on mqtt topic
+
+fan
+    fast
+    slow
+    stop
+    query_state - returns 'is_on'/'is_off' on mqtt topic
+
+
