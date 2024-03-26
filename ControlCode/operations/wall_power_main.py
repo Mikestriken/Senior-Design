@@ -9,7 +9,7 @@ from classes.wall_power import Wall_Power
 import time
 # * ----------------------------------------------------- Options and State Initialziation -----------------------------------------------------
 # * Set to how long before sampling next state to determine if state has changed.
-minutes_to_wait = 1
+minutes_to_wait = .1
 
 # * Init
 wall_power = Wall_Power()

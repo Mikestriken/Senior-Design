@@ -1,19 +1,20 @@
 {
-    // * Create object on html subdirectory to register events on
-    const eventSource = new EventSource('/wall-power-events');
+    // * Create socket
+    let socket = io.connect();
+    let socketTopic = "wall_power";
     
     const powerStatusOutput = document.getElementById('powerStatusOutput');
-
-    eventSource.onmessage = function(event) {
+    
+    socket.on(socketTopic, function (msg) {
         // * Convert JSON text → JavaScript Object
-        console.log(event);
-        const jsonData = JSON.parse(event.data);
-
+        // console.log(msg[socketTopic]);
+        const data = msg;
+    
         // * Set powerStatusOutput background color accordingly...
-        if ( jsonData.wall_power === "Wall Power Disconnected!" )
+        if ( data[socketTopic] === "Wall Power Disconnected!" )
             powerStatusOutput.style.backgroundColor = "red";
-
-        else if (jsonData.wall_power === "Wall Power Reconnected!")
+  
+        else if (data[socketTopic] === "Wall Power Reconnected!")
             powerStatusOutput.style.backgroundColor = "lime";
-    }
+      });
 }
