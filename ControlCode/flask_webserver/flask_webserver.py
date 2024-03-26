@@ -12,6 +12,8 @@ from classes.mqtt_connection import MQTT_Connection
 
 # webserver imports
 from flask import Flask, request, redirect, url_for, render_template, Response, jsonify
+from flask_socketio import SocketIO
+import threading
 import sys
 import socket
 import subprocess
@@ -35,6 +37,7 @@ if cameraCodeFlag:
     import indoor_camera, outdoor_camera
 
 app = Flask(__name__, template_folder='static')
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 # * ----------------------------------------------------- MQTT and state storage -----------------------------------------------------
                                                         # * Alert MQTT
@@ -56,7 +59,7 @@ wall_power_template_data = {
             'wall_power': None
         }
 
-# * MQTT topics to subscribe to
+# * MQTT topics to subscribe to 
 wall_power_topic = 'wall_power'
 
 # * alert_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
@@ -123,7 +126,7 @@ def main():
     return render_template('index.html')
 
 # * ----------------------------------------------------- Server Sent Events -----------------------------------------------------
-def generate_events(data_handler):
+def generate_events(socket_topic, data_handler):
    with app.app_context():
       while True:
         # * Convert the JSON data to a string and format as an SSE message
@@ -133,6 +136,8 @@ def generate_events(data_handler):
             current_data = data_handler.get_current_data()
             
             # print(f"sending {current_data.heading}\n\n")
+            print(f"{socket_topic}: {current_data}")
+            socketio.emit(socket_topic, current_data)
             
             json_data = jsonify(**current_data).get_data(as_text=True).replace('\n', '')
             
@@ -150,19 +155,42 @@ def generate_events(data_handler):
 @app.route('/weather-events')
 def weather_events():
     # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(weather_data_handler), content_type='text/event-stream')
+    return Response(generate_events('weather', weather_data_handler), content_type='text/event-stream')
 
 # * Route for SSE alert endpoint
 @app.route('/alert-events')
 def alert_events():
     # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(alert_data_handler), content_type='text/event-stream')
+    return Response(generate_events('alert', alert_data_handler), content_type='text/event-stream')
 
 # * Route for SSE wall-power endpoint
 @app.route('/wall-power-events')
 def wall_power_events():
     # * Return a response with the SSE content type and the generator function
-    return Response(generate_events(wall_power_data_handler), content_type='text/event-stream')
+    return Response(generate_events('wall', wall_power_data_handler), content_type='text/event-stream')
+
+# * ------------------------------------------ Web Sockets ------------------------------------------
+socket_thread = None
+socket_thread_lock = threading.Lock()
+
+def background_thread():
+    while True:
+        generate_events('alert', alert_data_handler)
+        socketio.sleep(1)
+
+@socketio.on('connect')
+def connect():
+    global socket_thread
+    print('Client connected')
+
+    global socket_thread
+    with socket_thread_lock:
+        if socket_thread is None:
+            socket_thread = socketio.start_background_task(background_thread)
+
+@socketio.on('disconnect')
+def disconnect():
+    print('Client disconnected',  request.sid)
 
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
@@ -211,4 +239,4 @@ def action(object, action):
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=debugFlag)
+    socketio.run(app, host='0.0.0.0', port=80, debug=debugFlag)
