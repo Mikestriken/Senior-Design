@@ -43,7 +43,10 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 ### MQTT Topics {#mqtt-topics}
 
 alerts 
-- publishes various messages from GPIO to Webserver
+    - publishes various messages from GPIO to Webserver
+
+battery_state
+    - publishes charge percentage
 
 door
     open
