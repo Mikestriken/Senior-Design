@@ -34,7 +34,8 @@ if "--debug" in sys.argv:
 # camera imports
 import time
 if cameraCodeFlag:
-    import indoor_camera, outdoor_camera
+    import classes.indoor_camera
+    import classes.outdoor_camera
 
 app = Flask(__name__, template_folder='static')
 socketio = SocketIO(app, cors_allowed_origins='*')

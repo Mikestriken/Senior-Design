@@ -14,11 +14,5 @@ class LimitSwitch:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin_number, GPIO.IN)
 
-        GPIO.add_event_detect(self.pin_number, GPIO.FALLING, 
+        GPIO.add_event_detect(self.pin_number, GPIO.FALLING, pull_up_down=GPIO.PUD_DOWN,
             callback=limit_isr, bouncetime=300)
-
-
-
-        
-
-    

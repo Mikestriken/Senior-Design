@@ -8,7 +8,7 @@
 
 import os
 import cv2
-from base_camera import BaseCamera
+from .base_camera import BaseCamera
 
 class Camera_outdoor(BaseCamera):
     video_source = 0

@@ -2,13 +2,19 @@ from classes import lighting, mqtt_connection
 
 import schedule
 import time
+from datetime import datetime, timezone
 import ephem
 import json
+import pytz
+
+import RPi.GPIO as GPIO
+
+GPIO.setwarnings(False)
 
 indoor_light = lighting.Indoor_Lighting()
 outdoor_light = lighting.Outdoor_Lighting()
 
-def on_message(msg):
+def on_message(self, client, msg):
     # Deserialize JSON data
     deserialized_data = json.loads(msg.payload)
     
@@ -19,6 +25,14 @@ def on_message(msg):
             indoor_light.power_off()
         elif msg.payload == 'toggle':
             indoor_light.toggle()
+        elif msg.payload == 'query_state':
+            if outdoor_light.is_on:
+                mqtt_connect.publishAsJSON('indoor_light', "is_on")
+            else:
+                mqtt_connect.publishAsJSON('indoor_light', "is_off")
+        else:
+            print('Invalid action posted to topic: indoor_light ' + str(msg))
+
     if msg.topic == 'outdoor_light':
         if msg.payload == 'power_on':
             outdoor_light.power_on()
@@ -26,8 +40,15 @@ def on_message(msg):
             outdoor_light.power_off()
         elif msg.payload == 'toggle':
             outdoor_light.toggle()
+        elif msg.payload == 'query_state':
+            if outdoor_light.is_on:
+                mqtt_connect.publishAsJSON('outdoor_light', "is_on")
+            else:
+                mqtt_connect.publishAsJSON('outdoor_light', "is_off")
+        else:
+            print('Invalid action posted to topic: outdoor_light ' + str(action))
 
-mqtt_connect = mqtt_connection.MQTT_Connection(type = 'subscriber', topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
+mqtt_connect = mqtt_connection.MQTT_Connection(topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
 
 
 def calculate_sunrise():
@@ -36,25 +57,34 @@ def calculate_sunrise():
     observer.lat = '42.368195'  
     observer.lon = '-73.285858' 
 
+    observer.date = datetime.now()
+
     # Calculate sunrise time
-    sunrise_time = observer.next_rising(ephem.Sun())
+    sun = ephem.Sun()
+    sun.compute(observer)
+    sunrise_time = observer.next_rising(sun)
     return ephem.localtime(sunrise_time)
 
 def calculate_sunset():
     # Set the observer's location (latitude, longitude)
     observer = ephem.Observer()
     observer.lat = '42.368195'  
-    observer.lon = '-73.285858' 
+    observer.lon = '-73.285858'
+
+    observer.date = datetime.now()
 
     # Calculate sunrise time
     sunset_time = observer.next_setting(ephem.Sun())
     return ephem.localtime(sunset_time)
 
-
 # Schedule the task at the sunrise time
-schedule.every().day.at(calculate_sunrise.strftime("%H:%M")).do(outdoor_light.power_on)
-schedule.every().day.at(calculate_sunset.strftime("%H:%M")).do(outdoor_light.power_on)
+schedule.every().day.at(str(calculate_sunrise().strftime('%H:%M'))).do(outdoor_light.power_off)
+schedule.every().day.at(str(calculate_sunset().strftime('%H:%M'))).do(outdoor_light.power_on)
 
-while True:
-    schedule.run_pending()
-    time.sleep(10)
+try:
+    while True:
+        time.sleep(1)
+
+finally:
+    outdoor_light.power_off()
+    mqtt_connect.publishAsJSON('outdoor_light', "is_off")
