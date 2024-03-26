@@ -21,7 +21,7 @@
       // * heading
         // * Update the webpage with the received JSON data
         // textField.value = `Timestamp: ${jsonData.timestamp}, Value: ${jsonData.value}`;
-        textField.value = `The Weather Station is Currently Pointing: ${jsonData.weather_topic.heading}°`;
+        // textField.value = `The Weather Station is Currently Pointing: ${jsonData.weather_topic.heading}°`;
   
       // * wind
         windSpeedOutput.innerHTML = jsonData.weather_topic.wind.speed;
