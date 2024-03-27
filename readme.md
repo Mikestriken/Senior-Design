@@ -74,7 +74,7 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
 7. indoor_weather
     - SHTC3 publishes data in the JSON format below:  
-    ```
+    ```json
         {
             'temperature': None,
             'relative_humidity': None
@@ -83,7 +83,7 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 
 8. weather
     - publishes data in the JSON format below:  
-    ```
+    ```json
         {
             'wind': {
                 'speed': None,
