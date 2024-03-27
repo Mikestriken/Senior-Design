@@ -29,9 +29,9 @@
 
     socket.on(socketTopic, function (msg) {
         // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopic]);
+        // console.log(msg);
     
-        updateBattery(msg[socketTopic]);
+        updateBattery(msg);
     });
 
     function iterate() {

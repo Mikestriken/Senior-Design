@@ -116,9 +116,10 @@ def on_message(client, userdata, msg):
             
             if (deserialized_data.keys() == template_data[msg.topic].keys()): # If keys match, update current data.
                 # Update the data_handler
-                data_handler.update_current_data({msg.topic: deserialized_data})
+                data_handler.update_current_data(msg.topic, deserialized_data)
                 
-                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
         else:
             deserialized_data = str(msg.payload.decode('utf-8'))
         
@@ -126,9 +127,10 @@ def on_message(client, userdata, msg):
         if msg.topic == wall_power_topic: # Look for specific valid strings
             if (deserialized_data.lower() == "Wall Power Disconnected!".lower() or deserialized_data.lower() == "Wall Power Reconnected!".lower()):
                 # Update the data_handler
-                data_handler.update_current_data({msg.topic: deserialized_data})
+                data_handler.update_current_data(msg.topic, deserialized_data)
                 
-                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
             
         # Note 1: The `template_data[door]` property holds the current % the door is open.
         # Note 2: The client JS checks that template_data[door] is between 0 ↔ 100.
@@ -138,9 +140,10 @@ def on_message(client, userdata, msg):
                 float(deserialized_data)
                 
                 # Update the data_handler
-                data_handler.update_current_data({msg.topic: deserialized_data})
+                data_handler.update_current_data(msg.topic, deserialized_data)
                 
-                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
                 
             except ValueError:
                 pass
@@ -148,16 +151,18 @@ def on_message(client, userdata, msg):
         elif msg.topic == outdoor_light_topic or msg.topic == indoor_light_topic:
             if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_on".lower()):
                 # Update the data_handler
-                data_handler.update_current_data({msg.topic: deserialized_data})
+                data_handler.update_current_data(msg.topic, deserialized_data)
                 
-                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
                 
         elif msg.topic == fan_topic:
             if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_slow".lower() or deserialized_data.lower() == "is_fast".lower()):
                 # Update the data_handler
-                data_handler.update_current_data({msg.topic: deserialized_data})
+                data_handler.update_current_data(msg.topic, deserialized_data)
                 
-                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
     except Exception as e:
         print(f"Something went Wrong...\nTopic: {msg.topic}\nMessage: {msg.payload}\n\nError Log:")
         print(e)
@@ -170,7 +175,7 @@ mqtt_connect = MQTT_Connection("both", topics, data_handler, on_message=on_messa
     # * TL;DR This code syncs the client up whenever the client refreshes / loads the page.
 @app.after_request
 def after_request(response):
-    data_handler.set_update_flag()
+    data_handler.set_all_update_flags()
     
     return response
 
@@ -205,12 +210,12 @@ def generate_socket_events(socket_topics, dataHandler):
     
     # * Send data to connected clients
     for topic in socket_topics_list:
-        if dataHandler.get_update_flag():
-            dataHandler.unset_update_flag()
+        if dataHandler.get_update_flag(topic):
+            dataHandler.unset_update_flag(topic)
             
             current_data = dataHandler.get_current_data()
             
-            # print(f"{topic}: {current_data[topic]}")
+            print(f"{topic}: {current_data[topic]}")
             socketio.emit(topic, current_data[topic])
         
 socket_thread = None
@@ -218,7 +223,9 @@ socket_thread_lock = threading.Lock()
 
 # * function to check that an 'object' doesn't have any properties or nested objects with value 'None'.
 def check_none(obj):
-    if isinstance(obj, dict):
+    if obj == None:
+        return True
+    elif isinstance(obj, dict):
         for k, v in obj.items():
             if v is None:
                 return True
@@ -248,7 +255,7 @@ def background_thread():
                 current_data = data_handler.get_current_data()
                 
                 # * If topic in current_data is not none, set updatedList element to true
-                if check_none(current_data[topicsAwaitingFirstUpdate[i]]):
+                if not check_none(current_data[topicsAwaitingFirstUpdate[i]]):
                     updatedList[i] = True
                 
                 # * Request an update

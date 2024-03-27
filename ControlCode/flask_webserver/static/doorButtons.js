@@ -108,10 +108,10 @@ import { fetchURL } from './modules.js';
 
     socket.on(socketTopic, function (msg) {
         // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopic]);
+        console.log(msg);
     
-        updateProgress(openButtonProgress, msg[socketTopic]);
-        updateProgress(closeButtonProgress, 100 - msg[socketTopic]);
+        updateProgress(openButtonProgress, msg);
+        updateProgress(closeButtonProgress, 100 - msg);
     });
 
     // * Create an event listener (( Interrupt )) mouse or finger press and release

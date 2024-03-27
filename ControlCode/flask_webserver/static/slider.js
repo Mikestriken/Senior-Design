@@ -69,9 +69,9 @@ import { fetchURL } from './modules.js';
 
     socket.on(socketTopicOutdoorLight, function (msg) {
         // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopicOutdoorLight]);
+        // console.log(msg);
 
-        switch(msg[socketTopicOutdoorLight]){
+        switch(msg.toLowerCase()){
             case "is_off":
                 outdoorLightSlider.value = 0;
                 break;
@@ -85,9 +85,9 @@ import { fetchURL } from './modules.js';
     
     socket.on(socketTopicIndoorLight, function (msg) {
     // * Convert JSON text → JavaScript Object
-    // console.log(msg[socketTopicIndoorLight]);
+    // console.log(msg);
     
-        switch(msg[socketTopicIndoorLight]){
+        switch(msg.toLowerCase()){
             case "is_off":
                 indoorLightSlider.value = 0;
                 break;
@@ -101,9 +101,9 @@ import { fetchURL } from './modules.js';
             
     socket.on(socketTopicFan, function (msg) {
         // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopicFan]);
+        // console.log(msg);
         
-        switch(msg[socketTopicFan]){
+        switch(msg.toLowerCase()){
             case "is_off":
                 fanSlider.value = 0;
                 break;

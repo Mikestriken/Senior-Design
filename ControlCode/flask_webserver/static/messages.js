@@ -9,9 +9,9 @@
     
     socket.on(socketTopic, function (msg) {
         // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopic]);
+        // console.log(msg);
     
-        messageBox.innerHTML += `\n<span>${msg[socketTopic]}</span>`;
+        messageBox.innerHTML += `\n<span>${msg}</span>`;
     
         messageBoxScroller.scrollTop = messageBoxScroller.scrollHeight;
       });
