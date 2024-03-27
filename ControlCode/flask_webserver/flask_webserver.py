@@ -86,7 +86,7 @@ outdoor_weather_template_data = {
                     'pressureMercury': None,
                     'pressureBars': None,
                     'temperature': None,
-                    'humidity' : None,
+                    'humidity': None,
                     'dewPoint': None
                 }
             }
@@ -103,8 +103,8 @@ outdoor_weather_mqtt_connect = MQTT_Connection("subscriber", outdoor_weather_top
 # * Template for how the data should be formatted.
 indoor_weather_template_data = {
             'indoor_weather': {
-                'temperature' : None,
-                'relative_humidity' : None
+                'temperature': None,
+                'relative_humidity': None
             }
         }
 

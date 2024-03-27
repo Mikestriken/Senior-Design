@@ -76,8 +76,8 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
     - SHTC3 publishes data in the JSON format below:  
     ```json
         {
-            'temperature': None,
-            'relative_humidity': None
+            "temperature": "value",
+            "relative_humidity": "value"
         }
     ```
 
@@ -85,19 +85,19 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
     - publishes data in the JSON format below:  
     ```json
         {
-            'wind': {
-                'speed': None,
-                'rawDirection': None,
-                'trueDirection:': None,
-                'status': None
+            "wind": {
+                "speed": "value",
+                "rawDirection": "value",
+                "trueDirection":"value",
+                "status": "value"
             },
-            'heading': None,
-            'meteorological': {
-                'pressureMercury': None,
-                'pressureBars': None,
-                'temperature': None,
-                'humidity' : None,
-                'dewPoint': None
+            "heading": "value",
+            "meteorological": {
+                "pressureMercury": "value",
+                "pressureBars": "value",
+                "temperature": "value",
+                "humidity" : "value",
+                "dewPoint": "value"
             }
         }
     ```
