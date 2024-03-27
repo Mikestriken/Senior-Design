@@ -102,7 +102,7 @@ topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_ba
 data_handler = DataHandler(template_data)
 
 # * Default, internal callback function for when a message is received
-def on_message(self, client, userdata, msg):
+def on_message(client, userdata, msg):
     # * Find out which topic got a message and update the data_hander with the data.
     # print(f"New message: {msg.payload} → {msg.payload.decode('utf-8')}")
     try:
@@ -184,7 +184,7 @@ def main():
     return render_template('index.html')
 
 # * ------------------------------------------ Web Sockets ------------------------------------------
-def generate_socket_events(socket_topics, data_handler):
+def generate_socket_events(socket_topics, dataHandler):
     # * Socket_topics should be string or list of strings of topics to send the current state to
     if isinstance(socket_topics, str):
         # Convert single string to a list with a single element
@@ -199,16 +199,16 @@ def generate_socket_events(socket_topics, data_handler):
         raise TypeError("Error: topic must be a string or a list of strings")
     
     
-    # * data_handler should be DataHandler
-    if not isinstance(data_handler, DataHandler):
-        raise TypeError("Error: data_handler must be a DataHandler")
+    # * dataHandler should be DataHandler
+    if not isinstance(dataHandler, DataHandler):
+        raise TypeError("Error: dataHandler must be a DataHandler")
     
     # * Send data to connected clients
     for topic in socket_topics_list:
-        if data_handler.get_update_flag():
-            data_handler.unset_update_flag()
+        if dataHandler.get_update_flag():
+            dataHandler.unset_update_flag()
             
-            current_data = data_handler.get_current_data()
+            current_data = dataHandler.get_current_data()
             
             # print(f"{topic}: {current_data[topic]}")
             socketio.emit(topic, current_data[topic])
@@ -254,8 +254,8 @@ def background_thread():
                 # * Request an update
                 mqtt_connect.publish(topicsAwaitingFirstUpdate[i], "query_state")
             
-        generate_socket_events([alert_topic], [alert_data_handler])
-        generate_socket_events(topics, [data_handler])
+        generate_socket_events([alert_topic], alert_data_handler)
+        generate_socket_events(topics, data_handler)
         socketio.sleep(1)
 
 @socketio.on('connect')
