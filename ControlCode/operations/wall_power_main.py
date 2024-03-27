@@ -45,24 +45,20 @@ def publishCurrentState(topics):
 
 # * ----------------------------------------------------- MQTT Settings -----------------------------------------------------
 # * Topic to return information on the wall power current state to on request
-wall_power_topics = ["wall_power", "wall_power_request"]
+wall_power_topic = "wall_power"
 
 # * As soon as "update" is sent to the wall_power_request MQTT topic, this script will send publish the current state back to the same topic
 def request_response(client, userdata, msg):
-    # Only respond to requests in the request topic
-    if msg.topic != wall_power_topics[1]: # if msg.topic != "wall_power_request"
-        return
-    
     try:
-        if msg.payload.decode('utf-8').lower() == "update":
-            publishCurrentState(topics=wall_power_topics[0])
+        if msg.payload.decode('utf-8').lower() == "query_state":
+            publishCurrentState(topics=wall_power_topic)
             
     except Exception as e:
         print(f"Something went Wrong...\nMessage: {msg.payload}\n\nError Log:")
         print(e)
 
 # * MQTT client setup
-mqtt_client = MQTT_Connection(type="both", topics=wall_power_topics, data_handler=None, on_message_type="string", on_message=request_response)
+mqtt_client = MQTT_Connection(type="both", topics=wall_power_topic, data_handler=None, on_message_type="string", on_message=request_response)
 
 
 # * ----------------------------------------------------- Main Loop -----------------------------------------------------
@@ -77,7 +73,7 @@ while True:
     
     # * Compare States, send alert if missmatch.
     if current_state != previous_state:
-        publishCurrentState(topics=["alert", wall_power_topics[0]])
+        publishCurrentState(topics=["alert", wall_power_topic])
             
     # * Update State
     previous_state = current_state

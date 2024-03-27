@@ -228,7 +228,7 @@ def check_none(obj):
     return False
 
 def background_thread():
-    topicsAwaitingFirstUpdate = [door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
+    topicsAwaitingFirstUpdate = [wall_power_topic, door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
     updatedList = [False] * len(topicsAwaitingFirstUpdate)
     updated = False
     

@@ -48,6 +48,10 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 2. battery_state
     - Publishes charge percentage when Spot is connected.
 
+2. wall_power
+    - Publishes "Wall Power Disconnected!" and "Wall Power Reconnected!" to alert and wall_power MQTT Topics if wall power state has been changed a set period of time.
+    - query_state -- publishes wall power state ("Wall Power Disconnected!" / "Wall Power Reconnected!") immediately without waiting for set period of time.
+
 3. door
     - open -- Start opening the door (until fully open).
     - close -- Start closing the door (until fully closed).
