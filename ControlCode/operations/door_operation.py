@@ -37,7 +37,7 @@ def door_operation(action):
         exit_event = multiprocessing.Event()
         threads = []
     elif action == 'query_state':
-        mqtt_connect.publishAsJSON('door', str(front_door.percent_open()))
+        mqtt_connect.publish('door', str(front_door.percent_open()))
     else:
         print('Invalid action posted to topic: door' + str(action))
 
@@ -50,16 +50,16 @@ door_limit_switch = limit_switch.LimitSwitch(limit_isr=door_collision_isr)
 # * ------------------------------Mqtt Connection-----------------------------------
 
 def on_message_main(self, client, msg):
-        # Deserialize JSON data
-        #deserialized_data = json.loads(msg.payload)
-        
-        with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
-            f.write(msg.payload.decode("utf-8"))
+    # Deserialize JSON data
+    #deserialized_data = json.loads(msg.payload)
+    
+    with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
+        f.write(msg.payload.decode("utf-8"))
 
-        if msg.topic == 'door':
-            door_operation(msg.payload.decode("utf-8"))
+    if msg.topic == 'door_request' or msg.topic == "door":
+        door_operation(msg.payload.decode("utf-8"))
                   
-mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door'], on_message=on_message_main)
+mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request'], on_message=on_message_main)
 
 
 def rssi_eval(rssi_value):

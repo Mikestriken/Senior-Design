@@ -134,7 +134,7 @@ class WeatherStation():
                         print(f"Published:\n{self.currentData}\n")
                     
                     # Publish
-                    self.client.publishAsJSON('weather', self.currentData)
+                    self.client.publishAsJSON('outdoor_weather', self.currentData)
                     
                     # Clear new data flag
                     self.NEW_DATA_FLAG = False

@@ -24,7 +24,7 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 `sudo apt install mosquitto` -- Broker used to allow use of paho-mqtt  
 `sudo apt install mosquitto-clients` -- Broker used to help debug MQTT clients
 
-### quick Installation {#quick-installation}
+### Quick Installation {#quick-installation}
 *Note: if this fails, try [Manual Installation Steps](#manual-installation-steps)*  
 1. clone this repository.
 2. Run `install/install.sh`
@@ -43,59 +43,67 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 ### MQTT Topics {#mqtt-topics}
 
 1. alerts 
-    - publishes various messages from GPIO to Webserver
+    - Publishes various messages from GPIO to Webserver.
 
 2. battery_state
-    - publishes charge percentage when Spot is connected
+    - Publishes charge percentage when Spot is connected.
 
 3. door
-    - open
-    - close
-    - stop
-    - query_state - returns percent open on mqtt topic
+    - open -- Start opening the door (until fully open).
+    - close -- Start closing the door (until fully closed).
+    - stop -- Stop the door.
+    - query_state -- Returns percent open on mqtt topic.
 
 4. outdoor_light
-    - power_on
-    - power_off
-    - toggle
-    - query_state - returns 'is_on'/'is_off' on mqtt topic
+    - power_on -- Turn the light on.
+    - power_off -- Turn the light off.
+    - toggle -- Toggle the light on/off.
+    - query_state -- Returns 'is_on'/'is_off' on mqtt topic.
 
 5. indoor_light
-    - power_on
-    - power_off
-    - toggle
-    - query_state - returns 'is_on'/'is_off' on mqtt topic
+    - power_on -- Turn the light on.
+    - power_off -- Turn the light off.
+    - toggle -- Toggle the light on/off.
+    - query_state -- Returns 'is_on'/'is_off' on mqtt topic.
 
 6. fan
-    - fast
-    - slow
-    - stop
-    - query_state - returns 'is_on'/'is_slow/is_fast' on mqtt topic
+    - fast -- Set fan to fast speed setting.
+    - slow -- Set fan to slow speed setting.
+    - stop -- Set fan to off speed setting.
+    - query_state -- Returns 'is_on'/'is_slow/is_fast' on mqtt topic.
 
 7. indoor_weather
-    - SHTC3 publishes on a JSON template of {'temperature': temp, 'relative_humidity': humid}
+    - SHTC3 publishes data in the JSON format below:  
+    ```
+        {
+            'temperature': None,
+            'relative_humidity': None
+        }
+    ```
 
 8. weather
-    - publishes data in the format below:
-    `'weather': {
-                'wind': {
-                    'speed': None,
-                    'rawDirection': None,
-                    'trueDirection:': None,
-                    'status': None
-                },
-                'heading': None,
-                'meteorological': {
-                    'pressureMercury': None,
-                    'pressureBars': None,
-                    'temperature': None,
-                    'humidity' : None,
-                    'dewPoint': None
-                }
-            },`
+    - publishes data in the JSON format below:  
+    ```
+        {
+            'wind': {
+                'speed': None,
+                'rawDirection': None,
+                'trueDirection:': None,
+                'status': None
+            },
+            'heading': None,
+            'meteorological': {
+                'pressureMercury': None,
+                'pressureBars': None,
+                'temperature': None,
+                'humidity' : None,
+                'dewPoint': None
+            }
+        }
+    ```
 
 9. rssi
-    - sent from the Spot Collar ESP32, negative integer representing wifi rssi
+    - Sent from the Spot Collar ESP32, negative integer representing wifi rssi
 
 
 

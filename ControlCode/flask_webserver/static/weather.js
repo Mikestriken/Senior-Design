@@ -1,7 +1,8 @@
 {
     // * Create socket
     let socket = io.connect();
-    let socketTopic = "weather";
+    let socketTopicOutdoor = "outdoor_weather";
+    let socketTopicIndoor = "indoor_weather";
   
     const windSpeedOutput = document.getElementById('windSpeedOutput');
     const windDirectionOutput = document.getElementById('windDirectionOutput');
@@ -12,16 +13,18 @@
     const pressureOutputBar = document.getElementById('pressureOutputBar');
     const humidityOutput = document.getElementById('humidityOutput');
     const dewPointOutput = document.getElementById('dewPointOutput');
+
+    const internalTemperatureOutput = document.getElementById('internalTemperatureOutput');
     
-    socket.on(socketTopic, function (msg) {
-        // * Convert JSON text → JavaScript Object
-        // console.log(msg[socketTopic]);
-        const data = msg;
+    socket.on(socketTopicOutdoor, function (msg) {
+      // * Convert JSON text → JavaScript Object
+      // console.log(msg[socketTopicOutdoor]);
+      const data = msg;
   
-        // * wind
-          windSpeedOutput.innerHTML = data[socketTopic].wind.speed;
-    
-          let direction = data[socketTopic].wind.trueDirection
+      // * wind
+      windSpeedOutput.innerHTML = data[socketTopicOutdoor].wind.speed;
+      
+      let direction = data[socketTopicOutdoor].wind.trueDirection
           if (direction >= -22.5 && direction <= 22.5) { // North
             windDirectionOutput.innerHTML = direction;
             windDirectionUnit.innerHTML = "N";
@@ -65,10 +68,19 @@
           
     
         // * meteorological
-          pressureOutputHG.innerHTML = data[socketTopic].meteorological.pressureMercury;
-          pressureOutputBar.innerHTML = data[socketTopic].meteorological.pressureBars;
-          externalTemperatureOutput.innerHTML = data[socketTopic].meteorological.temperature;
-          humidityOutput.innerHTML = data[socketTopic].meteorological.humidity;
-          dewPointOutput.innerHTML = data[socketTopic].meteorological.dewPoint;
-      });
+          pressureOutputHG.innerHTML = data[socketTopicOutdoor].meteorological.pressureMercury;
+          pressureOutputBar.innerHTML = data[socketTopicOutdoor].meteorological.pressureBars;
+          externalTemperatureOutput.innerHTML = data[socketTopicOutdoor].meteorological.temperature;
+          humidityOutput.innerHTML = data[socketTopicOutdoor].meteorological.humidity;
+          dewPointOutput.innerHTML = data[socketTopicOutdoor].meteorological.dewPoint;
+
+        });
+
+        socket.on(socketTopicIndoor, function (msg) {
+          // * Convert JSON text → JavaScript Object
+          // console.log(msg[socketTopicIndoor]);
+          const data = msg;
+
+          internalTemperatureOutput.innerHTML = data[socketTopicIndoor].temperature;
+        });
   }

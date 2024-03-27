@@ -1,6 +1,10 @@
 import { fetchURL } from './modules.js';
 
 {
+    // * Create socket
+    let socket = io.connect();
+    let socketTopic = "door";
+    
     // * JS Code for Buttons
     // * Get button objects and assign them to aliases
     const openButtonProgress = document.getElementById("openDoorProgress");
@@ -11,21 +15,6 @@ import { fetchURL } from './modules.js';
 
     const stopButton = document.getElementById("stopDoorButton");
 
-    // // * Basic Fetch Function
-    // async function fetchURL(url) {
-    //     try {
-    //         // * Load this webpage subdirectory asynchronously so that we don't reload the page.
-    //         const response = await fetch(url)
-
-    //         // * Log the Response
-    //         console.log('HTTP status code:', response.status);
-    //     }
-    //     catch(error) {
-    //         // * Handle any errors that occurred during the fetch operation
-    //         console.error('Error:', error);
-    //     }
-    // }
-
     function setPressedStyle(button) {
         button.style.backgroundColor = 'hsl(228, 66%, 70%)';
     }
@@ -34,20 +23,10 @@ import { fetchURL } from './modules.js';
         button.style.backgroundColor = 'hsl(228, 66%, 47%)';
     }
 
-    function updateProgress(button){
-        // * Define iterator variable
-        let i = 0;
-        
+    function updateProgress(buttonProgress, progress){
         // * Define graphic update logic
-        return function (interval){
-            if (i <= 100) {
-                button.style.width = i + '%';
-                i++;
-            } else {
-                clearInterval(interval)
-                i=0;
-            }
-        }
+        if (progress <= 100)
+            buttonProgress.style.width = progress + '%';
     }
 
     // * Define what happens when the open button is pressed
@@ -68,16 +47,17 @@ import { fetchURL } from './modules.js';
             setReleasedStyle(openButtonProgress);
         } else {
             // setReleasedStyle(openButton);
+            setReleasedStyle(closeButton);
             setReleasedStyle(openButtonProgress);
             
             // Asynchronously send open button event
             fetchURL('/openButton/click');
             
             // Create a new instance of updateProgress for openButton
-            const openButtonUpdateProgress = updateProgress(openButtonProgress);
+            // const openButtonUpdateProgress = updateProgress(openButtonProgress);
             
-            let openInterval;
-            openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
+            // let openInterval;
+            // openInterval = setInterval(()=>{openButtonUpdateProgress(openInterval);}, 100);
         }
     }
 
@@ -100,23 +80,24 @@ import { fetchURL } from './modules.js';
         }
         else {
             // setReleasedStyle(closeButton);
+            setReleasedStyle(openButton);
             setReleasedStyle(closeButtonProgress);
             
             // Asynchronously send close button event
-            fetchURL('/closeButton/click')
+            fetchURL('/closeButton/click');
             
             // Create a new instance of updateProgress for closeButton
-            const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
+            // const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
             
-            let closeInterval;
-            closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
+            // let closeInterval;
+            // closeInterval = setInterval(()=>{closeButtonUpdateProgress(closeInterval);}, 100);
         }
     }
 
     // * Define what happens when the stop button is pressed
     function stopButtonPressedEventHandler() {
         // Asynchronously send close button event
-        fetchURL('/closeButton/click')
+        fetchURL('/closeButton/click');
         stopButton.style.backgroundColor = 'hsl(0, 100%, 30%)';
     }
 
@@ -124,6 +105,14 @@ import { fetchURL } from './modules.js';
     function stopButtonReleasedEventHandler() {
         stopButton.style.backgroundColor = 'hsl(0, 100%, 50%)';
     }
+
+    socket.on(socketTopic, function (msg) {
+        // * Convert JSON text → JavaScript Object
+        // console.log(msg[socketTopic]);
+    
+        updateProgress(openButtonProgress, msg[socketTopic]);
+        updateProgress(closeButtonProgress, 100 - msg[socketTopic]);
+    });
 
     // * Create an event listener (( Interrupt )) mouse or finger press and release
         // * On interrupt run relevant function.
@@ -141,4 +130,19 @@ import { fetchURL } from './modules.js';
     stopButton.addEventListener("touchstart", stopButtonPressedEventHandler);
     stopButton.addEventListener("mouseup", stopButtonReleasedEventHandler);
     stopButton.addEventListener("touchend", stopButtonReleasedEventHandler);
+
+    function iterate() {
+        let i = 0;
+        function loop() {
+            if (i <= 100) {
+                updateBattery(i);
+                i++;
+                setTimeout(loop, 250);
+            }
+        }
+        loop();
+    }
+    
+    // Start iterating
+    // iterate();
 }
