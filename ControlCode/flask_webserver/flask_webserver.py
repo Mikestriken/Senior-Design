@@ -13,6 +13,7 @@ from classes.mqtt_connection import MQTT_Connection
 # webserver imports
 from flask import Flask, request, redirect, url_for, render_template, Response, jsonify
 from flask_socketio import SocketIO
+import json
 import threading
 import sys
 import socket
@@ -41,8 +42,8 @@ app = Flask(__name__, template_folder='static')
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 # * ----------------------------------------------------- MQTT and state storage -----------------------------------------------------
-# Todo: Merge all the MQTT data handlers into a single datahander and implement custom onmessage that checks the message before deciding what to do.
-                                                        # * Alert MQTT
+# Note: Alert is its own topic because I want the alerts to be unbuffered. Alerts should take Priority.
+                                                        # * Alert MQTT Client
 # * Template for how the data should be formatted.
 alert_template_data = {
             'alert': None
@@ -55,25 +56,10 @@ alert_topic = 'alert'
 alert_data_handler = DataHandler(alert_template_data)
 alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handler, "string")
 
-                                                        # * Wall Power MQTT
+                                                        # * Big MQTT Client
 # * Template for how the data should be formatted.
-wall_power_template_data = {
-            'wall_power': None
-        }
-
-# * MQTT topics to subscribe to 
-wall_power_topic = 'wall_power'
-
-# * wall_power_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-wall_power_data_handler = DataHandler(wall_power_template_data)
-wall_power_mqtt_connect = MQTT_Connection("subscriber", wall_power_topic, wall_power_data_handler, "string")
-
-# * Request an update on the current wall power status:
-wall_power_mqtt_connect.publish(wall_power_topic + "_request", "update")
-
-                                                        # * Outdoor Weather MQTT
-# * Template for how the data should be formatted.
-outdoor_weather_template_data = {
+template_data = {
+            'wall_power': None,
             'outdoor_weather': {
                 'wind': {
                     'speed': None,
@@ -89,126 +75,102 @@ outdoor_weather_template_data = {
                     'humidity': None,
                     'dewPoint': None
                 }
-            }
-        }
-
-# * MQTT topics to subscribe to that will update the states.
-outdoor_weather_topic = 'outdoor_weather'
-
-# * outdoor_weather_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-outdoor_weather_data_handler = DataHandler(outdoor_weather_template_data)
-outdoor_weather_mqtt_connect = MQTT_Connection("subscriber", outdoor_weather_topic, outdoor_weather_data_handler, "json")
-
-                                                        # * Indoor Weather MQTT
-# * Template for how the data should be formatted.
-indoor_weather_template_data = {
+            },
             'indoor_weather': {
                 'temperature': None,
                 'relative_humidity': None
-            }
-        }
-
-# * MQTT topics to subscribe to that will update the states.
-indoor_weather_topic = 'indoor_weather'
-
-# * indoor_weather_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-indoor_weather_data_handler = DataHandler(indoor_weather_template_data)
-indoor_weather_mqtt_connect = MQTT_Connection("subscriber", indoor_weather_topic, indoor_weather_data_handler, "json")
-
-                                                        # * Spot Battery
-# * Template for how the data should be formatted.
-spot_battery_template_data = {
-            'battery_state': None
-        }
-
-# * MQTT topics to subscribe to 
-spot_battery_topic = 'battery_state'
-
-# * spot_battery_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-spot_battery_data_handler = DataHandler(spot_battery_template_data)
-spot_battery_mqtt_connect = MQTT_Connection("subscriber", spot_battery_topic, spot_battery_data_handler, "string")
-
-# * Request an update on the current spot battery state:
-# spot_battery_mqtt_connect.publish(spot_battery_topic + "_request", "update")
-
-                                                        # * Door
-# * Template for how the data should be formatted.
-door_template_data = {
-            'door': None
-        }
-
-# * MQTT topics to subscribe to 
-door_topic = 'door'
-
-# * door_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-door_data_handler = DataHandler(door_template_data)
-door_mqtt_connect = MQTT_Connection("subscriber", door_topic, door_data_handler, "string")
-
-# * Request an update on the current door state:
-door_mqtt_connect.publish(door_topic, "query_state")
-
-                                                        # * Outdoor Light
-# * Template for how the data should be formatted.
-outdoor_light_template_data = {
-            'outdoor_light': None
-        }
-
-# * MQTT topics to subscribe to 
-outdoor_light_topic = 'outdoor_light'
-
-# * outdoor_light_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-outdoor_light_data_handler = DataHandler(outdoor_light_template_data)
-
-outdoor_light_mqtt_connect = MQTT_Connection("subscriber", outdoor_light_topic, outdoor_light_data_handler, "string")
-
-# * Request an update on the current light state:
-outdoor_light_mqtt_connect.publish(outdoor_light_topic, "query_state")
-
-                                                        # * Indoor Light
-# * Template for how the data should be formatted.
-indoor_light_template_data = {
-            'indoor_light': None
-        }
-
-# * MQTT topics to subscribe to 
-indoor_light_topic = 'indoor_light'
-
-# * indoor_light_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-indoor_light_data_handler = DataHandler(indoor_light_template_data)
-indoor_light_mqtt_connect = MQTT_Connection("subscriber", indoor_light_topic, indoor_light_data_handler, "string")
-
-# * Request an update on the current light state:
-indoor_light_mqtt_connect.publish(indoor_light_topic, "query_state")
-
-                                                        # * Fan
-# * Template for how the data should be formatted.
-fan_template_data = {
+            },
+            'battery_state': None,
+            'door': None,
+            'outdoor_light': None,
+            'indoor_light': None,
             'fan': None
         }
 
 # * MQTT topics to subscribe to 
+wall_power_topic = 'wall_power'
+outdoor_weather_topic = 'outdoor_weather'
+indoor_weather_topic = 'indoor_weather'
+spot_battery_topic = 'battery_state'
+door_topic = 'door'
+outdoor_light_topic = 'outdoor_light'
+indoor_light_topic = 'indoor_light'
 fan_topic = 'fan'
+topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_battery_topic, door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
 
 # * fan_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
-fan_data_handler = DataHandler(fan_template_data)
-fan_mqtt_connect = MQTT_Connection("subscriber", fan_topic, fan_data_handler, "string")
+data_handler = DataHandler(template_data)
 
-# * Request an update on the current fan state:
-fan_mqtt_connect.publish(fan_topic, "query_state")
+# * Default, internal callback function for when a message is received
+def on_message(self, client, userdata, msg):
+    # * Find out which topic got a message and update the data_hander with the data.
+    # print(f"New message: {msg.payload} → {msg.payload.decode('utf-8')}")
+    try:
+        # * Assign msg.payload to deserialized data appropriately
+        deserialized_data = None
+        
+        # If msg.topic is associated with a dictionary in the template, load the message as a json type and check keys match before updating, 
+        # else load deserialized_data as string.
+        if (isinstance(template_data[msg.topic], dict)):
+            deserialized_data = json.loads(msg.payload)
+            
+            if (deserialized_data.keys() == template_data[msg.topic].keys()): # If keys match, update current data.
+                # Update the data_handler
+                data_handler.update_current_data({msg.topic: deserialized_data})
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}")
+        else:
+            deserialized_data = str(msg.payload.decode('utf-8'))
+        
+        # * Message filtering and classification.
+        if msg.topic == wall_power_topic: # Look for specific valid strings
+            if (deserialized_data.lower() == "Wall Power Disconnected!".lower() or deserialized_data.lower() == "Wall Power Reconnected!".lower()):
+                # Update the data_handler
+                data_handler.update_current_data({msg.topic: deserialized_data})
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}")
+            
+        # Note 1: The `template_data[door]` property holds the current % the door is open.
+        # Note 2: The client JS checks that template_data[door] is between 0 ↔ 100.
+        elif msg.topic == spot_battery_topic or msg.topic == door_topic: # Look for values that can be interpreted as a number.
+            try:
+                # Attempt to cast deserialized_data as a float, if it fails, and exception will be thrown.
+                float(deserialized_data)
+                
+                # Update the data_handler
+                data_handler.update_current_data({msg.topic: deserialized_data})
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                
+            except ValueError:
+                pass
+                
+        elif msg.topic == outdoor_light_topic or msg.topic == indoor_light_topic:
+            if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_on".lower()):
+                # Update the data_handler
+                data_handler.update_current_data({msg.topic: deserialized_data})
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}")
+                
+        elif msg.topic == fan_topic:
+            if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_slow".lower() or deserialized_data.lower() == "is_fast".lower()):
+                # Update the data_handler
+                data_handler.update_current_data({msg.topic: deserialized_data})
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}")
+    except Exception as e:
+        print(f"Something went Wrong...\nTopic: {msg.topic}\nMessage: {msg.payload}\n\nError Log:")
+        print(e)
+
+mqtt_connect = MQTT_Connection("both", topics, data_handler, on_message=on_message)
 
 # * ----------------------------------------------------- Landing Page Functionality -----------------------------------------------------
-# * List of datahandler objects to refresh when a new client connects / refreshes
-dataHandlerTopics = [indoor_weather_topic, outdoor_weather_topic, wall_power_topic, spot_battery_topic, door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
-dataHandlers = [indoor_weather_data_handler, outdoor_weather_data_handler, wall_power_data_handler, spot_battery_data_handler, door_data_handler, outdoor_light_data_handler, indoor_light_data_handler, fan_data_handler]
-
 # * Run code after a template has been rendered and response is about to be sent.
-    # * This code sets the update flag, so that all the SSE generate event generator function instances will send updates to the client
-    # * TL;DR This code syncs the client up whenever refreshes / loads the page.
+    # * This code sets the update flag, so that generate_socket_events will sent an update to the client.
+    # * TL;DR This code syncs the client up whenever the client refreshes / loads the page.
 @app.after_request
 def after_request(response):
-    for DH in dataHandlers:
-        print("set DH update flag!")
-        DH.set_update_flag()
+    data_handler.set_update_flag()
     
     return response
 
@@ -237,39 +199,63 @@ def generate_socket_events(socket_topics, data_handler):
         raise TypeError("Error: topic must be a string or a list of strings")
     
     
-    # * data_handler should be DataHandler or list of DataHandlers
-    if isinstance(data_handler, DataHandler):
-        # Convert single DataHandler to a list with a single element
-        data_handler_list = [data_handler]
-    elif isinstance(data_handler, list):
-        # Check length of both data_handler and socket_topic match
-        if (len(socket_topics) != len(data_handler)):
-            raise TypeError(f"Error: Number of elements in data_handler must equal socket_topic:\n{data_handler}\n{socket_topics}")
-            
-        # Check all elements of the list are of type DataHandler before assigning
-        if all(isinstance(DH, DataHandler) for DH in data_handler):
-            data_handler_list = data_handler
-        else:
-            raise TypeError(f"Error: All elements of data_handler list must be type DataHandler. Received: {data_handler}")
-    else:
-        raise TypeError("Error: topic must be a DataHandler or a list of DataHandlers")
+    # * data_handler should be DataHandler
+    if not isinstance(data_handler, DataHandler):
+        raise TypeError("Error: data_handler must be a DataHandler")
     
     # * Send data to connected clients
-    for i in range(len(data_handler_list)):
-        if data_handler_list[i].get_update_flag():
-            data_handler_list[i].unset_update_flag()
+    for topic in socket_topics_list:
+        if data_handler.get_update_flag():
+            data_handler.unset_update_flag()
             
-            current_data = data_handler_list[i].get_current_data()
+            current_data = data_handler.get_current_data()
             
-            # print(f"{socket_topic[i]}: {current_data}")
-            socketio.emit(socket_topics_list[i], current_data)
+            # print(f"{topic}: {current_data[topic]}")
+            socketio.emit(topic, current_data[topic])
         
 socket_thread = None
 socket_thread_lock = threading.Lock()
 
+# * function to check that an 'object' doesn't have any properties or nested objects with value 'None'.
+def check_none(obj):
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if v is None:
+                return True
+            if isinstance(v, dict):
+                if check_none(v):
+                    return True
+    return False
+
 def background_thread():
+    topicsAwaitingFirstUpdate = [door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
+    updatedList = [False] * len(topicsAwaitingFirstUpdate)
+    updated = False
+    
     while True:
-        generate_socket_events([alert_topic] + dataHandlerTopics, [alert_data_handler] + dataHandlers)
+        # * Set updated flag if everything in the updatedList is True
+        if not updated:
+            if all(updatedList):
+                updated = True
+                
+            # * Update Updated List Flags
+            for i in range(len(topicsAwaitingFirstUpdate)):
+                # * Don't check for `None` if already updated.
+                if updatedList[i] == True:
+                    break
+                
+                # * Get current data
+                current_data = data_handler.get_current_data()
+                
+                # * If topic in current_data is not none, set updatedList element to true
+                if check_none(current_data[topicsAwaitingFirstUpdate[i]]):
+                    updatedList[i] = True
+                
+                # * Request an update
+                mqtt_connect.publish(topicsAwaitingFirstUpdate[i], "query_state")
+            
+        generate_socket_events([alert_topic], [alert_data_handler])
+        generate_socket_events(topics, [data_handler])
         socketio.sleep(1)
 
 @socketio.on('connect')
@@ -313,8 +299,6 @@ if cameraCodeFlag:
         #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
                     # Door
-door_mqtt_connect = MQTT_Connection("publisher")
-
 @app.route("/<object>/<action>")
 def action(object, action):
     print("Action Called")
@@ -322,30 +306,30 @@ def action(object, action):
     # * Open Button  → /openButton/click  → openButton_topic,  "click"
     # * Close Button → /closeButton/click → closeButton_topic, "click"
     if object == "openButton" or object == "closeButton":
-        door_mqtt_connect.publish(object, action)
+        mqtt_connect.publish(object, action)
         
     # * Fan slider position change to: 0/1/2 => set speed to: stop/slow/fast
     elif object == "fanSlider":
         if action == '0':
-            fan_mqtt_connect.publish(fan_topic, "stop")
+            mqtt_connect.publish(fan_topic, "stop")
         elif action == '1':
-            fan_mqtt_connect.publish(fan_topic, "slow")
+            mqtt_connect.publish(fan_topic, "slow")
         elif action == '2':
-            fan_mqtt_connect.publish(fan_topic, "fast")
+            mqtt_connect.publish(fan_topic, "fast")
         
     # * light slider position change to: 0/1 => set to: on/off
     elif object == "indoorLightSlider":
         if action == '0':
-            fan_mqtt_connect.publish(indoor_light_topic, "off")
+            mqtt_connect.publish(indoor_light_topic, "off")
         elif action == '1':
-            fan_mqtt_connect.publish(indoor_light_topic, "on")
+            mqtt_connect.publish(indoor_light_topic, "on")
         
     # * light slider position change to: 0/1 => set to: on/off
     elif object == "outdoorLightSlider":
         if action == '0':
-            fan_mqtt_connect.publish(outdoor_light_topic, "off")
+            mqtt_connect.publish(outdoor_light_topic, "off")
         elif action == '1':
-            fan_mqtt_connect.publish(outdoor_light_topic, "on")
+            mqtt_connect.publish(outdoor_light_topic, "on")
     
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
