@@ -59,32 +59,32 @@ alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handl
                                                         # * Big MQTT Client
 # * Template for how the data should be formatted.
 template_data = {
-            'wall_power': "...",
+            'wall_power': "",
             'outdoor_weather': {
                 'wind': {
-                    'speed': "...",
-                    'rawDirection': "...",
-                    'trueDirection:': "...",
-                    'status': "..."
+                    'speed': "",
+                    'rawDirection': "",
+                    'trueDirection:': "",
+                    'status': ""
                 },
-                'heading': "...",
+                'heading': "",
                 'meteorological': {
-                    'pressureMercury': "...",
-                    'pressureBars': "...",
-                    'temperature': "...",
-                    'humidity': "...",
-                    'dewPoint': "..."
+                    'pressureMercury': "",
+                    'pressureBars': "",
+                    'temperature': "",
+                    'humidity': "",
+                    'dewPoint': ""
                 }
             },
             'indoor_weather': {
-                'temperature': "...",
-                'relative_humidity': "..."
+                'temperature': "",
+                'relative_humidity': ""
             },
-            'battery_state': "...",
-            'door': "...",
-            'outdoor_light': "...",
-            'indoor_light': "...",
-            'fan': "..."
+            'battery_state': "",
+            'door': "",
+            'outdoor_light': "",
+            'indoor_light': "",
+            'fan': ""
         }
 
 # * MQTT topics to subscribe to 
@@ -215,7 +215,7 @@ def generate_socket_events(socket_topics, dataHandler):
             
             current_data = dataHandler.get_current_data()
             
-            print(f"{topic}: {current_data[topic]}")
+            # print(f"{topic}: {current_data[topic]}")
             socketio.emit(topic, current_data[topic])
         
 socket_thread = None
@@ -310,8 +310,8 @@ if cameraCodeFlag:
 def action(object, action):
     print("Action Called")
     # MQTT Section
-    # * Open Button  → /openButton/click  → openButton_topic,  "click"
-    # * Close Button → /closeButton/click → closeButton_topic, "click"
+    # * Open Button  → /openButton/click  → openButton,  "click"
+    # * Close Button → /closeButton/click → closeButton, "click"
     if object == "openButton" or object == "closeButton":
         mqtt_connect.publish(object, action)
         

@@ -62,7 +62,7 @@
             windDirectionUnit.innerHTML = "N";
           }
           else {
-            windDirectionOutput.innerHTML = direction;
+            windDirectionOutput.innerHTML = "";
             windDirectionUnit.innerHTML = "UNK";
           }
           
