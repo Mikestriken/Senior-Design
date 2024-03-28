@@ -24,5 +24,12 @@
 
     clearButton.addEventListener("mouseup", clearMessages)
     clearButton.addEventListener("touchend", clearMessages)
+
+    for (let i = 0; i <= 100; ++i)
+        setTimeout(() => {
+            messageBox.innerHTML += `\n<span>Alert Message ${i}</span>`;
+        
+            messageBoxScroller.scrollTop = messageBoxScroller.scrollHeight;
+        }, i*1000);
     
 }

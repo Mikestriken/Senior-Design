@@ -136,9 +136,9 @@ import { fetchURL } from './modules.js';
 
     // * Change triggers when mouse / touch is released from slider, input triggers as the slider moves across the bar for each value the slider passes.
     fanSlider.addEventListener('change', () => {updateRangeValue(3, fanSlider, fanPopOut); sliderEventHandler(fanSlider);});
-    // fanSlider.addEventListener('input', () => {updateRangeValue(3, fanSlider, fanPopOut); sliderEventHandler(fanSlider);});
+    fanSlider.addEventListener('input', () => {updateRangeValue(3, fanSlider, fanPopOut);});
     indoorLightSlider.addEventListener('change', () => {updateRangeValue(2, indoorLightSlider, indoorLightPopOut); sliderEventHandler(indoorLightSlider);});
-    // indoorLightSlider.addEventListener('input', () => {updateRangeValue(2, indoorLightSlider, indoorLightPopOut); sliderEventHandler(indoorLightSlider);});
+    indoorLightSlider.addEventListener('input', () => {updateRangeValue(2, indoorLightSlider, indoorLightPopOut);});
     outdoorLightSlider.addEventListener('change', () => {updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut); sliderEventHandler(outdoorLightSlider);});
-    // outdoorLightSlider.addEventListener('input', () => {updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut); sliderEventHandler(outdoorLightSlider);});
+    outdoorLightSlider.addEventListener('input', () => {updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut);});
 }

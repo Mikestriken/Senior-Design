@@ -59,32 +59,32 @@ alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handl
                                                         # * Big MQTT Client
 # * Template for how the data should be formatted.
 template_data = {
-            'wall_power': None,
+            'wall_power': "...",
             'outdoor_weather': {
                 'wind': {
-                    'speed': None,
-                    'rawDirection': None,
-                    'trueDirection:': None,
-                    'status': None
+                    'speed': "...",
+                    'rawDirection': "...",
+                    'trueDirection:': "...",
+                    'status': "..."
                 },
-                'heading': None,
+                'heading': "...",
                 'meteorological': {
-                    'pressureMercury': None,
-                    'pressureBars': None,
-                    'temperature': None,
-                    'humidity': None,
-                    'dewPoint': None
+                    'pressureMercury': "...",
+                    'pressureBars': "...",
+                    'temperature': "...",
+                    'humidity': "...",
+                    'dewPoint': "..."
                 }
             },
             'indoor_weather': {
-                'temperature': None,
-                'relative_humidity': None
+                'temperature': "...",
+                'relative_humidity': "..."
             },
-            'battery_state': None,
-            'door': None,
-            'outdoor_light': None,
-            'indoor_light': None,
-            'fan': None
+            'battery_state': "...",
+            'door': "...",
+            'outdoor_light': "...",
+            'indoor_light': "...",
+            'fan': "..."
         }
 
 # * MQTT topics to subscribe to 

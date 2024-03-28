@@ -10,6 +10,8 @@
     const dewPointOutput = document.getElementById('dewPointOutput');
   
     const internalTemperatureOutput = document.getElementById('internalTemperatureOutput');
+
+    const powerStatusOutput = document.getElementById('powerStatusOutput');
   
     // Function to generate random integer with one decimal point precision
     function getRandomInt() {
@@ -78,9 +80,14 @@
       dewPointOutput.innerHTML = getRandomInt();
       
       internalTemperatureOutput.innerHTML = getRandomInt();
+
+      if (powerStatusOutput.style.backgroundColor === "lime")
+        powerStatusOutput.style.backgroundColor = "red";
+      else
+        powerStatusOutput.style.backgroundColor = "lime";
     }
   
   
     // * Run update every {secondArgument ms}
-    // setInterval(randomize, 1000);
+    setInterval(randomize, 1000);
   }

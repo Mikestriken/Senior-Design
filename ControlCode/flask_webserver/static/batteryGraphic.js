@@ -51,5 +51,5 @@
     }
     
     // Start iterating
-    // iterate();
+    iterate();
 }

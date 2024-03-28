@@ -52,6 +52,9 @@ import { fetchURL } from './modules.js';
             
             // Asynchronously send open button event
             fetchURL('/openButton/click');
+
+            for (let i = 0; i <= 100; ++i)
+                setTimeout(() => {updateProgress(openButtonProgress, i)}, i*100);
             
             // Create a new instance of updateProgress for openButton
             // const openButtonUpdateProgress = updateProgress(openButtonProgress);
@@ -85,6 +88,9 @@ import { fetchURL } from './modules.js';
             
             // Asynchronously send close button event
             fetchURL('/closeButton/click');
+
+            for (let i = 0; i <= 100; ++i)
+                setTimeout(() => {updateProgress(closeButtonProgress, i)}, i*100);
             
             // Create a new instance of updateProgress for closeButton
             // const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
