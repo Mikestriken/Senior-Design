@@ -60,7 +60,7 @@ class Door:
         GPIO.output(self.in2, False)
 
         while(self.percent_open < 100):
-            time.sleep(0.18)
+            time.sleep(0.22)
             self.percent_open += 1
             self.write_percent_open()
 
@@ -79,7 +79,7 @@ class Door:
         GPIO.output(self.in2, True)
         
         while(self.percent_open > 0):
-            time.sleep(0.19)
+            time.sleep(0.25)
             self.percent_open -= 1
             self.write_percent_open()
 
@@ -97,7 +97,7 @@ class Door:
         GPIO.output(self.in2, False)
 
         while(self.percent_open < 100 and not exit_event.is_set()):
-            time.sleep(0.18)
+            time.sleep(0.22)
             self.percent_open += 1
             self.write_percent_open()
 
@@ -117,7 +117,7 @@ class Door:
         GPIO.output(self.in2, True)
         
         while(self.percent_open > 0 and not exit_event.is_set()):
-            time.sleep(0.19)
+            time.sleep(0.25)
             self.percent_open -= 1
             self.write_percent_open()
 
@@ -133,10 +133,10 @@ class Door:
         print("door stopped! Percent Open: " + str(self.percent_open))
 
     def get_percent_open(self):
-        with open('/home/eprispot/Desktop/classes/data/door_open_percent.txt', "r") as f:
+        with open('/home/eprispot/Desktop/control_code/ControlCode/classes/data/door_open_percent.txt', "r") as f:
             self.percent_open = int(f.read())
         return self.percent_open
 
     def write_percent_open(self):
-        with open('/home/eprispot/Desktop/classes/data/door_open_percent.txt', 'w') as f:
+        with open('/home/eprispot/Desktop/control_code/ControlCode/classes/data/door_open_percent.txt', 'w') as f:
             f.write(str(self.percent_open))

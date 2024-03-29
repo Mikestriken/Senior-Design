@@ -53,8 +53,8 @@ import { fetchURL } from './modules.js';
             // Asynchronously send open button event
             fetchURL('/openButton/click');
 
-            for (let i = 0; i <= 100; ++i)
-                setTimeout(() => {updateProgress(openButtonProgress, i)}, i*100);
+            // for (let i = 0; i <= 100; ++i)
+            //     setTimeout(() => {updateProgress(openButtonProgress, i)}, i*100);
             
             // Create a new instance of updateProgress for openButton
             // const openButtonUpdateProgress = updateProgress(openButtonProgress);
@@ -89,8 +89,8 @@ import { fetchURL } from './modules.js';
             // Asynchronously send close button event
             fetchURL('/closeButton/click');
 
-            for (let i = 0; i <= 100; ++i)
-                setTimeout(() => {updateProgress(closeButtonProgress, i)}, i*100);
+            //for (let i = 0; i <= 100; ++i)
+            //    setTimeout(() => {updateProgress(closeButtonProgress, i)}, i*100);
             
             // Create a new instance of updateProgress for closeButton
             // const closeButtonUpdateProgress = updateProgress(closeButtonProgress);
@@ -103,7 +103,7 @@ import { fetchURL } from './modules.js';
     // * Define what happens when the stop button is pressed
     function stopButtonPressedEventHandler() {
         // Asynchronously send close button event
-        fetchURL('/closeButton/click');
+        fetchURL('/stopButton/click');
         stopButton.style.backgroundColor = 'hsl(0, 100%, 30%)';
     }
 

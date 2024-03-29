@@ -64,9 +64,28 @@ except:
     print("Spot robot not connected. Continuing with non-connected protocol...")
 
 
+
+def on_message_rssi(self, client, msg):
+        # Deserialize JSON data
+        #deserialized_data = json.loads(msg.payload)
+        
+        with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
+            f.write(msg.payload.decode("utf-8"))
+
+        if msg.topic == 'rssi':
+            print(msg.payload)
+            rssi_eval(int(msg.payload))
+
+rssi_mqtt = mqtt_connection.MQTT_Connection(type='both', topics = ['rssi'], on_message=on_message_rssi, broker_address = "10.143.204.58")
+
+
 while True:
     time.sleep(1)
     if Spot_API_Connect_Flag:
         state = robot_state_client.get_robot_state()
         mqtt_connect.publishAsJSON('battery_state', state.battery_states[0].charge_percentage.value)
          # print(state.battery_states[0].current.value) # pos - charging, neg - not
+
+
+
+        

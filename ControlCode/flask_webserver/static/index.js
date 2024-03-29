@@ -89,5 +89,5 @@
   
   
     // * Run update every {secondArgument ms}
-    setInterval(randomize, 1000);
+    //setInterval(randomize, 1000);
   }

@@ -13,7 +13,7 @@ else
 fi
 
 # List of packages to install
-packages=("mosquitto" "mosquitto-clients")
+packages=("mosquitto" "mosquitto-clients" "libcamera" "libcamera-apps")
 winPackages=("mosquitto")
 
 # Loop through the list of packages

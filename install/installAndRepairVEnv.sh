@@ -10,7 +10,7 @@ cd "$script_dir"
 # List of modules to install
 # Note: if package is raspberry specific, add it to raspberryPackages... Otherwise, just add it to packages.
 packages=("Flask" "flask-socketio" "greenlet" "paho-mqtt")
-raspberryPackages=("pyserial" "RPi.GPIO" "picamera")
+raspberryPackages=("pyserial" "RPi.GPIO" "picamera" "picamera2")
 
 # Specify the directory for the virtual environment
 venv_dir="../venv"

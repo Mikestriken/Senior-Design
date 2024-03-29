@@ -59,32 +59,32 @@ alert_mqtt_connect = MQTT_Connection("subscriber", alert_topic, alert_data_handl
                                                         # * Big MQTT Client
 # * Template for how the data should be formatted.
 template_data = {
-            'wall_power': "",
+            'wall_power': None,
             'outdoor_weather': {
                 'wind': {
-                    'speed': "",
-                    'rawDirection': "",
-                    'trueDirection:': "",
-                    'status': ""
+                    'speed': None,
+                    'rawDirection': None,
+                    'trueDirection:': None,
+                    'status': None
                 },
-                'heading': "",
+                'heading': None,
                 'meteorological': {
-                    'pressureMercury': "",
-                    'pressureBars': "",
-                    'temperature': "",
-                    'humidity': "",
-                    'dewPoint': ""
+                    'pressureMercury': None,
+                    'pressureBars': None,
+                    'temperature': None,
+                    'humidity': None,
+                    'dewPoint': None
                 }
             },
             'indoor_weather': {
-                'temperature': "",
-                'relative_humidity': ""
+                'temperature': None,
+                'relative_humidity': None
             },
-            'battery_state': "",
-            'door': "",
-            'outdoor_light': "",
-            'indoor_light': "",
-            'fan': ""
+            'battery_state': None,
+            'door': None,
+            'outdoor_light': None,
+            'indoor_light': None,
+            'fan': None
         }
 
 # * MQTT topics to subscribe to 
@@ -312,8 +312,16 @@ def action(object, action):
     # MQTT Section
     # * Open Button  → /openButton/click  → openButton,  "click"
     # * Close Button → /closeButton/click → closeButton, "click"
-    if object == "openButton" or object == "closeButton":
-        mqtt_connect.publish(object, action)
+    if object == "openButton" and action == "click":
+        mqtt_connect.publish("door", "open")
+
+    elif object == "closeButton" and action == "click":
+        mqtt_connect.publish("door", "close")
+
+    elif object == "stopButton" and action == "click":
+        mqtt_connect.publish("door", "stop")
+    # if object == "openButton" or object == "closeButton":
+    #     mqtt_connect.publish(object, action)
         
     # * Fan slider position change to: 0/1/2 => set speed to: stop/slow/fast
     elif object == "fanSlider":
