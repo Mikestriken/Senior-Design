@@ -1,35 +1,35 @@
 from classes import lighting, mqtt_connection
 
-import schedule
 import time
-from datetime import datetime, timezone
-import ephem
 import json
-import pytz
+
 
 import RPi.GPIO as GPIO
 
+GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 indoor_light = lighting.Indoor_Lighting()
 outdoor_light = lighting.Outdoor_Lighting()
 
 def on_message(self, client, msg):
-    # Deserialize JSON data
-    deserialized_data = json.loads(msg.payload)
     
+    msg.payload = msg.payload.decode("utf-8")
+
     if msg.topic == 'indoor_light':
         if msg.payload == 'power_on':
             indoor_light.power_on()
+            mqtt_connect.publish('indoor_light', "is_on")
         elif msg.payload == 'power_off':
             indoor_light.power_off()
+            mqtt_connect.publish('indoor_light', "is_off")
         elif msg.payload == 'toggle':
             indoor_light.toggle()
         elif msg.payload == 'query_state':
             if outdoor_light.is_on:
-                mqtt_connect.publishAsJSON('indoor_light', "is_on")
+                mqtt_connect.publish('indoor_light', "is_on")
             else:
-                mqtt_connect.publishAsJSON('indoor_light', "is_off")
+                mqtt_connect.publish('indoor_light', "is_off")
         else:
             print('Invalid action posted to topic: indoor_light ' + str(msg))
 
@@ -42,13 +42,13 @@ def on_message(self, client, msg):
             outdoor_light.toggle()
         elif msg.payload == 'query_state':
             if outdoor_light.is_on:
-                mqtt_connect.publishAsJSON('outdoor_light', "is_on")
+                mqtt_connect.publish('outdoor_light', "is_on")
             else:
-                mqtt_connect.publishAsJSON('outdoor_light', "is_off")
+                mqtt_connect.publish('outdoor_light', "is_off")
         else:
-            print('Invalid action posted to topic: outdoor_light ' + str(action))
+            print('Invalid action posted to topic: outdoor_light ' + str(msg))
 
-mqtt_connect = mqtt_connection.MQTT_Connection(topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
+mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['indoor_light', 'outdoor_light'], on_message=on_message)
 
 #-----------------------------------Photoresister Outdoor Light Triggering -----------------------------------------
 
@@ -63,11 +63,11 @@ pin_number = 7
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pin_number, GPIO.IN)
 
-GPIO.add_event_detect(pin_number, GPIO.RISING, pull_up_down=GPIO.PUD_DOWN,
-    callback=photoresister_isr_on, bouncetime=300)
+# GPIO.add_event_detect(pin_number, GPIO.RISING, pull_up_down=GPIO.PUD_DOWN,
+#     callback=photoresister_isr_on, bouncetime=300)
 
-GPIO.add_event_detect(pin_number, GPIO.FALLING, pull_up_down=GPIO.PUD_DOWN,
-    callback=photoresister_isr_off, bouncetime=300)
+# GPIO.add_event_detect(pin_number, GPIO.FALLING, pull_up_down=GPIO.PUD_DOWN,
+#     callback=photoresister_isr_off, bouncetime=300)
 
 
 try:

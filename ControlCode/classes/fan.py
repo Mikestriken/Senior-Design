@@ -9,16 +9,22 @@ class Fan():
         self.speed_pin = speed_pin
         GPIO.setup(self.gpio_pin, GPIO.OUT)
         GPIO.setup(self.speed_pin, GPIO.OUT)
+
+        GPIO.output(self.speed_pin, False)
+        GPIO.output(self.gpio_pin, False)
+
         self.is_on = False
         self.is_fast = False
         self.power_on()
 
     def power_on(self):
         GPIO.output(self.gpio_pin, True)
+        GPIO.output(self.speed_pin, False)
         self.is_on = True
         self.is_fast = True
 
     def speed_low(self):
+        GPIO.output(self.gpio_pin, True)
         GPIO.output(self.speed_pin, True)
         self.is_fast = False
         

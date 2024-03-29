@@ -35,8 +35,8 @@ if "--debug" in sys.argv:
 # camera imports
 import time
 if cameraCodeFlag:
-    import classes.indoor_camera
-    import classes.outdoor_camera
+    from classes import indoor_camera
+    from classes import outdoor_camera
 
 app = Flask(__name__, template_folder='static')
 socketio = SocketIO(app, cors_allowed_origins='*')
@@ -335,9 +335,9 @@ def action(object, action):
     # * light slider position change to: 0/1 => set to: on/off
     elif object == "indoorLightSlider":
         if action == '0':
-            mqtt_connect.publish(indoor_light_topic, "off")
+            mqtt_connect.publish(indoor_light_topic, "power_off")
         elif action == '1':
-            mqtt_connect.publish(indoor_light_topic, "on")
+            mqtt_connect.publish(indoor_light_topic, "power_on")
         
     # * light slider position change to: 0/1 => set to: on/off
     elif object == "outdoorLightSlider":

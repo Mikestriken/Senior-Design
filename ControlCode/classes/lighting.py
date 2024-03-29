@@ -8,6 +8,7 @@ import RPi.GPIO as GPIO
 
 class Indoor_Lighting():
     def __init__(self, gpio_pin = 27):
+        self.gpio_pin = gpio_pin
         GPIO.setup(gpio_pin, GPIO.OUT)
         self.is_on = False
         self.power_on()
@@ -28,6 +29,7 @@ class Indoor_Lighting():
 
 class Outdoor_Lighting():
     def __init__(self, gpio_pin = 4):
+        self.gpio_pin = gpio_pin
         GPIO.setup(gpio_pin, GPIO.OUT)
         self.is_on = False
         self.power_on()
