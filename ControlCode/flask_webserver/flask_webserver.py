@@ -82,7 +82,7 @@ template_data = {
             },
             'battery_state': None,
             'door': None,
-            'outdoor_light': None,
+            'fan_HOA': None,
             'indoor_light': None,
             'fan': None
         }
@@ -93,10 +93,10 @@ outdoor_weather_topic = 'outdoor_weather'
 indoor_weather_topic = 'indoor_weather'
 spot_battery_topic = 'battery_state'
 door_topic = 'door'
-outdoor_light_topic = 'outdoor_light'
+fan_HOA_topic = 'fan_HOA'
 indoor_light_topic = 'indoor_light'
 fan_topic = 'fan'
-topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_battery_topic, door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
+topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_battery_topic, door_topic, fan_HOA_topic, indoor_light_topic, fan_topic]
 
 # * fan_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 data_handler = DataHandler(template_data)
@@ -148,7 +148,15 @@ def on_message(client, userdata, msg):
             except ValueError:
                 pass
                 
-        elif msg.topic == outdoor_light_topic or msg.topic == indoor_light_topic:
+        elif msg.topic == fan_HOA_topic:
+            if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_hand".lower() or deserialized_data.lower() == "is_auto".lower()):
+                # Update the data_handler
+                data_handler.update_current_data(msg.topic, deserialized_data)
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
+        
+        elif msg.topic == indoor_light_topic:
             if (deserialized_data.lower() == "is_off".lower() or deserialized_data.lower() == "is_on".lower()):
                 # Update the data_handler
                 data_handler.update_current_data(msg.topic, deserialized_data)
@@ -235,7 +243,7 @@ def check_none(obj):
     return False
 
 def background_thread():
-    topicsAwaitingFirstUpdate = [wall_power_topic, door_topic, outdoor_light_topic, indoor_light_topic, fan_topic]
+    topicsAwaitingFirstUpdate = [wall_power_topic, door_topic, fan_HOA_topic, indoor_light_topic, fan_topic]
     updatedList = [False] * len(topicsAwaitingFirstUpdate)
     updated = False
     
@@ -340,11 +348,13 @@ def action(object, action):
             mqtt_connect.publish(indoor_light_topic, "power_on")
         
     # * light slider position change to: 0/1 => set to: on/off
-    elif object == "outdoorLightSlider":
+    elif object == "fanHOASlider":
         if action == '0':
-            mqtt_connect.publish(outdoor_light_topic, "off")
+            mqtt_connect.publish(fan_HOA_topic, "off")
         elif action == '1':
-            mqtt_connect.publish(outdoor_light_topic, "on")
+            mqtt_connect.publish(fan_HOA_topic, "hand")
+        elif action == '2':
+            mqtt_connect.publish(fan_HOA_topic, "auto")
     
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi

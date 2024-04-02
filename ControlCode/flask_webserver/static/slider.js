@@ -3,7 +3,7 @@ import { fetchURL } from './modules.js';
 {
     // * Create socket
     let socket = io.connect();
-    let socketTopicOutdoorLight = "outdoor_light";
+    let socketTopicFanHOA = "fan_HOA";
     let socketTopicIndoorLight = "indoor_light";
     let socketTopicFan = "fan";
 
@@ -11,9 +11,9 @@ import { fetchURL } from './modules.js';
     const indoorLightPopOut = document.querySelector('#indoorLightPopOut');
 
     const indoorLightSlider = document.querySelector('#indoorLightSlider [type="range"]');
-    const outdoorLightPopOut = document.querySelector('#outdoorLightPopOut');
+    const fanHOAPopOut = document.querySelector('#fanHOAPopOut');
 
-    const outdoorLightSlider = document.querySelector('#outdoorLightSlider [type="range"]');
+    const fanHOASlider = document.querySelector('#fanHOASlider [type="range"]');
     const fanPopOut = document.querySelector('#fanPopOut');
 
 
@@ -67,20 +67,47 @@ import { fetchURL } from './modules.js';
         popOutElement.style.left = `${rangePercent}%`;
     }
 
-    socket.on(socketTopicOutdoorLight, function (msg) {
+    function updateHOAValue(rangeSliderElement, popOutElement) {
+
+        let rangePercent;
+
+            // * States are 0, 1, 2 (Off Hand Auto)
+            // * Percentages are: 0*50, 1*50, 2*50 => 0%, 50%, 100%
+            rangePercent = rangeSliderElement.value*50;
+        
+            switch (rangeSliderElement.value) {
+                case '0':
+                    popOutElement.innerHTML = "OFF" + '<span></span>';
+                    break;
+                case '1':
+                    popOutElement.innerHTML = "HAND" + '<span></span>';
+                    break;
+                case '2':
+                    popOutElement.innerHTML = "AUTO" + '<span></span>';
+                    break;
+            }
+
+
+
+        // rangeSliderElement.style.filter = 'hue-rotate(-' + rangePercent + 'deg)';
+        popOutElement.style.transform = 'translateX(-50%) scale(' + (1 + ((rangePercent - (rangePercent/100)*70) / 100)) + ')';
+        popOutElement.style.left = `${rangePercent}%`;
+    }
+
+    socket.on(socketTopicFanHOA, function (msg) {
         // * Convert JSON text → JavaScript Object
         // console.log(msg);
 
         switch(msg.toLowerCase()){
             case "is_off":
-                outdoorLightSlider.value = 0;
+                fanHOASlider.value = 0;
                 break;
             case "is_on":
-                outdoorLightSlider.value = 1;
+                fanHOASlider.value = 1;
                 break;
         }
         
-        updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut);
+        updateHOAValue(fanHOASlider, fanHOAPopOut);
     });
     
     socket.on(socketTopicIndoorLight, function (msg) {
@@ -128,8 +155,8 @@ import { fetchURL } from './modules.js';
                 fetchURL(`/indoorLightSlider/${indoorLightSlider.value}`);
                 break;
 
-            case outdoorLightSlider:
-                fetchURL(`/outdoorLightSlider/${outdoorLightSlider.value}`);
+            case fanHOASlider:
+                fetchURL(`/fanHOASlider/${fanHOASlider.value}`);
                 break;
         }
     }
@@ -139,6 +166,6 @@ import { fetchURL } from './modules.js';
     fanSlider.addEventListener('input', () => {updateRangeValue(3, fanSlider, fanPopOut);});
     indoorLightSlider.addEventListener('change', () => {updateRangeValue(2, indoorLightSlider, indoorLightPopOut); sliderEventHandler(indoorLightSlider);});
     indoorLightSlider.addEventListener('input', () => {updateRangeValue(2, indoorLightSlider, indoorLightPopOut);});
-    outdoorLightSlider.addEventListener('change', () => {updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut); sliderEventHandler(outdoorLightSlider);});
-    outdoorLightSlider.addEventListener('input', () => {updateRangeValue(2, outdoorLightSlider, outdoorLightPopOut);});
+    fanHOASlider.addEventListener('change', () => {updateHOAValue(fanHOASlider, fanHOAPopOut); sliderEventHandler(fanHOASlider);});
+    fanHOASlider.addEventListener('input', () => {updateHOAValue(fanHOASlider, fanHOAPopOut);});
 }

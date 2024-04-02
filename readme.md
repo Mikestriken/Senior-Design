@@ -58,11 +58,11 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
     - stop -- Stop the door.
     - query_state -- Returns percent open on mqtt topic.
 
-4. outdoor_light
-    - power_on -- Turn the light on.
-    - power_off -- Turn the light off.
-    - toggle -- Toggle the light on/off.
-    - query_state -- Returns 'is_on'/'is_off' on mqtt topic.
+4. fan_HOA
+    - off -- Turn off the fan, regardless of fan speed slider.
+    - hand -- Enable the fan speed slider.
+    - auto -- Set fan to ignore speed slider and temp sensor control code instead.
+    - query_state -- Returns 'is_off'/'is_hand'/'is_auto' on mqtt topic.
 
 5. indoor_light
     - power_on -- Turn the light on.

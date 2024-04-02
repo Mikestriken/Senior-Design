@@ -221,10 +221,10 @@ section > section {
     column-gap: 2rem;
 
     grid-template-areas: "title title title"
-                         "indoorLightSubTitle stopDoor open"
-                         "indoorLightSlider stopDoor close"
-                         "outdoorLightSubTitle stopDoor fanSubTitle"
-                         "outdoorLightSlider stopDoor fanSlider"
+                         "fanHOASubTitle stopDoor open"
+                         "fanHOASlider stopDoor close"
+                         "fanSubTitle stopDoor indoorLightSubTitle"
+                         "fanSlider stopDoor indoorLightSlider"
                          "indoorTemp indoorTemp powerStatus";
 }
 
@@ -241,9 +241,9 @@ section > section {
 
 #fanSubTitle { grid-area: fanSubTitle; }
 #indoorLightSubTitle { grid-area: indoorLightSubTitle; }
-#outdoorLightSubTitle { grid-area: outdoorLightSubTitle; }
+#fanHOASubTitle { grid-area: fanHOASubTitle; }
 
-#fanSubTitle, #indoorLightSubTitle, #outdoorLightSubTitle { 
+#fanSubTitle, #indoorLightSubTitle, #fanHOASubTitle { 
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -254,7 +254,7 @@ section > section {
 
 #fanSpeedSlider { grid-area: fanSlider;}
 #indoorLightSlider{ grid-area: indoorLightSlider; }
-#outdoorLightSlider{ grid-area: outdoorLightSlider; }
+#fanHOASlider{ grid-area: fanHOASlider; }
 
 #stopDoorButton {
     grid-area: stopDoor;
