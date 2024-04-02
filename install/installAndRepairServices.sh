@@ -204,7 +204,7 @@ if [ "$no_root_services" = false ]; then
     done
 fi
 
-echo "Service files coppied!"
+echo "Service files copied!"
 
 # * Enable the service files
 # Reloading systemctl so that copied files are visible to it
