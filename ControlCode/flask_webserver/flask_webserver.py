@@ -355,7 +355,7 @@ def action(object, action):
             mqtt_connect.publish(fan_HOA_topic, "hand")
         elif action == '2':
             mqtt_connect.publish(fan_HOA_topic, "auto")
-    
+
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
     elif object == "localhost" and action == "reboot":

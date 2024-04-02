@@ -10,4 +10,4 @@ cd "$script_dir"
 cd "../../../"
 
 # Execute the flask webserver
-../venv/bin/python -m operations.weather_main
+../venv/bin/python -B -m operations.weather_main

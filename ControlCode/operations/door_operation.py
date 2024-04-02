@@ -73,14 +73,14 @@ def rssi_eval(rssi_value):
 
 def ultrasonic_operation():
     while True:
-        reading = door_ultrasonic.get_average_distance(5)
-        if reading < 30:
-            if front_door.get_percent_open() < 2:
+        reading = door_ultrasonic.get_average_distance(20)
+        if reading < 35:
+            if front_door.get_percent_open() < 1:
                 door_operation('stop')
                 mqtt_connect.publishAsJSON('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
 
-            if front_door.get_percent_open() > 10:
+            if front_door.get_percent_open() > 60:
                 door_operation('stop')
                 mqtt_connect.publishAsJSON('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')

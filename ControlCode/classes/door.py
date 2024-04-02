@@ -11,6 +11,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import os
 
 GPIO.setwarnings(False)
 
@@ -133,10 +134,12 @@ class Door:
         print("door stopped! Percent Open: " + str(self.percent_open))
 
     def get_percent_open(self):
-        with open('/home/eprispot/Desktop/control_code/ControlCode/classes/data/door_open_percent.txt', "r") as f:
+        script_dir = os.path.dirname(__file__)
+        with open(script_dir + '/data/door_open_percent.txt', "a+") as f:
             self.percent_open = int(f.read())
         return self.percent_open
 
     def write_percent_open(self):
-        with open('/home/eprispot/Desktop/control_code/ControlCode/classes/data/door_open_percent.txt', 'w') as f:
+        script_dir = os.path.dirname(__file__)
+        with open(script_dir + '/data/door_open_percent.txt', 'a+') as f:
             f.write(str(self.percent_open))

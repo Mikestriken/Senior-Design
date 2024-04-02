@@ -15,6 +15,7 @@ class Camera(BaseCamera):
     @staticmethod
     def frames():
         with Picamera2() as camera:
+            camera.configure(camera.create_video_configuration(main={"size": (2300,1290)}))
             camera.start()
 
             # let camera warm up

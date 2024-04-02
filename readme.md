@@ -109,6 +109,7 @@ Airmar 150WX WeatherStation → NMEA 0183 → USB Serial
 9. rssi
     - Sent from the Spot Collar ESP32, negative integer representing wifi rssi
 
-
+10. mode
+    - Sets the HOA 'manual' or 'automatic' for fan, door
 
 
