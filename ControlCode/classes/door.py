@@ -12,6 +12,8 @@
 import RPi.GPIO as GPIO
 import time
 import os
+import fcntl
+import mqtt_connection
 
 GPIO.setwarnings(False)
 
@@ -41,6 +43,8 @@ class Door:
         self.PWMSet = GPIO.PWM(self.ena, pwm)
         self.PWMSet.ChangeDutyCycle(self.duty_cycle)
         self.PWMSet.start(self.duty_cycle)
+
+        self.send_percent_open = mqtt_connect.MQTT_Connection(type='publisher')
 
     def test_funct(self):
         c_scale = [260, 293, 330, 350, 392, 440, 493, 523]
@@ -135,11 +139,18 @@ class Door:
 
     def get_percent_open(self):
         script_dir = os.path.dirname(__file__)
-        with open(script_dir + '/data/door_open_percent.txt', "a+") as f:
+
+        with open(script_dir + '/data/door_open_percent.txt', 'r') as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
             self.percent_open = int(f.read())
+            fcntl.flock(f, fcntl.LOCK_UN)
+
         return self.percent_open
 
     def write_percent_open(self):
+        self.send_percent_open.publish('door', str(self.percent_open))
         script_dir = os.path.dirname(__file__)
-        with open(script_dir + '/data/door_open_percent.txt', 'a+') as f:
+        with open(script_dir + '/data/door_open_percent.txt', 'w') as f:
+            fcntl.flock(f, fcntl.LOCK_EX)
             f.write(str(self.percent_open))
+            fcntl.flock(f, fcntl.LOCK_UN)

@@ -5,7 +5,7 @@
 #
 # to run webserver:  python -B -m flask_webserver.flask_webserver
 ##############################################################################
-
+# Todo: Production Webserver and register on website.
 from classes.data_handler import DataHandler
 from classes.mqtt_connection import MQTT_Connection
 
@@ -352,7 +352,7 @@ def action(object, action):
         if action == '0':
             mqtt_connect.publish(fan_HOA_topic, "off")
         elif action == '1':
-            mqtt_connect.publish(fan_HOA_topic, "hand")
+            mqtt_connect.publish(fan_HOA_topic, "manual")
         elif action == '2':
             mqtt_connect.publish(fan_HOA_topic, "auto")
 
@@ -365,4 +365,4 @@ def action(object, action):
 
 # * ----------------------------------------------------- Host Local Website with Debugging Enabled -----------------------------------------------------
 if __name__ == "__main__":
-    socketio.run(app, host='0.0.0.0', port=80, debug=debugFlag)
+    socketio.run(app, host='0.0.0.0', port=80, debug=debugFlag, allow_unsafe_werkzeug=True)

@@ -52,9 +52,6 @@ def door_collision_isr():
 def on_message_main(self, client, msg):
     # Deserialize JSON data
     #deserialized_data = json.loads(msg.payload)
-    
-    with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
-        f.write(msg.payload.decode("utf-8"))
 
     if msg.topic == 'door_request' or msg.topic == "door":
         door_operation(msg.payload.decode("utf-8"))
