@@ -11,7 +11,7 @@ import cv2
 from .base_camera import BaseCamera
 
 class Camera_outdoor(BaseCamera):
-    video_source = 2
+    video_source = 0
 
     def __init__(self):
         if os.environ.get('OPENCV_CAMERA_SOURCE'):

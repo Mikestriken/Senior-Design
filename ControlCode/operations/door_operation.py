@@ -37,7 +37,7 @@ def door_operation(action):
         exit_event = multiprocessing.Event()
         threads = []
     elif action == 'query_state':
-        mqtt_connect.publish('door', str(front_door.percent_open()))
+        mqtt_connect.publish('door', str(front_door.percent_open))
     else:
         print('Invalid action posted to topic: door' + str(action))
 
@@ -50,9 +50,7 @@ def door_collision_isr():
 # * ------------------------------Mqtt Connection-----------------------------------
 
 def on_message_main(self, client, msg):
-    # Deserialize JSON data
-    #deserialized_data = json.loads(msg.payload)
-
+    
     if msg.topic == 'door_request' or msg.topic == "door":
         door_operation(msg.payload.decode("utf-8"))
                   
@@ -81,10 +79,6 @@ def ultrasonic_operation():
                 door_operation('stop')
                 mqtt_connect.publishAsJSON('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
-
-
-#ultrasonic_thread = threading.Thread(target=ultrasonic_operation, args = (exit_event,))
-#ultrasonic_thread.start()
 
 ultrasonic_operation()
 

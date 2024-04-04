@@ -309,10 +309,17 @@ if cameraCodeFlag:
 
     @app.route('/outdoor_video_feed')
     def outdoor_video_feed():
-        return Response(gen2(outdoor_camera.Camera_outdoor()),
-                        mimetype='multipart/x-mixed-replace; boundary=frame')
-        #return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
+        try:
+            return Response(gen2(outdoor_camera.Camera_outdoor()),
+                            mimetype='multipart/x-mixed-replace; boundary=frame')
+        except:                                                                     #TODO check if this is valid
+            for camera_index in range(0,4):
+                os.environ['OPENCV_CAMERA_SOURCE'] = str(camera_index)
+                try:
+                    return Response(gen2(outdoor_camera.Camera_outdoor()),
+                            mimetype='multipart/x-mixed-replace; boundary=frame')
+                except:
+                    print('Camera index '+ str(camera_index) + ' checked and found not valid.')
                     # Door
 @app.route("/<object>/<action>")
 def action(object, action):
@@ -354,7 +361,7 @@ def action(object, action):
         elif action == '1':
             mqtt_connect.publish(fan_HOA_topic, "manual")
         elif action == '2':
-            mqtt_connect.publish(fan_HOA_topic, "auto")
+            mqtt_connect.publish(fan_HOA_topic, "automatic")
 
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
