@@ -30,5 +30,6 @@ class Indoor_Temp():
     def publish_reading(self):
         temp, humid = self.get_reading()
         data = {'temperature': temp, 'relative_humidity': humid}
-
+        
         self.mqtt_client.publishAsJSON('indoor_weather', data)
+        print(f"Published to \'indoor_weather\':\n{data}")
