@@ -12,13 +12,13 @@ MANUAL_MODE = False
 def on_message_mode(self, client, msg):
         global MANUAL_MODE
 
-        if msg.topic == 'mode':
+        if msg.topic == 'fan_HOA':
             if msg.payload.decode("utf-8") == 'manual':
                 MANUAL_MODE = True
             elif msg.payload.decode("utf-8") == 'automatic':
                 MANUAL_MODE = False
 
-mode_listener = MQTT_Connection(type='subscriber', topics=['mode'], on_message=on_message_mode)
+mode_listener = MQTT_Connection(type='subscriber', topics=['fan_HOA'], on_message=on_message_mode)
 
 while(1):
     temp, humid = indoor_temp_shtc3.get_reading()
@@ -31,4 +31,4 @@ while(1):
         elif temp < OFF_TEMP:
             indoor_temp_shtc3.mqtt_client.publish('fan', 'stop')
 
-    indoor_temp_shtc3.publish_reading(temp, humid)
+    indoor_temp_shtc3.publish_reading()
