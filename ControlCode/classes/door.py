@@ -160,7 +160,7 @@ class Door:
         return self.percent_open
 
     def write_percent_open(self):
-        self.send_percent_open.publish('door', str(self.percent_open))
+        self.send_percent_open.publish('door', "this is a test") #TODO debug this, not printing out, on different thread?
         script_dir = os.path.dirname(__file__)
         with open(script_dir + '/data/door_open_percent.txt', 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
