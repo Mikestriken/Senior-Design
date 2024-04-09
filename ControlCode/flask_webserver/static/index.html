@@ -58,8 +58,8 @@
             <section id="camera">
                 <h1>Video Feeds</h1>
                 
-                <button class="input button" id="externalCameraButton" onclick="location.href='/outdoor_video_feed';">External Camera</button>
-                <button class="input button" id="internalCameraButton" onclick="location.href='/indoor_video_feed';">Internal Camera</button>
+                <button class="input button" id="externalCameraButton">External Camera</button>
+                <button class="input button" id="internalCameraButton">Internal Camera</button>
             </section>
         </section>
 
@@ -223,5 +223,13 @@
             </section>
         </section>
     </main>
+    <section id="popup">
+        <article id="popupContent">
+            <button id="popupCloseButton">&times;</button>
+            <article id="cameraStreamContainer">
+                <!-- <img id="cameraStream" src="" alt="Indoor Camera Stream"> -->
+            </article>
+        </article>
+    </section>
 </body>
 </html>
