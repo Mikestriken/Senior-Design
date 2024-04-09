@@ -248,8 +248,8 @@ def background_thread():
     updated = False
     
     while True:
-        # * Set updated flag if everything in the updatedList is True
         if not updated:
+        # * Set updated flag if everything in the updatedList is True
             if all(updatedList):
                 updated = True
                 
