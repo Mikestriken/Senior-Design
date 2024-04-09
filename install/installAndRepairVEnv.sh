@@ -9,7 +9,7 @@ cd "$script_dir"
 
 # List of modules to install
 # Note: if package is raspberry specific, add it to raspberryPackages... Otherwise, just add it to packages.
-packages=("Flask" "flask-socketio" "greenlet" "paho-mqtt")
+packages=("Flask" "flask-socketio" "greenlet" "paho-mqtt" "pyserial")
 raspberryPackages=("pyserial" "RPi.GPIO" "rpi-libcamera" "rpi-kms" "picamera2" "opencv-python" "board" "adafruit-circuitpython-shtc3")
 
 # Specify the directory for the virtual environment

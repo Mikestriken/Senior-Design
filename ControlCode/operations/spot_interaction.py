@@ -20,6 +20,8 @@ except:
 Spot_API_Connect_Flag = 0
 Ultrasonic_Close_Door_Flag = 1
 
+# * ---------------------------Spot API Connection-------------------------------
+
 def robot_setup():
     global Spot_API_Connect_Flag 
 
@@ -38,15 +40,14 @@ def robot_setup():
 def spot_rssi_operation(rssi):
     rssi = int(rssi)
     if rssi < -40:                                      #TODO callibrate this number
-        mqtt_connect.publishAsJSON('door', 'open')
+        mqtt_connect.publish('door', 'open')
     elif Spot_API_Connect_Flag:
         state = robot_state_client.get_robot_state()
         if (state.battery_states[0].current.value < 0): # pos - charging, neg - not
-            mqtt_connect.publishAsJSON('door', 'close')
+            mqtt_connect.publish('door', 'close')
     elif Ultrasonic_Close_Door_Flag:
-        mqtt_connect.publishAsJSON('door', 'close')
+        mqtt_connect.publish('door', 'close')
 
-    
 
 def on_message_main(msg):
         # Deserialize JSON data
@@ -63,20 +64,28 @@ try:
 except:
     print("Spot robot not connected. Continuing with non-connected protocol...")
 
+# * ------------------------------RSSI Connection-----------------------------------
 
+
+
+def rssi_eval(rssi_value):
+    if rssi_value < -80:                        #TODO callibrate these numbers
+        mqtt_connect.publish('door', 'open')
+    elif rssi_value > -60:
+        mqtt_connect.publish('door', 'close')
 
 def on_message_rssi(self, client, msg):
         # Deserialize JSON data
         #deserialized_data = json.loads(msg.payload)
         
-        with open('/home/eprispot/Desktop/readme.txt', 'w') as f:
+        with open('/home/eprispot/Desktop/readme.txt', 'w') as f: #DEBUGGING
             f.write(msg.payload.decode("utf-8"))
 
         if msg.topic == 'rssi':
             print(msg.payload)
             rssi_eval(int(msg.payload))
 
-rssi_mqtt = mqtt_connection.MQTT_Connection(type='both', topics = ['rssi'], on_message=on_message_rssi, broker_address = "10.143.204.58")
+rssi_mqtt = mqtt_connection.MQTT_Connection(type='both')
 
 
 while True:
