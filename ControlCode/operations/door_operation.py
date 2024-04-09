@@ -2,10 +2,10 @@ import multiprocessing
 import json
 import sys
 
-from classes import ultrasonic, door, limit_switch, mqtt_connection
+from classes import ultrasonic, door, limit_switch, mqtt_connection, motor_current
 
-#import RPi.GPIO as GPIO # or gpio setup
-#GPIO.setwarnings(False)
+import RPi.GPIO as GPIO # or gpio setup
+GPIO.setwarnings(False)
 
 # * ------------------------------Door Operation-----------------------------------
 
@@ -56,13 +56,11 @@ def on_message_main(self, client, msg):
                   
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request'], on_message=on_message_main)
 
+# * ------------------------------Motor Current-----------------------------------
+def isr():
+    door_operation('stop')
 
-def rssi_eval(rssi_value):
-    if rssi_value < -80:
-        door_operation('open')
-    elif rssi_value > -60:
-        door_operation('close')
-
+current_detect = motor_current.MotorCurrent(isr=isr)
 
 # * ------------------------------Ultrasonic-----------------------------------
 
@@ -72,7 +70,7 @@ def ultrasonic_operation():
         if reading < 35:
             if front_door.get_percent_open() < 1:
                 door_operation('stop')
-                mqtt_connect.publishAsJSON('alert', 'Object Blocking Door')
+                mqtt_connect.publish('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
 
             if front_door.get_percent_open() > 60:

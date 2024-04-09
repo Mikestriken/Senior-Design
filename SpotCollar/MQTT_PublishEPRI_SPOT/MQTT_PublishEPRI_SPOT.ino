@@ -15,7 +15,7 @@ const char* wifi_password = "";
 
 // MQTT
 // Make sure to update this for your own MQTT Broker!
-const char* mqtt_server = "10.143.204.58";
+char* mqtt_server = "10.143.204.58"; // IP of Raspberry Pi, default
 const char* mqtt_topic = "rssi";
 // The client id identifies the ESP8266 device. Think of it a bit like a hostname (Or just a name, like Greg).
 const char* clientID = "SpotCollar";
@@ -34,6 +34,18 @@ void setup() {
   // Remember to choose the correct Baudrate on the Serial monitor!
   // This is just for debugging purposes
   Serial.begin(115200);
+
+  for(int i; i <10; i++){
+    if (Serial.available()) {
+        int bytesRead = Serial.readBytesUntil('\n', data, MAX_DATA_LEN - 1); // Read until newline or until buffer is full
+        data[bytesRead] = '\0'; // Null-terminate the string
+        Serial.print("Received: ");
+        Serial.println(data);
+
+        mqtt_server = data
+        break;
+      }
+  }
 
   Serial.print("Connecting to ");
   Serial.println(ssid);
