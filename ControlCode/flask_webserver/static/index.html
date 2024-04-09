@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
 
     <script src="{{ url_for('static', filename='doorButtons.js') }}" type="module" defer></script>
+    <script src="{{ url_for('static', filename='cameraButtons.js') }}" defer></script>
     <script src="{{ url_for('static', filename='batteryGraphic.js') }}" defer></script>
     <script src="{{ url_for('static', filename='serverSentEventHandler.js') }}" defer></script>
     <script src="{{ url_for('static', filename='weather.js') }}" defer></script>
@@ -58,8 +59,8 @@
             <section id="camera">
                 <h1>Video Feeds</h1>
                 
-                <button class="input button" id="externalCameraButton" onclick="location.href='/outdoor_video_feed';">External Camera</button>
-                <button class="input button" id="internalCameraButton" onclick="location.href='/indoor_video_feed';">Internal Camera</button>
+                <button class="input button" id="externalCameraButton">External Camera</button>
+                <button class="input button" id="internalCameraButton">Internal Camera</button>
             </section>
         </section>
 
@@ -223,5 +224,13 @@
             </section>
         </section>
     </main>
+    <section id="popup">
+        <article id="popupContent">
+            <button id="popupCloseButton">&times;</button>
+            <article id="cameraStreamContainer">
+                <img id="cameraStream" src="" alt="Camera Stream Displayed Here">
+            </article>
+        </article>
+    </section>
 </body>
 </html>
