@@ -22,7 +22,7 @@
       const data = msg;
   
       // * wind
-      windSpeedOutput.innerHTML = data.wind.speed;
+      windSpeedOutput.innerHTML = data.wind.speed.toFixed(1);
       
       let direction = data.wind.trueDirection
           if (direction >= -22.5 && direction <= 22.5) { // North
@@ -68,11 +68,11 @@
           
     
         // * meteorological
-          pressureOutputHG.innerHTML = data.meteorological.pressureMercury;
+          pressureOutputHG.innerHTML = data.meteorological.pressureMercury.toFixed(1);
           pressureOutputBar.innerHTML = data.meteorological.pressureBars;
-          externalTemperatureOutput.innerHTML = data.meteorological.temperature;
-          humidityOutput.innerHTML = data.meteorological.humidity;
-          dewPointOutput.innerHTML = data.meteorological.dewPoint;
+          externalTemperatureOutput.innerHTML = data.meteorological.temperature.toFixed(1);
+          humidityOutput.innerHTML = data.meteorological.humidity.toFixed(1);
+          dewPointOutput.innerHTML = data.meteorological.dewPoint.toFixed(1);
 
         });
 
@@ -81,6 +81,6 @@
           // console.log(msg);
           const data = msg;
 
-          internalTemperatureOutput.innerHTML = data.temperature;
+          internalTemperatureOutput.innerHTML = data.temperature.toFixed(1);
         });
   }

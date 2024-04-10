@@ -11,7 +11,7 @@ def get_ip_address():
 def send_data(data):
     global SEND_SUCCESS
     try:
-        ser = serial.Serial('/dev/ttyUSB0', 115200)  # TODO Replace '/dev/ttyUSB0' with Arduino's serial port
+        ser = serial.Serial('/dev/ttyUSB1', 115200)  # TODO Replace '/dev/ttyUSB0' with Arduino's serial port
         if ser.isOpen():
             print("Serial connection established.")
             ser.write(data.encode())  # Convert string to bytes and send it
