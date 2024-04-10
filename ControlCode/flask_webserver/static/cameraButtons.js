@@ -26,7 +26,7 @@
         // Update outdoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/outdoor_video_feed");
-        }, 1000); // Update every second
+        }, 1); // Update every second
     }
     
     function internalCameraButtonReleasedEventHandler() {
@@ -35,7 +35,7 @@
         // Update indoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/indoor_video_feed");
-        }, 1000); // Update every second
+        }, 1); // Update every second
     }
     
     function popupCloseButtonReleasedEventHandler() {

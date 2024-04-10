@@ -39,7 +39,7 @@ def door_operation(action):
     elif action == 'query_state':
         mqtt_connect.publish('door', str(front_door.percent_open))
     else:
-        print('Invalid action posted to topic: door' + str(action))
+        print('Invalid action posted to topic: door ' + str(action))
 
 def door_collision_isr():
         door_operation('stop')

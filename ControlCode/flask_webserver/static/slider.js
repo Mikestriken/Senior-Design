@@ -16,7 +16,6 @@ import { fetchURL } from './modules.js';
     const fanHOASlider = document.querySelector('#fanHOASlider [type="range"]');
     const fanPopOut = document.querySelector('#fanPopOut');
 
-
     function updateRangeValue(numberOfStates, rangeSliderElement, popOutElement) {
 
         let rangePercent;
@@ -94,6 +93,12 @@ import { fetchURL } from './modules.js';
         popOutElement.style.left = `${rangePercent}%`;
     }
 
+    updateHOAValue(fanHOASlider, fanHOAPopOut);
+    updateRangeValue(2, indoorLightSlider, indoorLightPopOut);
+    updateRangeValue(3, fanSlider, fanPopOut);
+
+
+
     socket.on(socketTopicFanHOA, function (msg) {
         // * Convert JSON text → JavaScript Object
         // console.log(msg);
@@ -102,8 +107,11 @@ import { fetchURL } from './modules.js';
             case "is_off":
                 fanHOASlider.value = 0;
                 break;
-            case "is_on":
+            case "is_hand":
                 fanHOASlider.value = 1;
+                break;
+            case "is_auto":
+                fanHOASlider.value = 2;
                 break;
         }
         
