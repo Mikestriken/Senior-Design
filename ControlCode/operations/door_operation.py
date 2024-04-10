@@ -64,8 +64,9 @@ current_detect = motor_current.MotorCurrent(isr=isr)
 
 # * ------------------------------Ultrasonic-----------------------------------
 
-def ultrasonic_operation():
+def operation_loop():
     while True:
+        mqtt_connect.publish('door', 'query_state')
         reading = door_ultrasonic.get_average_distance(20)
         if reading < 35:
             if front_door.get_percent_open() < 1:
@@ -75,8 +76,8 @@ def ultrasonic_operation():
 
             if front_door.get_percent_open() > 60:
                 door_operation('stop')
-                mqtt_connect.publishAsJSON('alert', 'Object Blocking Door')
+                mqtt_connect.publish('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
 
-ultrasonic_operation()
+operation_loop()
 
