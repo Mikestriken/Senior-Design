@@ -2,7 +2,7 @@
 {
     // * Create socket
     let socket = io.connect();
-    let socketTopic = "camera_state";
+    // let socketTopic = "camera_state";
     
     // * JS Code for Buttons
     // * Get button objects and assign them to aliases
@@ -19,27 +19,48 @@
     function updateImageSource(imgElement, endpoint) {
         imgElement.src = endpoint + "?" + new Date().getTime(); // Append a timestamp to force image reload
     }
+    /* socket.on('frame', function(data) {
+        // let image = new Blob([data.image], {type: 'image/jpeg'});
+        // let imageUrl = URL.createObjectURL(image);
+        // cameraStream.src = imageUrl;
+
+        // Convert ArrayBuffer to Uint8Array
+        // let uint8Array = new Uint8Array(data.frame);
+
+        // Convert Uint8Array to base64 string
+        // let base64String = btoa(String.fromCharCode.apply(null, uint8Array));
+        
+        // cameraStream.src = "data:image/jpeg;base64," + data.frame;
+
+        var blob = new Blob([data.frame], { type: 'image/jpeg' });
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL(blob);
+        cameraStream.src = imageUrl;
+    }); */
 
     function externalCameraButtonReleasedEventHandler() {
         popup.style.display = "flex";
-
+        // socket.emit('switch_to_outdoor');
+        
         // Update outdoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/outdoor_video_feed");
-        }, 1); // Update every second
+        }, 0); // Update every second
     }
     
     function internalCameraButtonReleasedEventHandler() {
         popup.style.display = "flex";
+        // socket.emit('switch_to_indoor');
         
         // Update indoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/indoor_video_feed");
-        }, 1); // Update every second
+        }, 0); // Update every second
     }
     
     function popupCloseButtonReleasedEventHandler() {
         popup.style.display = "none";
+        // socket.emit('switch_to_none');
         
         clearInterval(updateInterval);
     }

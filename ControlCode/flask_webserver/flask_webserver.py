@@ -278,7 +278,6 @@ def connect():
     global socket_thread
     print('Client connected')
 
-    global socket_thread
     with socket_thread_lock:
         if socket_thread is None:
             socket_thread = socketio.start_background_task(background_thread)
@@ -290,6 +289,61 @@ def disconnect():
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
 if cameraCodeFlag:
+    """ import base64
+    socket_indoor_camera_thread = None
+    socket_indoor_camera_thread_lock = threading.Lock()
+    socket_outdoor_camera_thread = None
+    socket_outdoor_camera_thread_lock = threading.Lock()
+
+    indoor_feed_active = False
+    outdoor_feed_active = False
+
+    # def gen_indoor(camera):
+    #     while indoor_feed_active:
+    #         frame = camera.get_frame()
+    #         socketio.emit('indoor_frame', {'frame': frame})
+
+    # def gen_outdoor(camera):
+    #     while outdoor_feed_active:
+    #         frame = camera.get_frame()
+    #         socketio.emit('outdoor_frame', {'frame': frame})
+
+    def gen_frame(camera):
+        while outdoor_feed_active:
+            frame = camera.get_frame()
+            encoded_frame = base64.b64encode(frame).decode('utf-8')
+            socketio.emit('frame', {'frame': encoded_frame})
+    
+    @socketio.on('switch_to_indoor')
+    def switch_to_indoor():
+        print("Switching to indoor...")
+        global indoor_feed_active, outdoor_feed_active, socket_indoor_camera_thread
+        indoor_feed_active = True
+        outdoor_feed_active = False
+        
+        with socket_indoor_camera_thread_lock:
+            if socket_indoor_camera_thread is None:
+                socket_indoor_camera_thread = socketio.start_background_task(target=gen_frame, camera=indoor_camera.Camera())
+
+    @socketio.on('switch_to_outdoor')
+    def switch_to_outdoor():
+        print("Switching to outdoor...")
+        global indoor_feed_active, outdoor_feed_active, socket_outdoor_camera_thread
+        indoor_feed_active = False
+        outdoor_feed_active = True
+        
+        
+        with socket_outdoor_camera_thread_lock:
+            if socket_outdoor_camera_thread is None:
+                socket_outdoor_camera_thread = socketio.start_background_task(target=gen_frame, camera=outdoor_camera.Camera_outdoor())
+
+    @socketio.on('switch_to_none')
+    def switch_to_none():
+        print("Switching to none...")
+        global indoor_feed_active, outdoor_feed_active
+        indoor_feed_active = False
+        outdoor_feed_active = False """
+    
     def gen(camera):
         while True:
             frame = indoor_camera.Camera().get_frame()
@@ -320,6 +374,10 @@ if cameraCodeFlag:
                             mimetype='multipart/x-mixed-replace; boundary=frame')
                 except:
                     print('Camera index '+ str(camera_index) + ' checked and found not valid.')
+    
+    
+    
+    
                     # Door
 @app.route("/<object>/<action>")
 def action(object, action):
