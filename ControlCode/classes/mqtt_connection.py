@@ -108,6 +108,7 @@ class MQTT_Connection():
     def publish(self, topic, data):
         # Publish the data
         self.client.publish(topic, data)
+        print(f"Sent to {topic}:\n{data}")
 
     # * MQTT_Connection Destructor
     def __del__(self):

@@ -18,7 +18,7 @@ from classes.mqtt_connection import MQTT_Connection
 GPIO.setwarnings(False)
 
 class Door:
-    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60):
+    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60, mqtt_connect=MQTT_Connection(type='publisher')):
         try:
             self.percent_open = self.get_percent_open()
         except:
@@ -44,7 +44,7 @@ class Door:
         self.PWMSet.ChangeDutyCycle(self.duty_cycle)
         self.PWMSet.start(self.duty_cycle)
 
-        self.send_percent_open = MQTT_Connection(type='publisher')
+        self.send_percent_open = mqtt_connect
 
     def test_funct(self):
         c_scale = [260, 293, 330, 350, 392, 440, 493, 523]
@@ -55,7 +55,7 @@ class Door:
             self.PWMSet.ChangeFrequency(i)
             print("Changing Frequency to: "+ str(i))
             time.sleep(2)
-
+            
     def open_door(self):
 
         self.stop_door()
@@ -64,8 +64,8 @@ class Door:
         self.percent_open = self.get_percent_open()
 
         # Set IN1 -> 1, IN2 -> 0
-        GPIO.output(self.in1, True)
         GPIO.output(self.in2, False)
+        GPIO.output(self.in1, True)
 
         while(self.percent_open < 100):
             time.sleep(0.22)
@@ -100,9 +100,8 @@ class Door:
         time.sleep(1)
 
     def open_door_multithreading(self, exit_event):
-
         self.stop_door()
-
+        
         print("opening...")
         self.percent_open = self.get_percent_open()
 
@@ -123,8 +122,9 @@ class Door:
         time.sleep(1)
 
     def close_door_multithreading(self, exit_event):
-
         self.stop_door()
+        
+        
 
         print("closing...")
         self.percent_open = self.get_percent_open()
@@ -160,7 +160,7 @@ class Door:
         return self.percent_open
 
     def write_percent_open(self):
-        self.send_percent_open.publish('door', "this is a test") #TODO debug this, not printing out, on different thread?
+        MQTT_Connection(type='publisher').publish('door', str(self.percent_open)) #TODO debug this, not printing out, on different thread?
         script_dir = os.path.dirname(__file__)
         with open(script_dir + '/data/door_open_percent.txt', 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
