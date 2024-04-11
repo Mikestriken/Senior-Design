@@ -138,7 +138,7 @@ class Door:
             self.percent_open -= 1
             self.write_percent_open()
 
-        # Break and wait, IN1 -> 0, IN2 -> 0 ;)
+        # Break and wait, IN1 -> 0, IN2 -> 0 ;) edit 2
         GPIO.output(self.in2, False)
         if not exit_event.is_set():
             print('closed')
