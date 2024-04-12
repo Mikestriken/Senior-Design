@@ -13,7 +13,6 @@ import RPi.GPIO as GPIO
 import time
 import os
 import fcntl
-from classes.mqtt_connection import MQTT_Connection
 
 GPIO.setwarnings(False)
 
@@ -43,8 +42,6 @@ class Door:
         self.PWMSet = GPIO.PWM(self.ena, pwm)
         self.PWMSet.ChangeDutyCycle(self.duty_cycle)
         self.PWMSet.start(self.duty_cycle)
-
-        self.send_percent_open = mqtt_connect
 
     def test_funct(self):
         c_scale = [260, 293, 330, 350, 392, 440, 493, 523]
@@ -99,7 +96,8 @@ class Door:
         print('closed')
         time.sleep(1)
 
-    def open_door_multithreading(self, exit_event):
+    def open_door_multithreading(self, exit_event, percent_publisher):
+
         self.stop_door()
         
         print("opening...")
@@ -113,6 +111,7 @@ class Door:
             time.sleep(0.22)
             self.percent_open += 1
             self.write_percent_open()
+            percent_publisher.publish('door', str(self.percent_open))
 
         
         # Break and wait, IN1 -> 0, IN2 -> 0
@@ -121,10 +120,9 @@ class Door:
             print('opened')
         time.sleep(1)
 
-    def close_door_multithreading(self, exit_event):
+    def close_door_multithreading(self, exit_event, percent_publisher):
+
         self.stop_door()
-        
-        
 
         print("closing...")
         self.percent_open = self.get_percent_open()
@@ -137,6 +135,7 @@ class Door:
             time.sleep(0.25)
             self.percent_open -= 1
             self.write_percent_open()
+            percent_publisher.publish('door', str(self.percent_open))
 
         # Break and wait, IN1 -> 0, IN2 -> 0
         GPIO.output(self.in2, False)
@@ -160,7 +159,7 @@ class Door:
         return self.percent_open
 
     def write_percent_open(self):
-        MQTT_Connection(type='publisher').publish('door', str(self.percent_open)) #TODO debug this, not printing out, on different thread?
+        #self.send_percent_open.publish('door', "this is a test") #TODO debug this, not printing out, on different thread?
         script_dir = os.path.dirname(__file__)
         with open(script_dir + '/data/door_open_percent.txt', 'w') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
