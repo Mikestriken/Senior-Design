@@ -30,8 +30,6 @@ Physical address (MAC):	F4-CE-23-FC-CC-09
 const char* ssid = "Joelle"; // your ssid
 const char* password = "test1234";
 
-
-
 // MQTT
 // Make sure to update this for your own MQTT Broker!
 char* mqtt_server = "192.168.0.142"; // IP of Raspberry Pi, default

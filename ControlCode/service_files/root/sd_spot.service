@@ -1,0 +1,12 @@
+[Unit]
+Description=Automatically start spot interaction control code on startup
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=$gitRepoDir/ControlCode/bash_scripts/linked_service_scripts/root/service_spot.sh
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
