@@ -9,6 +9,8 @@ GPIO.setwarnings(False)
 
 # * ------------------------------Door Operation-----------------------------------
 
+percent_publisher = mqtt_connection.MQTT_Connection(type='publisher')
+
 front_door = door.Door()
 door_ultrasonic = ultrasonic.Ultrasonic() # y axis detect
 
@@ -19,11 +21,11 @@ def door_operation(action):
     global exit_event
     global threads
     if action == 'open':
-        open_thread = multiprocessing.Process(target=front_door.open_door_multithreading, args=(exit_event,))
+        open_thread = multiprocessing.Process(target=front_door.open_door_multithreading, args=(exit_event, percent_publisher))
         open_thread.start()
         threads.append(open_thread)
     elif action == 'close':
-        close_thread = multiprocessing.Process(target=front_door.close_door_multithreading, args=(exit_event,))
+        close_thread = multiprocessing.Process(target=front_door.close_door_multithreading, args=(exit_event, percent_publisher))
         close_thread.start()
         threads.append(close_thread)
     elif action == 'stop':
