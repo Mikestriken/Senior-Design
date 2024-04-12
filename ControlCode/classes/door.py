@@ -17,7 +17,7 @@ import fcntl
 GPIO.setwarnings(False)
 
 class Door:
-    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60):
+    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60, mqtt_connect=MQTT_Connection(type='publisher')):
         try:
             self.percent_open = self.get_percent_open()
         except:
@@ -52,7 +52,7 @@ class Door:
             self.PWMSet.ChangeFrequency(i)
             print("Changing Frequency to: "+ str(i))
             time.sleep(2)
-
+            
     def open_door(self):
 
         self.stop_door()
@@ -61,8 +61,8 @@ class Door:
         self.percent_open = self.get_percent_open()
 
         # Set IN1 -> 1, IN2 -> 0
-        GPIO.output(self.in1, True)
         GPIO.output(self.in2, False)
+        GPIO.output(self.in1, True)
 
         while(self.percent_open < 100):
             time.sleep(0.22)
@@ -99,7 +99,7 @@ class Door:
     def open_door_multithreading(self, exit_event, percent_publisher):
 
         self.stop_door()
-
+        
         print("opening...")
         self.percent_open = self.get_percent_open()
 

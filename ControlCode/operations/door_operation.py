@@ -8,10 +8,9 @@ import RPi.GPIO as GPIO # or gpio setup
 GPIO.setwarnings(False)
 
 # * ------------------------------Door Operation-----------------------------------
+door_percent_publisher = mqtt_connection.MQTT_Connection("publisher")
 
-percent_publisher = mqtt_connection.MQTT_Connection(type='publisher')
-
-front_door = door.Door()
+front_door = door.Door(mqtt_connect=door_percent_publisher)
 door_ultrasonic = ultrasonic.Ultrasonic() # y axis detect
 
 threads = []
@@ -39,7 +38,7 @@ def door_operation(action):
         exit_event = multiprocessing.Event()
         threads = []
     elif action == 'query_state':
-        mqtt_connect.publish('door', str(front_door.percent_open))
+        mqtt_connect.publish("door", str(front_door.percent_open))
     else:
         print('Invalid action posted to topic: door ' + str(action))
 
@@ -69,6 +68,7 @@ current_detect = motor_current.MotorCurrent(isr=isr)
 def operation_loop():
     while True:
         mqtt_connect.publish('door', 'query_state')
+        print('HI')
         reading = door_ultrasonic.get_average_distance(20)
         if reading < 35:
             if front_door.get_percent_open() < 1:
