@@ -8,9 +8,9 @@ import RPi.GPIO as GPIO # or gpio setup
 GPIO.setwarnings(False)
 
 # * ------------------------------Door Operation-----------------------------------
-door_percent_publisher = mqtt_connection.MQTT_Connection("publisher")
+percent_publisher = mqtt_connection.MQTT_Connection("publisher")
 
-front_door = door.Door(mqtt_connect=door_percent_publisher)
+front_door = door.Door()
 door_ultrasonic = ultrasonic.Ultrasonic() # y axis detect
 
 threads = []
@@ -20,10 +20,14 @@ def door_operation(action):
     global exit_event
     global threads
     if action == 'open':
+        door_operation('stop')
+
         open_thread = multiprocessing.Process(target=front_door.open_door_multithreading, args=(exit_event, percent_publisher))
         open_thread.start()
         threads.append(open_thread)
     elif action == 'close':
+        door_operation('stop') 
+
         close_thread = multiprocessing.Process(target=front_door.close_door_multithreading, args=(exit_event, percent_publisher))
         close_thread.start()
         threads.append(close_thread)
@@ -67,18 +71,16 @@ current_detect = motor_current.MotorCurrent(isr=isr)
 
 def operation_loop():
     while True:
-        mqtt_connect.publish('door', 'query_state')
-        print('HI')
         reading = door_ultrasonic.get_average_distance(20)
         if reading < 35:
             if front_door.get_percent_open() < 1:
-                door_operation('stop')
-                mqtt_connect.publish('alert', 'Object Blocking Door')
+                #door_operation('stop')
+                #mqtt_connect.publish('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
 
             if front_door.get_percent_open() > 60:
-                door_operation('stop')
-                mqtt_connect.publish('alert', 'Object Blocking Door')
+                #door_operation('stop')
+                #mqtt_connect.publish('alert', 'Object Blocking Door')
                 print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
 
 operation_loop()

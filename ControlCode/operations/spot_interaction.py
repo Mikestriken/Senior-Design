@@ -43,22 +43,26 @@ except:
     print("Spot robot not connected. Continuing with non-connected protocol...")
 
 # * ------------------------------RSSI Connection-----------------------------------
-
-last_rssi_state = "approaching"
+rssi_publisher = mqtt_connection.MQTT_Connection('publisher')
+last_rssi_state = ""
 
 def rssi_eval(rssi_value):
     global last_rssi_state
     if rssi_value > -50 and last_rssi_state == "leaving": #TODO callibrate these numbers                        
-        mqtt_connect.publish('door', 'open')
-        time.sleep(60)
-    elif rssi_value < -80 and last_rssi_state == "approaching":
-        mqtt_connect.publish('door', 'close')
-        time.sleep(60)
+        rssi_publisher.publish('door', 'open')
+        print("attempting door open")
+        last_rssi_state = "approaching"
+        time.sleep(10)
+    elif rssi_value < -70 and last_rssi_state == "approaching":
+        rssi_publisher.publish('door', 'close')
+        print("attempting door close")
+        last_rssi_state = "leaving"
+        time.sleep(1)
 
 def on_message_rssi(self, client, msg):
     if msg.topic == 'rssi':
-        print(msg.payload)
-        rssi_eval(int(msg.payload))
+        print(msg.payload.decode("utf-8"))
+        rssi_eval(int(msg.payload.decode("utf-8")))
 
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['rssi'], on_message=on_message_rssi)
 
@@ -72,9 +76,11 @@ while True:
 
         if state.battery_states[0].current.value > 0 and last_state == "not_charging":   # pos - charging, neg - not
             mqtt_connect.publish('door', 'close')
+            print("attempting door close")
             last_state = "charging"
         elif state.battery_states[0].current.value <= 0 and last_state == "charging":
             mqtt_connect.publish('door', 'open')
+            print("attempting door open")
             last_state = "not_charging"
 
 

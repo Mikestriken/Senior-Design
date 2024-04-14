@@ -36,6 +36,13 @@ class Camera_outdoor(BaseCamera):
             _, img = camera.read()
 
             # encode as a jpeg image and return it
-            #try:
-            yield cv2.imencode('.jpg', img)[1].tobytes()
             
+            yield cv2.imencode('.jpg', img)[1].tobytes()
+                                                                    #TODO check if this is valid
+                
+            """ for camera_index in range(0,4):
+                    os.environ['OPENCV_CAMERA_SOURCE'] = str(camera_index)
+                    try:
+                        yield cv2.imencode('.jpg', img)[1].tobytes()
+                    except:
+                        print('Camera index '+ str(camera_index) + ' checked and found not valid.') """

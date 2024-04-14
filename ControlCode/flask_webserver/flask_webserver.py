@@ -363,21 +363,10 @@ if cameraCodeFlag:
 
     @app.route('/outdoor_video_feed')
     def outdoor_video_feed():
-        try:
-            return Response(gen2(outdoor_camera.Camera_outdoor()),
-                            mimetype='multipart/x-mixed-replace; boundary=frame')
-        except:                                                                     #TODO check if this is valid
-            for camera_index in range(0,4):
-                os.environ['OPENCV_CAMERA_SOURCE'] = str(camera_index)
-                try:
-                    return Response(gen2(outdoor_camera.Camera_outdoor()),
-                            mimetype='multipart/x-mixed-replace; boundary=frame')
-                except:
-                    print('Camera index '+ str(camera_index) + ' checked and found not valid.')
-    
-    
-    
-    
+        return Response(gen2(outdoor_camera.Camera_outdoor()),
+                        mimetype='multipart/x-mixed-replace; boundary=frame')
+        
+
                     # Door
 @app.route("/<object>/<action>")
 def action(object, action):
