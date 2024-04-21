@@ -55,6 +55,7 @@
             </section>
         </section>
 
+        {% if not request.remote_addr == "127.0.0.1" %}
         <section id="cameraContainer">
             <section id="camera">
                 <h1>Video Feeds</h1>
@@ -63,6 +64,7 @@
                 <button class="input button" id="internalCameraButton">Internal Camera</button>
             </section>
         </section>
+        {% endif %}
 
         <section id="weatherStationContainer">
             <section id="weatherStation">
