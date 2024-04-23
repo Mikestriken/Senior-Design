@@ -68,7 +68,6 @@ current_detect = motor_current.MotorCurrent(isr=isr)
 def operation_loop():
     while True:
         mqtt_connect.publish('door', 'query_state')
-        print('HI')
         reading = door_ultrasonic.get_average_distance(20)
         if reading < 35:
             if front_door.get_percent_open() < 1:
