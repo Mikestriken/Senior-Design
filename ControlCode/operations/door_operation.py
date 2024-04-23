@@ -47,25 +47,25 @@ def door_operation(action):
         print('Invalid action posted to topic: door ' + str(action))
 
 def door_collision_isr():
-        door_operation('stop')
-        print("collision detected")
+    door_operation('stop')
+    print("collision detected")
 
 #door_limit_switch = limit_switch.LimitSwitch(limit_isr=door_collision_isr)
 
 # * ------------------------------Mqtt Connection-----------------------------------
 
 def on_message_main(self, client, msg):
-    
     if msg.topic == 'door_request' or msg.topic == "door":
         door_operation(msg.payload.decode("utf-8"))
                   
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request'], on_message=on_message_main)
 
 # * ------------------------------Motor Current-----------------------------------
-def isr():
+def current_isr():
+    print("isr called - current")
     door_operation('stop')
 
-current_detect = motor_current.MotorCurrent(isr=isr)
+current_detect = motor_current.MotorCurrent(isr=current_isr)
 
 # * ------------------------------Ultrasonic-----------------------------------
 

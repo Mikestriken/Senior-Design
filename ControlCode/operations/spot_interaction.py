@@ -48,12 +48,18 @@ last_rssi_state = ""
 
 def rssi_eval(rssi_value):
     global last_rssi_state
-    if rssi_value > -50 and last_rssi_state == "leaving": #TODO callibrate these numbers                        
+    if rssi_value > -17 and last_rssi_state == "approaching":
+        time.sleep(10)
+        rssi_publisher.publish('door', 'close')
+        rssi_publisher.publish('door', "attempting door close - robot inside")
+        print("attempting door close - robot inside")
+        last_rssi_state = "inside" 
+    elif rssi_value > -55 and last_rssi_state != "approaching" and last_rssi_state != "inside": #TODO callibrate these numbers                        
         rssi_publisher.publish('door', 'open')
         print("attempting door open")
         last_rssi_state = "approaching"
         time.sleep(10)
-    elif rssi_value < -70 and last_rssi_state == "approaching":
+    elif rssi_value < -70 and last_rssi_state != "leaving":
         rssi_publisher.publish('door', 'close')
         print("attempting door close")
         last_rssi_state = "leaving"

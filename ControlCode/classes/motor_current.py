@@ -14,5 +14,5 @@ class MotorCurrent:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin_number, GPIO.IN)
 
-        GPIO.add_event_detect(self.pin_number, GPIO.FALLING,
+        GPIO.add_event_detect(self.pin_number, GPIO.RISING,
             callback=isr, bouncetime=300)
