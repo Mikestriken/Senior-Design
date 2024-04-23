@@ -16,7 +16,7 @@ try:
         input_state = GPIO.input(input_pin)
         
         # Print the input state
-        print("Input state:", input_state)
+        print(input_state)
         
         # Wait for a short duration
         time.sleep(0.1)  # Polling frequency
