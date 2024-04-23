@@ -39,23 +39,25 @@
     }); */
 
     function externalCameraButtonReleasedEventHandler() {
-        popup.style.display = "flex";
+        window.location.href = "/outdoor_video_feed";
+        /* popup.style.display = "flex";
         // socket.emit('switch_to_outdoor');
         
         // Update outdoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/outdoor_video_feed");
-        }, 0); // Update every second
+        }, 0); // Update every second */
     }
     
     function internalCameraButtonReleasedEventHandler() {
-        popup.style.display = "flex";
+        window.location.href = "/indoor_video_feed";
+        /* popup.style.display = "flex";
         // socket.emit('switch_to_indoor');
         
         // Update indoor video feed
         updateInterval = setInterval(function() {
             updateImageSource(cameraStream, "/indoor_video_feed");
-        }, 0); // Update every second
+        }, 0); // Update every second */
     }
     
     function popupCloseButtonReleasedEventHandler() {

@@ -3,14 +3,14 @@
  * for use with team EPRI_SPOT
  */
 
-#include <WiFi.h>
+#import "WiFi.h"
 #include <PubSubClient.h> // Allows us to connect to, and publish to the MQTT broker
 
 const int ledPin = 0; // This code uses the built-in led for visual feedback that the button has been pressed
 
 // WiFi
 /* 
-SSID:	IBR900-96a-5g
+SSID:	IBR900-96a-5g/ Spot Wifi
 Protocol:	Wi-Fi 5 (802.11ac)
 Security type:	WPA2-Personal
 Manufacturer:	Intel Corporation
@@ -25,10 +25,9 @@ IPv4 DNS servers:	192.168.0.1 (Unencrypted)
 Physical address (MAC):	F4-CE-23-FC-CC-09
 */
 
-// Make sure to update this for your own WiFi network!
-
-const char* ssid = "Joelle"; // your ssid
-const char* password = "test1234";
+#define ssid "Spot Wifi"
+#define WIFI_PASSWORD "Spot1234!"
+#define WIFI_TIMEOUT_MS 20000
 
 // MQTT
 // Make sure to update this for your own MQTT Broker!
@@ -45,6 +44,19 @@ PubSubClient client(mqtt_server, 1883, wifiClient); // 1883 is the listener port
 
 char data[MAX_DATA_LEN]; // Array to store received data
 
+void connectToWiFi(){
+  Serial.print("Connecting...");
+  WiFi.begin(ssid, WIFI_PASSWORD);
+
+  unsigned long startAttemptTime = millis();
+
+  while(WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_TIMEOUT_MS){
+    Serial.print(".");
+    delay(100);
+  }
+}
+
+
 void setup() {
   pinMode(ledPin, OUTPUT);
 
@@ -55,6 +67,7 @@ void setup() {
   // Remember to choose the correct Baudrate on the Serial monitor!
   // This is just for debugging purposes
   Serial.begin(115200);
+  connectToWiFi();
 
   for(int i; i <10; i++){
     if (Serial.available()) {
@@ -85,8 +98,6 @@ void setup() {
       Serial.println(WiFi.SSID(i)); // Print the SSID of the network
     }
   }
-
-  WiFi.begin(ssid, password);
 
   // Wait until the connection has been confirmed before continuing
   while (WiFi.status() != WL_CONNECTED) {
@@ -125,6 +136,7 @@ void loop() {
   // Again, client.publish will return a boolean value depending on whether it succeded or not.
   // If the message failed to send, we will try again, as the connection may have broken.
   else {
+    Serial.print(clientID);
     Serial.println("Message failed to send. Reconnecting to MQTT Broker and trying again");
     client.connect(clientID);
     delay(10); // This delay ensures that client.publish doesn't clash with the client.connect call
