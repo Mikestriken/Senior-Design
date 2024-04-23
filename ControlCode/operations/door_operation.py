@@ -61,7 +61,7 @@ def on_message_main(self, client, msg):
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request'], on_message=on_message_main)
 
 # * ------------------------------Motor Current-----------------------------------
-def current_isr():
+def current_isr(temp_arg):
     print("isr called - current")
     door_operation('stop')
 
