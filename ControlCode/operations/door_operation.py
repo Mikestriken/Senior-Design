@@ -61,9 +61,17 @@ def on_message_main(self, client, msg):
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request'], on_message=on_message_main)
 
 # * ------------------------------Motor Current-----------------------------------
+CURRENT_COUNT = 0
+
 def current_isr(temp_arg):
-    print("isr called - current")
-    door_operation('stop')
+    global CURRENT_COUNT
+    
+    if CURRENT_COUNT > 3:
+        print("isr called for collision - current")
+        door_operation('stop')
+        CURRENT_COUNT = 0
+    else:
+        CURRENT_COUNT += 1
 
 current_detect = motor_current.MotorCurrent(isr=current_isr)
 
@@ -71,7 +79,8 @@ current_detect = motor_current.MotorCurrent(isr=current_isr)
 
 def operation_loop():
     while True:
-        reading = door_ultrasonic.get_average_distance(20)
+        a=1
+        """ reading = door_ultrasonic.get_average_distance(20)
         if reading < 35:
             if front_door.get_percent_open() < 1:
                 #door_operation('stop')
@@ -81,7 +90,7 @@ def operation_loop():
             if front_door.get_percent_open() > 60:
                 #door_operation('stop')
                 #mqtt_connect.publish('alert', 'Object Blocking Door')
-                print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
+                print('stopped from ultrasonic, reading: ' + str(reading) + 'cm') """
 
 operation_loop()
 

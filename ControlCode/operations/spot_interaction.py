@@ -67,7 +67,7 @@ def rssi_eval(rssi_value):
 
 def on_message_rssi(self, client, msg):
     if msg.topic == 'rssi':
-        print(msg.payload.decode("utf-8"))
+        print(msg.payload.decode("utf-8"), last_rssi_state)
         rssi_eval(int(msg.payload.decode("utf-8")))
 
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['rssi'], on_message=on_message_rssi)
