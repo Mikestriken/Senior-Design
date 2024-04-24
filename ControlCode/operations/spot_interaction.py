@@ -48,7 +48,7 @@ last_rssi_state = ""
 
 def rssi_eval(rssi_value):
     global last_rssi_state
-    if rssi_value > -17 and last_rssi_state == "approaching":
+    if rssi_value > -20 and last_rssi_state == "approaching":
         time.sleep(10)
         rssi_publisher.publish('door', 'close')
         rssi_publisher.publish('door', "attempting door close - robot inside")

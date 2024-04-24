@@ -2,6 +2,9 @@
 #                                 Wall Power
 #
 # Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
+#   * Relay Closes when Power is present.
+#   * Pin High => Wall Power
+#   * Pin Low => No Wall Power
 ##################################################################################
 
 from classes.mqtt_connection import MQTT_Connection
@@ -47,7 +50,7 @@ def publishCurrentState(topics):
 # * Topic to return information on the wall power current state to on request
 wall_power_topic = "wall_power"
 
-# * As soon as "update" is sent to the wall_power_request MQTT topic, this script will send publish the current state back to the same topic
+# * As soon as "query_state" is sent to the wall_power_request MQTT topic, this script will send publish the current state back to the same topic
 def request_response(client, userdata, msg):
     try:
         if msg.payload.decode('utf-8').lower() == "query_state":
