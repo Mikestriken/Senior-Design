@@ -17,7 +17,7 @@ import fcntl
 GPIO.setwarnings(False)
 
 class Door:
-    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60, mqtt_connect=MQTT_Connection(type='publisher')):
+    def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60):
         try:
             self.percent_open = self.get_percent_open()
         except:
@@ -161,7 +161,7 @@ class Door:
     def get_percent_open(self):
         script_dir = os.path.dirname(__file__)
 
-        with open(script_dir + '/data/door_open_percent.txt', 'r') as f:
+        with open(script_dir + '/data/door_open_percent.txt') as f:
             fcntl.flock(f, fcntl.LOCK_EX)
             self.percent_open = int(f.read())
             fcntl.flock(f, fcntl.LOCK_UN)

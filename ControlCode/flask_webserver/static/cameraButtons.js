@@ -65,6 +65,9 @@
         // socket.emit('switch_to_none');
         
         clearInterval(updateInterval);
+
+        // reload page
+        location.reload();
     }
 
     
