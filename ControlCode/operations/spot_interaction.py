@@ -5,7 +5,7 @@
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 ##############################################################################
 
-from classes import mqtt_connection
+from classes import mqtt_connection, ultrasonic
 import time
 
 try:
@@ -18,6 +18,8 @@ except:
 
 Spot_API_Connect_Flag = 0
 Ultrasonic_Close_Door_Flag = 1
+
+stand_ultrasonic = ultrasonic.Ultrasonic() # y axis detect
 
 # * ---------------------------Spot API Connection-------------------------------
 
@@ -51,14 +53,25 @@ def rssi_eval(rssi_value):
     if rssi_value > -20 and last_rssi_state == "approaching":
         time.sleep(10)
         rssi_publisher.publish('door', 'close')
-        rssi_publisher.publish('door', "attempting door close - robot inside")
+        rssi_publisher.publish('alerts', "attempting door close - robot inside")
         print("attempting door close - robot inside")
         last_rssi_state = "inside" 
+        time.sleep(5)
+
+    elif last_rssi_state == "inside":
+        reading = stand_ultrasonic.get_average_distance(20)
+        if reading < 35:
+            rssi_publisher.publish('door', 'open')
+            print("attempting door close - robot inside")
+            rssi_publisher.publish('alerts', "attempting door open - robot inside")
+            last_rssi_state = "approaching"
+            
     elif rssi_value > -55 and last_rssi_state != "approaching" and last_rssi_state != "inside": #TODO callibrate these numbers                        
         rssi_publisher.publish('door', 'open')
         print("attempting door open")
         last_rssi_state = "approaching"
         time.sleep(10)
+        
     elif rssi_value < -70 and last_rssi_state != "leaving":
         rssi_publisher.publish('door', 'close')
         print("attempting door close")

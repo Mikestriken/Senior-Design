@@ -1,8 +1,9 @@
 import multiprocessing
 import json
 import sys
+import time
 
-from classes import ultrasonic, door, limit_switch, mqtt_connection, motor_current
+from classes import door, limit_switch, mqtt_connection, motor_current
 
 import RPi.GPIO as GPIO # or gpio setup
 GPIO.setwarnings(False)
@@ -11,7 +12,6 @@ GPIO.setwarnings(False)
 percent_publisher = mqtt_connection.MQTT_Connection("publisher")
 
 front_door = door.Door()
-door_ultrasonic = ultrasonic.Ultrasonic() # y axis detect
 
 threads = []
 exit_event = multiprocessing.Event()
@@ -67,30 +67,21 @@ def current_isr(temp_arg):
     global CURRENT_COUNT
     
     if CURRENT_COUNT > 3:
-        print("isr called for collision - current")
         door_operation('stop')
+        print("isr called for collision - current")
+        mqtt_connect.publish('alert', 'Object Blocking Door')
         CURRENT_COUNT = 0
     else:
         CURRENT_COUNT += 1
 
 current_detect = motor_current.MotorCurrent(isr=current_isr)
 
-# * ------------------------------Ultrasonic-----------------------------------
+# * ------------------------------Operation Loop---------------------------------
 
 def operation_loop():
     while True:
-        a=1
-        """ reading = door_ultrasonic.get_average_distance(20)
-        if reading < 35:
-            if front_door.get_percent_open() < 1:
-                #door_operation('stop')
-                #mqtt_connect.publish('alert', 'Object Blocking Door')
-                print('stopped from ultrasonic, reading: ' + str(reading) + 'cm')
-
-            if front_door.get_percent_open() > 60:
-                #door_operation('stop')
-                #mqtt_connect.publish('alert', 'Object Blocking Door')
-                print('stopped from ultrasonic, reading: ' + str(reading) + 'cm') """
+        time.sleep(.01)
+        
 
 operation_loop()
 
