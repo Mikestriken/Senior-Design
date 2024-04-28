@@ -288,6 +288,10 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     print('Client disconnected',  request.sid)
+    
+@socketio.on('host_ip')
+def request_host_ip():
+    socketio.emit('host_ip', {'data': socket.gethostbyname(socket.gethostname())})
 
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
@@ -370,7 +374,7 @@ if cameraCodeFlag:
                         mimetype='multipart/x-mixed-replace; boundary=frame')
         
 
-                    # Door
+                    # Buttons
 @app.route("/<object>/<action>")
 def action(object, action):
     print("Action Called")
@@ -415,7 +419,7 @@ def action(object, action):
 
     # localhost button Section
     # * Reboot Button → /localhost/reboot → Reboot Raspberry Pi
-    elif object == "localhost" and action == "reboot":
+    elif object == "localhost" and action == "reboot" and sys.platform.startswith("linux"):
         subprocess.run(['sudo', 'reboot'])
         
     return redirect(url_for('main'))
