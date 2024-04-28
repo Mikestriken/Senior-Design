@@ -88,7 +88,7 @@ class MQTT_Connection():
                         
                     
                     # Update the data_handler
-                    self.data_handler.update_current_data({topic: deserialized_data})
+                    self.data_handler.update_current_data(msg.topic, deserialized_data)
                     # print(f"Updated {topic} with: {deserialized_data}")
                     
                     break # There can only be topic in a message, break out of for loop.
