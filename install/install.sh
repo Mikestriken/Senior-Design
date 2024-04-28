@@ -1,4 +1,14 @@
 #!/bin/bash
+##############################################################################
+#                                 Install
+# This script runs all the install scripts in order:
+# 1. repairScripts.sh
+# 2. installAndRepairAPTInstalls.sh
+# 3. installAndRepairVEnv.sh
+# 4. installAndRepairServices.sh
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
 
 # * CD to the script file location
 # Get the directory where the script is located

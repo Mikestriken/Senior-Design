@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#                     Install and Repair APT Installs
+# This script installs all the apps needed for the control code to function,
+# namely Mosquitto for MQTT control code communications.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * Check current OS
 windows=false
 OS=$(uname)

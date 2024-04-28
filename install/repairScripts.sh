@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#                                 Repair Scripts
+# This script searches for all .sh files in the repository,
+# and ensures they have rwx permissions.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")
