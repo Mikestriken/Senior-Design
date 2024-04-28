@@ -37,7 +37,7 @@ if [ "$windows" == true ]; then
         fi
     done
     # Prompt user to press any key
-    echo "Make sure to run the mosquitto client in the background for MQTT and Flask Server Functionality."
+    echo "After installation is complete, make sure to run the mosquitto client in the background for MQTT and Flask Server Functionality."
     echo "A good place to look is 'C:\Program Files\mosquitto', run mosquitto.exe when you find it."
     echo "Press any key to continue..."
 
