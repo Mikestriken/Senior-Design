@@ -1,13 +1,18 @@
 ##############################################################################
-#                                 Indoor Temperature
-# Indoor temperature sensor module for SHTC3
-#
-# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+#                     Indoor Temperature Class Python Script
+# This python script defines the logic necessary to retrieve data from the
+# Indoor temperature sensor module from the SHTC3 IC using I2C.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/climate_main.py
+# 
 # Template used by flask webserver
 # 'indoor_weather': {
 #                 'temperature' : None,
 #                 'relative_humidity' : None
 #             }
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 ##############################################################################
 
 from classes.mqtt_connection import MQTT_Connection

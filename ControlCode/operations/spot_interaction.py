@@ -1,6 +1,7 @@
 ##############################################################################
 #                                 Spot Interaction
-# Talks with Spot API or Spot Collar to determine door operation
+# This python script handles communication with the Spot API or Spot Collar
+# to determine door operation.
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 ##############################################################################

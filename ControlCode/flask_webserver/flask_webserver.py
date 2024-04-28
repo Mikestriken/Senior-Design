@@ -1,11 +1,14 @@
-##############################################################################
-#                                 Flask Web Server
+##################################################################################
+#                         Flask Webserver Python Script
+# This python script creates a webserver using the flask library. This is creates
+# a website running locally on the Raspberry Pi that clients can access and use
+# to control / retrieve data from the dock house.
 #
-# Created by Joelle Bailey, Michael Marais for EPRI_SPOT, Spring 2024
-#
-# to run webserver:  python -B -m flask_webserver.flask_webserver
-##############################################################################
-# Todo: Production Webserver and register on website.
+# Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+
+# Todo: Move webserver off flask development server and onto a Production server, and register it on a website.
+
 from classes.data_handler import DataHandler
 from classes.mqtt_connection import MQTT_Connection
 

@@ -1,3 +1,11 @@
+##################################################################################
+#      ESP 32 Receive Signal Strength Indication (RSSI) Setup Python Script
+# This python script sets up a connection with a robot connected to the same router
+# and sends the RSSI information on an MQTT topic for the door control code to use.
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+
 import serial
 import socket
 
@@ -11,7 +19,7 @@ def get_ip_address():
 def send_data(data):
     global SEND_SUCCESS
     try:
-        ser = serial.Serial('/dev/ttyUSB1', 115200)  # TODO Replace '/dev/ttyUSB0' with Arduino's serial port
+        ser = serial.Serial('/dev/ttyUSB1', 115200)  # TODO Replace '/dev/ttyUSBX' with Arduino's serial port
         if ser.isOpen():
             print("Serial connection established.")
             ser.write(data.encode())  # Convert string to bytes and send it

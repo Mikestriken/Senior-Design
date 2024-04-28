@@ -1,3 +1,14 @@
+##################################################################################
+#                         Weather Station Main Python Script
+# This python script instantiates the WeatherStation class defined in
+# /ControlCode/classes/weather_class.py which then reads the ASCII output sent by
+# the weather station using the NMEA 0183 protocol.
+# 
+# It then filters the data and sends only the relevant data via MQTT
+# 
+# Created by Michael Marais for EPRI_SPOT, Spring 2024
+##################################################################################
+
 import asyncio
 import sys
 

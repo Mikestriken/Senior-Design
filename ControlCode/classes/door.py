@@ -1,12 +1,16 @@
 ##############################################################################
-#                                 Door Operation
-# Door object and operation for motor controller and linear actuator interface
-# has operations: open, close, stop door, self contained isr 
+#                              Door Class Python Script
+# This script defines the Door object and operation for motor controller and
+# linear actuator interface.
+# 
+# It has operations: open, close, stop door, self contained isr 
 # 
 # Inputs: in1, in2, ena, duty_cycle
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/door_operation.py
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
-#
 ##############################################################################
 
 import RPi.GPIO as GPIO

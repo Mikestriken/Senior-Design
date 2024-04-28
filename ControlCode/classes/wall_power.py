@@ -1,10 +1,16 @@
 ##################################################################################
-#                                 Wall Power
-#
-# Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
-#   * Relay Closes when Power is present.
+#                         Wall Power Class Python Script
+# The purpose of this python script is to define the GPIO necessary to access
+# the AC Current detection relay.
+# 
+# The relay closes when power is present:
 #   * Pin High => Wall Power
 #   * Pin Low => No Wall Power
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/wall_power_main.py
+#
+# Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
 ##################################################################################
 
 import RPi.GPIO as GPIO

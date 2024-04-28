@@ -1,6 +1,12 @@
 ##############################################################################
-#                                 Limit
-# Limit switch module
+#                       Limit Switch Class Python Script
+# The purpose of this python script is to define the GPIO to access the
+# limit switches embedded in the door.
+# 
+# NOTE: THIS CODE IS NOW OBSOLETE AS THE LIMIT SWITCHES DID NOT WORK AS INTENDED.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/door_operation.py
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 ##############################################################################

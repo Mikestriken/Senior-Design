@@ -1,3 +1,10 @@
+##################################################################################
+#                         EPRI Test3 Python Script
+# This python script ...
+# 
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+
 import bosdyn.client
 import bosdyn.client.util
 from bosdyn.client.robot_state import RobotStateClient

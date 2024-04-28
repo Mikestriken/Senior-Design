@@ -1,3 +1,19 @@
+##############################################################################
+#                      Data Handler Class Python Script
+# This python script defines a data structure with thread locking.
+# 
+# Its main purpose is to be used as a wrapper for data when multiple threads
+# need to access the same data in parallel.
+# 
+# In addition it also has update flags that can be used to tell processes that
+# use the data if old data has been replaced with new data.
+# 
+# This class is mainly tied to the flask webserver control code found in the
+# /ControlCode/flask_webserver/flask_webserver.py python script.
+#
+# Created by Michael Marais and Joelle Bailey, Spring 2024
+##############################################################################
+
 import copy
 import threading
 
