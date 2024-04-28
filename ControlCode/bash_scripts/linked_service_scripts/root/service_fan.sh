@@ -1,5 +1,15 @@
 #!/bin/bash
 
+##############################################################################
+#                        Fan Service Script
+# This script will be ran by the sd_fan.service.
+# 
+# This script runs the fan_operation python script found in the
+# /ControlCode/operations/ directory.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")
 

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#                        Start linux .service files
+# This script starts all the linux services that this code repository
+# creates.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")
