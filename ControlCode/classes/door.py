@@ -18,6 +18,8 @@ import time
 import os
 import fcntl
 
+from classes import mqtt_connection
+
 GPIO.setwarnings(False)
 
 class Door:
@@ -69,7 +71,7 @@ class Door:
         GPIO.output(self.in1, True)
 
         while(self.percent_open < 100):
-            time.sleep(0.18)
+            time.sleep(0.20)
             self.percent_open += 1
             self.write_percent_open()
 
@@ -106,7 +108,7 @@ class Door:
         time.sleep(1)
 
     def open_door_multithreading(self, exit_event, percent_publisher):
-
+        percent_publisher = mqtt_connection.MQTT_Connection("publisher")
         self.stop_door()
         
         print("opening...")
@@ -117,7 +119,7 @@ class Door:
         GPIO.output(self.in2, False)
 
         while(self.percent_open < 100 and not exit_event.is_set()):
-            time.sleep(0.18)
+            time.sleep(0.20)
             self.percent_open += 1
             self.write_percent_open()
             percent_publisher.publish('door', str(self.percent_open))
@@ -130,7 +132,7 @@ class Door:
         time.sleep(1)
 
     def close_door_multithreading(self, exit_event, percent_publisher):
-
+        percent_publisher = mqtt_connection.MQTT_Connection("publisher")
         self.stop_door()
 
         print("closing...")

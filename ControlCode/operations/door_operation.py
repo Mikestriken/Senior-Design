@@ -81,7 +81,7 @@ def current_isr(temp_arg):
     if CURRENT_COUNT > 4:
         door_operation('stop')
         print("isr called for collision - current")
-        mqtt_connect.publish('alerts', 'Object Blocking Door')
+        mqtt_connect.publish('alert', 'Object Blocking Door')
         CURRENT_COUNT = 0
     else:
         CURRENT_COUNT += 1

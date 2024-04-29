@@ -59,7 +59,7 @@ def rssi_eval(rssi_value):
     if rssi_value > -20 and last_rssi_state == "approaching":
         time.sleep(10)
         rssi_publisher.publish('door', 'close')
-        rssi_publisher.publish('alerts', "attempting door close - robot inside")
+        rssi_publisher.publish('alert', "attempting door close - robot inside")
         print("attempting door close - robot inside")
         last_rssi_state = "inside" 
         time.sleep(5)
@@ -67,11 +67,11 @@ def rssi_eval(rssi_value):
     elif last_rssi_state == "inside":
         print("inside")
         reading = stand_ultrasonic.get_average_distance(500)
-        rssi_publisher.publish('alerts', str(reading))
+        rssi_publisher.publish('alert', str(reading))
         if reading < 50:
             rssi_publisher.publish('door', 'open')
             print("attempting door open - robot inside")
-            rssi_publisher.publish('alerts', "attempting door open - robot inside")
+            rssi_publisher.publish('alert', "attempting door open - robot inside")
             time.sleep(20)
             last_rssi_state = "approaching"
             
@@ -99,7 +99,7 @@ last_state = "not_charging"
 while True:
     time.sleep(1)
     #reading = stand_ultrasonic.get_average_distance(20)
-    #rssi_publisher.publish('alerts', str(reading))
+    #rssi_publisher.publish('alert', str(reading))
     #print("dist: ", stand_ultrasonic.get_average_distance(20))
     if Spot_API_Connect_Flag:
         state = robot_state_client.get_robot_state()
