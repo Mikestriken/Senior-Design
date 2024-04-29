@@ -174,6 +174,17 @@ def on_message(client, userdata, msg):
                 
                 # print(f"Updated {msg.topic} with: {deserialized_data}\n")
                 # print(data_handler.get_current_data())
+                
+        elif msg.topic == door_topic:
+            if (isinstance(deserialized_data, int) and deserialized_data >= 0):
+                # Update the data_handler
+                if (deserialized_data > 100):
+                    data_handler.update_current_data(msg.topic, 100)
+                else:
+                    data_handler.update_current_data(msg.topic, deserialized_data)
+                
+                # print(f"Updated {msg.topic} with: {deserialized_data}\n")
+                # print(data_handler.get_current_data())
     except Exception as e:
         print(f"Something went Wrong...\nTopic: {msg.topic}\nMessage: {msg.payload}\n\nError Log:")
         print(e)

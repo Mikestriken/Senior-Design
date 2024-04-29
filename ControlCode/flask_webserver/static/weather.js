@@ -6,7 +6,7 @@
   
     const windSpeedOutput = document.getElementById('windSpeedOutput');
     const windDirectionOutput = document.getElementById('windDirectionOutput');
-    const windDirectionUnit = document.getElementById('windDirectionUnit');
+    // const windDirectionUnit = document.getElementById('windDirectionUnit');
   
     const externalTemperatureOutput = document.getElementById('externalTemperatureOutput');
     const pressureOutputHG = document.getElementById('pressureOutputHG');
@@ -23,9 +23,11 @@
   
       // * wind
       windSpeedOutput.innerHTML = data.wind.speed.toFixed(1);
-      
       let direction = data.wind.trueDirection
-          if (direction >= -22.5 && direction <= 22.5) { // North
+      windDirectionOutput.innerHTML = direction;
+
+          // Note: It appears someone removed the windDirectionUnit and didn't tell me... I'll comment out the extra code I guess...
+          /* if (direction >= -22.5 && direction <= 22.5) { // North
             windDirectionOutput.innerHTML = direction;
             windDirectionUnit.innerHTML = "N";
           } 
@@ -64,7 +66,7 @@
           else {
             windDirectionOutput.innerHTML = "";
             windDirectionUnit.innerHTML = "UNK";
-          }
+          } */
           
     
         // * meteorological
