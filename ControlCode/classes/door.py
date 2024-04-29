@@ -65,7 +65,7 @@ class Door:
         GPIO.output(self.in1, True)
 
         while(self.percent_open < 100):
-            time.sleep(0.22)
+            time.sleep(0.18)
             self.percent_open += 1
             self.write_percent_open()
 
@@ -113,7 +113,7 @@ class Door:
         GPIO.output(self.in2, False)
 
         while(self.percent_open < 100 and not exit_event.is_set()):
-            time.sleep(0.22)
+            time.sleep(0.18)
             self.percent_open += 1
             self.write_percent_open()
             percent_publisher.publish('door', str(self.percent_open))

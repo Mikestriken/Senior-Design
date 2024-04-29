@@ -8,12 +8,17 @@
 from classes import mqtt_connection, ultrasonic
 import time
 
+import RPi.GPIO as GPIO # or gpio setup
+GPIO.setwarnings(False)
+
+
 try:
     import bosdyn.client
     import bosdyn.client.util
     from bosdyn.client.robot_state import RobotStateClient
 except:
     print("Bosdyn.client not installed")
+
 
 
 Spot_API_Connect_Flag = 0
@@ -59,14 +64,17 @@ def rssi_eval(rssi_value):
         time.sleep(5)
 
     elif last_rssi_state == "inside":
-        reading = stand_ultrasonic.get_average_distance(20)
-        if reading < 35:
+        print("inside")
+        reading = stand_ultrasonic.get_average_distance(500)
+        rssi_publisher.publish('alerts', str(reading))
+        if reading < 50:
             rssi_publisher.publish('door', 'open')
-            print("attempting door close - robot inside")
+            print("attempting door open - robot inside")
             rssi_publisher.publish('alerts', "attempting door open - robot inside")
+            time.sleep(20)
             last_rssi_state = "approaching"
             
-    elif rssi_value > -55 and last_rssi_state != "approaching" and last_rssi_state != "inside": #TODO callibrate these numbers                        
+    elif rssi_value > -50 and last_rssi_state != "approaching" and last_rssi_state != "inside":                       
         rssi_publisher.publish('door', 'open')
         print("attempting door open")
         last_rssi_state = "approaching"
@@ -89,6 +97,9 @@ last_state = "not_charging"
 
 while True:
     time.sleep(1)
+    #reading = stand_ultrasonic.get_average_distance(20)
+    #rssi_publisher.publish('alerts', str(reading))
+    #print("dist: ", stand_ultrasonic.get_average_distance(20))
     if Spot_API_Connect_Flag:
         state = robot_state_client.get_robot_state()
         mqtt_connect.publish('battery_state', str(state.battery_states[0].charge_percentage.value))
@@ -101,8 +112,3 @@ while True:
             mqtt_connect.publish('door', 'open')
             print("attempting door open")
             last_state = "not_charging"
-
-
-
-
-        

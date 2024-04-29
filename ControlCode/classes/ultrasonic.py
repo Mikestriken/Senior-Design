@@ -10,6 +10,8 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setwarnings(False)
+
 class Ultrasonic:
     # Enter BCM trigger and echo pin numbers 26, 6
     def __init__(self, trigger = 26, echo = 6):
