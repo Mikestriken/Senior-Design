@@ -1,3 +1,16 @@
+// *******************************************************************************
+//                         Spot Collar Control Code for the ESP 32
+// This program runs on an ESP 32 powered with a battery that is then
+// physically attached to a robot.
+// 
+// The ESP 32 connects to the same router as the Raspberry Pi and sends out
+// Receive Signal Strength Indication (RSSI) data via MQTT to the Raspberry Pi, so that the
+// Raspberry Pi can determine how far away the robot is, and when to start opening
+// the doors.
+// 
+// Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+// *******************************************************************************
+
 /* Modified from:
  * ESP8266 (Adafruit HUZZAH) Mosquitto MQTT Publish Example
  * for use with team EPRI_SPOT

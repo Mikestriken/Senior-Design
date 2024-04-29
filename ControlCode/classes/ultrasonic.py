@@ -1,6 +1,10 @@
 ##############################################################################
-#                                 Ultrasonic
-# Ultrasonic sensor operation HC-SR04, returns distance in cm 
+#               Ultrasonic Sensor Class Python Script
+# The purpose of this python script is to define the GPIO needed to access the
+# Ultrasonic sensor HC-SR04 which returns a distance in cm.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/door_operation.py
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024
 # with the help of tutorial:

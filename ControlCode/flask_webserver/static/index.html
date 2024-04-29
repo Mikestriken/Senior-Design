@@ -29,13 +29,15 @@
     <header>
         <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
 
-        {% if request.remote_addr == "127.0.0.1" %}
-        <script src="{{ url_for('static', filename='localhostButtons.js') }}" type="module" defer></script>
         <section>
-            <button class="button" id="terminalButton">Terminal</button>
+        <script src="{{ url_for('static', filename='localhostButtons.js') }}" type="module" defer></script>
+        
+            {% if request.remote_addr == "127.0.0.1" %}
+                <button class="button" id="terminalButton">Terminal</button>
+            {% endif %}
+
             <button class="button" id="rebootButton">Reboot</button>
         </section>
-        {% endif %}
         
     </header>
     <main class="container">

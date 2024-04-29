@@ -1,3 +1,11 @@
+##################################################################################
+#                       lighting Operation Python Script
+# This python script implements the control code to turn on and off the internal
+# lights of the dock house based on MQTT requests from other scripts.
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+ 
 from classes import lighting, mqtt_connection
 
 import time

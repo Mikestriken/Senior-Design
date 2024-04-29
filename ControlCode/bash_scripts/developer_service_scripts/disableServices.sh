@@ -1,5 +1,14 @@
 #!/bin/bash
 
+##############################################################################
+#                        Disable linux .service files
+# This script disables all the linux services that this code repository
+# creates. This means that on startup, the control code will not be
+# automatically started.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#                     Install and Repair APT Installs
+# This script installs all the apps needed for the control code to function,
+# namely Mosquitto for MQTT control code communications.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * Check current OS
 windows=false
 OS=$(uname)
@@ -37,7 +45,7 @@ if [ "$windows" == true ]; then
         fi
     done
     # Prompt user to press any key
-    echo "Make sure to run the mosquitto client in the background for MQTT and Flask Server Functionality."
+    echo "After installation is complete, make sure to run the mosquitto client in the background for MQTT and Flask Server Functionality."
     echo "A good place to look is 'C:\Program Files\mosquitto', run mosquitto.exe when you find it."
     echo "Press any key to continue..."
 

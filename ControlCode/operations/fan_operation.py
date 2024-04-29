@@ -1,5 +1,12 @@
+##################################################################################
+#                         Fan Operation Python Script
+# This python script implements the fan control code that turns on / off and sets
+# the speed of the fan when requested by other scripts.
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+ 
 from classes import fan, mqtt_connection
-
 import time
 
 fan = fan.Fan()

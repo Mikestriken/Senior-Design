@@ -1,5 +1,16 @@
 #!/bin/bash
 
+##############################################################################
+#                  Install and Repair Virtual Environment
+# This script attempts to access a local python virtual environment,
+# and creates one if a local virtual environment is not found.
+# 
+# Then the script proceeds to install all the python modules needed for the
+# control code to function.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")

@@ -1,10 +1,13 @@
 ##################################################################################
-#                                 Wall Power
-#
-# Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
-#   * Relay Closes when Power is present.
+#                              Wall Power Main Python Script
+# This python script sends and alert and when the wall power is connected or
+# disconnected (implying that the dock house is running on backup battery power).
+# 
+# The relay closes when power is present:
 #   * Pin High => Wall Power
 #   * Pin Low => No Wall Power
+
+# Created by Michael Marais and Joelle Bailey for EPRI_SPOT, Spring 2024
 ##################################################################################
 
 from classes.mqtt_connection import MQTT_Connection

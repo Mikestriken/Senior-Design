@@ -1,3 +1,15 @@
+##################################################################################
+#                         Door Operation Python Script
+# This python script controls the opening and closing of the door based on
+# a variety of different sensors such as:
+#   - Limit Switches # ! NOTE: NOW OBSOLETE
+#   - Ultrasonic Sensor
+#   - Door Motor Current Sensor
+#   - Receive Signal Strength Indication (RSSI) from a robot connected to the router.
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+
 import multiprocessing
 import json
 import sys

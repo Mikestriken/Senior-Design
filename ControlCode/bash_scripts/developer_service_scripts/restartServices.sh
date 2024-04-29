@@ -1,5 +1,14 @@
 #!/bin/bash
 
+##############################################################################
+#                        restart linux .service files
+# This script restarts all the linux services that this code repository
+# creates. This means that the control code for this repository will be
+# stopped and started back up again.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")

@@ -1,3 +1,12 @@
+##################################################################################
+#                         Climate Control Main Python Script
+# This python script retrieves temperature data from the internal temperature sensor
+# (the SHTC3 using I2C), and then uses that to determine if it should turn on
+# the fan and if so, at what speed.
+#
+# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+##################################################################################
+
 import classes.indoor_temp as indoor_temp
 from classes.mqtt_connection import MQTT_Connection
 

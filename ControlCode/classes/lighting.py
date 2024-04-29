@@ -1,8 +1,14 @@
 ##############################################################################
-#                                 Lighting TODO
+#                      lighting Class Python Script
+# This python script defines the GPIO configuration for the internal lighting
+# of the dock house.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/lighting_operation.py
 #
-# Created by Joelle Bailey for EPRI_SPOT, Spring 2024
+# Created by Joelle Bailey, Spring 2024
 ##############################################################################
+
 import RPi.GPIO as GPIO
 
 

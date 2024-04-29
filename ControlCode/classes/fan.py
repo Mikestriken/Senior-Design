@@ -1,3 +1,14 @@
+##############################################################################
+#                      Fan Class Python Script
+# This python script defines the GPIO configuration for the fan used used
+# to control the internal temperature of the docking station.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/fan_operation.py
+#
+# Created by Joelle Bailey, Spring 2024
+##############################################################################
+
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)

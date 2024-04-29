@@ -1,5 +1,13 @@
 #!/bin/bash
 
+##############################################################################
+#                        Install and Repair Services
+# This script creates and starts linux service files to automate restarting
+# all the control code executables when the Raspberry Pi starts up.
+#
+# Created by Michael Marais, Spring 2024
+##############################################################################
+
 # * CD to the script file location
 # Get the directory where the script is located
 script_dir=$(dirname "$(readlink -f "$0")")

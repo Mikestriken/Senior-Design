@@ -1,7 +1,10 @@
 #############################################################################################################
 #                                 NMEA Weather Station
-#
-# Created by Michael Marais refactored by Joelle Bailey for EPRI_SPOT, Spring 2024
+# The purpose of this python script is to retrieve data from the serial com port send by the weather station
+# and parse the data stream for the data we care about before sending it to the webserver to display to clients.
+# 
+# The operation / main loop this script is tied to is found in
+# /ControlCode/operations/weather_main.py
 #
 # * Regex patterns for parsing relevant NMEA sentences
 # Sample Data:   $WIMWV,   181.1  ,R,    0.3   ,N,  A    *    29
@@ -12,6 +15,8 @@
 #
 # Sample Data:   $WIMDA,  29.2554 ,I,  0.9907  ,B,  23.9    ,C,,,   14.4   ,,  -4.8    ,C,,,,,,,, *   61
 #              '\$WIMDA,(-?[\d.]+),I,(-?[\d.]+),B,(-?[\d.]+),C,,,(-?[\d.]+),,(-?[\d.]+),C,,,,,,,,\*(?:\w{2})'
+
+# Created by Michael Marais for EPRI_SPOT, Spring 2024
 #############################################################################################################
 
 import serial

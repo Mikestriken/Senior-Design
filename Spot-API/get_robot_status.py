@@ -1,3 +1,9 @@
+##################################################################################
+#                          Get Robot State Python API Script
+# This python script provides API Access for the boston dynamics spot robot.
+# 
+##################################################################################
+
 # Copyright (c) 2023 Boston Dynamics, Inc.  All rights reserved.
 #
 # Downloading, reproducing, distributing or otherwise using the SDK Software

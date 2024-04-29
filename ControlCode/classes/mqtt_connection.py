@@ -1,3 +1,17 @@
+##############################################################################
+#                         MQTT Class Python Script
+# The purpose of this python script is to be used as a utility by other
+# python scripts to quickly instantiate a MQTT object to handle sending and
+# receiving data to and from other scripts.
+# 
+# This script is used by all operations, to communicate with one another.
+# In particular most if not all operations in the /ControlCode/operations/
+# directory send data to the flask webserver in the
+# /ControlCode/flask_webserver/ directory.
+#
+# Created by Michael Marais for EPRI_SPOT, Spring 2024
+##############################################################################
+
 import paho.mqtt.client as mqtt
 import json
 
@@ -88,7 +102,7 @@ class MQTT_Connection():
                         
                     
                     # Update the data_handler
-                    self.data_handler.update_current_data({topic: deserialized_data})
+                    self.data_handler.update_current_data(msg.topic, deserialized_data)
                     # print(f"Updated {topic} with: {deserialized_data}")
                     
                     break # There can only be topic in a message, break out of for loop.
