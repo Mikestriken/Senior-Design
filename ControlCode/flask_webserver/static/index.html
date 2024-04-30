@@ -29,10 +29,24 @@
     <header>
         <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
 
-        <section>
+        <section id="buttonSection">
         <script src="{{ url_for('static', filename='localhostButtons.js') }}" type="module" defer></script>
         
             {% if request.remote_addr == "127.0.0.1" %}
+
+                <button class="button" onclick="zoomIn()">Zoom In</button>
+                <button class="button" onclick="zoomOut()">Zoom Out</button>
+                
+                <script>
+                    function zoomIn() {
+                        document.body.style.zoom += 0.1;  // Increment zoom
+                    }
+                    
+                    function zoomOut() {
+                        document.body.style.zoom -= 0.1;  // Decrement Zoom
+                    }
+                </script>
+
                 <button class="button" id="terminalButton">Terminal</button>
             {% endif %}
 

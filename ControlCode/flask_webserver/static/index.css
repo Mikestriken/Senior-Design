@@ -151,7 +151,7 @@ header {
     height: 6vh;
 }
 
-#rebootButton, #terminalButton {
+#buttonSection button {
     /* justify-self: right; */
     margin-right: 3rem;
 }
