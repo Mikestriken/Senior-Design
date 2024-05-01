@@ -121,7 +121,6 @@ class Door:
             self.percent_open += 1
             self.write_percent_open()
             percent_publisher.publish('door', str(self.percent_open))
-
         
         # Break and wait, IN1 -> 0, IN2 -> 0
         GPIO.output(self.in1, False)
