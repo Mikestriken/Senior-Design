@@ -318,10 +318,12 @@ def request_host_ip():
         if current_data[current_sensor_topic] == "is_on":
             mqtt_connect.publish(current_sensor_topic, "off")
             data_handler.update_current_data(current_sensor_topic, "is_off")
+            socketio.emit(current_sensor_topic, {'data': "is_off"})
             
         elif current_data[current_sensor_topic] == "is_off":
             mqtt_connect.publish(current_sensor_topic, "on")
             data_handler.update_current_data(current_sensor_topic, "is_on")
+            socketio.emit(current_sensor_topic, {'data': "is_on"})
             
 
 
