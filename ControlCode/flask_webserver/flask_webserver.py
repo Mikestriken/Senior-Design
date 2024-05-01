@@ -87,7 +87,8 @@ template_data = {
             'door': None,
             'fan_HOA': None,
             'indoor_light': None,
-            'fan': None
+            'fan': None,
+            'current_sensor': "is_on"
         }
 
 # * MQTT topics to subscribe to 
@@ -99,7 +100,8 @@ door_topic = 'door'
 fan_HOA_topic = 'fan_HOA'
 indoor_light_topic = 'indoor_light'
 fan_topic = 'fan'
-topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_battery_topic, door_topic, fan_HOA_topic, indoor_light_topic, fan_topic]
+current_sensor_topic = 'current_sensor'
+topics = [wall_power_topic, outdoor_weather_topic, indoor_weather_topic, spot_battery_topic, door_topic, fan_HOA_topic, indoor_light_topic, fan_topic, current_sensor_topic]
 
 # * fan_data_handler stores the states and also locks the storage to ensure multiple threads don't access at the same time.
 data_handler = DataHandler(template_data)
@@ -299,10 +301,29 @@ def connect():
 @socketio.on('disconnect')
 def disconnect():
     print('Client disconnected',  request.sid)
-    
+
 @socketio.on('host_ip')
 def request_host_ip():
-    socketio.emit('host_ip', {'data': socket.gethostbyname(socket.gethostname())})
+    # if sys.platform.startswith("linux"):
+    #     result = subprocess.check_output(['hostname', '-I'])
+    #     ip_address = result.decode().strip().split()[0]
+        
+    #     socketio.emit('host_ip', {'data': ip_address})
+    # else:
+        socketio.emit('host_ip', {'data': socket.gethostbyname(socket.gethostname())})
+    
+        # * Get current data
+        current_data = data_handler.get_current_data()
+            
+        if current_data[current_sensor_topic] == "is_on":
+            mqtt_connect.publish(current_sensor_topic, "off")
+            data_handler.update_current_data(current_sensor_topic, "is_off")
+            
+        elif current_data[current_sensor_topic] == "is_off":
+            mqtt_connect.publish(current_sensor_topic, "on")
+            data_handler.update_current_data(current_sensor_topic, "is_on")
+            
+
 
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
