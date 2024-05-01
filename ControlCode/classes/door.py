@@ -24,12 +24,14 @@ GPIO.setwarnings(False)
 
 class Door:
     def __init__(self, in1 = 23, in2 = 24, ena = 12, duty_cycle = 25, pwm = 60):
+        # * Attempt to open the door_open_percent.txt file and read in data. If fail
         try:
             self.percent_open = self.get_percent_open()
         except:
             self.percent_open = 0
             print('Door Read Error, watch door for over-open')
 
+        # * Init GPIO
         self.in1 = in1
         self.in2 = in2
         self.ena = ena

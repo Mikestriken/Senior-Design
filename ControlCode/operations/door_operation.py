@@ -31,19 +31,24 @@ exit_event = multiprocessing.Event()
 def door_operation(action):
     global exit_event
     global threads
+    
     if action == 'open':
         door_operation('stop')
 
         open_thread = multiprocessing.Process(target=front_door.open_door_multithreading, args=(exit_event, percent_publisher))
         open_thread.start()
         threads.append(open_thread)
+        
     elif action == 'close':
         door_operation('stop') 
 
         close_thread = multiprocessing.Process(target=front_door.close_door_multithreading, args=(exit_event, percent_publisher))
         close_thread.start()
         threads.append(close_thread)
+        
     elif action == 'stop':
+        # global CURRENT_COUNT
+        
         front_door.stop_door()
 
         exit_event.set()
@@ -53,6 +58,8 @@ def door_operation(action):
         
         exit_event = multiprocessing.Event()
         threads = []
+        # CURRENT_COUNT = 0
+        
     elif action == 'query_state':
         mqtt_connect.publish("door", str(front_door.percent_open))
     else:
