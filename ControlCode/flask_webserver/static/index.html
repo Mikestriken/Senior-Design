@@ -29,14 +29,40 @@
     <header>
         <img id="EPRILogo" src="{{ url_for('static', filename='Assets/EPRI-logo.png') }}" alt="EPRI Icon">
 
-        <section>
+        <section id="buttonSection">
         <script src="{{ url_for('static', filename='localhostButtons.js') }}" type="module" defer></script>
         
+            <button class="button" id="rebootButton">Reboot</button>
             {% if request.remote_addr == "127.0.0.1" %}
+
                 <button class="button" id="terminalButton">Terminal</button>
+
+                <button class="button" onclick="zoomIn()">Zoom In</button>
+                <button class="button" onclick="zoomOut()">Zoom Out</button>
+                
+                <script>
+                    const htmlElement = document.documentElement;
+
+                    // This function retrieves the computed value for the font size of the html element in "px"
+                    function getHTMLFontSize() {
+                        let style = window.getComputedStyle(htmlElement); // Get the computed style of the element
+                        let fontSize = parseFloat(style.fontSize); // Get the font-size and convert it from "px" to an integer
+                        return fontSize;
+                    }
+
+                    function zoomIn() {
+                        // Get current HTML font size and increment it by 1 px
+                        htmlElement.style.fontSize = `${getHTMLFontSize()+1}px`;
+                    }
+                    
+                    function zoomOut() {
+                        // Get current HTML font size and decrement it by 1 px
+                        htmlElement.style.fontSize = `${getHTMLFontSize()-1}px`;
+                    }
+                </script>
+
             {% endif %}
 
-            <button class="button" id="rebootButton">Reboot</button>
         </section>
         
     </header>
