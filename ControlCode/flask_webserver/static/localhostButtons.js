@@ -14,11 +14,12 @@ import { fetchURL } from './modules.js';
         });
     }
 
-    function getCurrentStatus() {
+    // * Commented out code below sends an MQTT request to turn on / off the current sensor functionality. It was used during the Expo in case door collision detection glitched out.
+    /* function getCurrentStatus() {
         return new Promise((resolve, reject) => {
             socket.on(currentSensorStatusSocketTopic, function (msg) { resolve(msg.data) });
         });
-    }
+    } */
     
     async function terminalButtonReleasedEventHandler() {
         // Request and retrieve the IPv4 Address of webserver on local network.
@@ -27,7 +28,7 @@ import { fetchURL } from './modules.js';
         let currentSensorStatus = getCurrentStatus();
 
         // Display an alert textbox with relevant information.
-        window.alert(`To Open a Terminal Press: Ctrl + Alt + T\nAlternatively the IPv4 Address webserver to ssh into is: ${await host_ip}\nCurrent Sensor: ${await currentSensorStatus}`);
+        window.alert(`To Open a Terminal Press: Ctrl + Alt + T\nAlternatively the IPv4 Address webserver to ssh into is: ${await host_ip}`); // \nCurrent Sensor: ${await currentSensorStatus}`);
     }
 
     function rebootButtonReleasedEventHandler() {

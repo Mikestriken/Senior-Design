@@ -304,32 +304,34 @@ def disconnect():
 
 @socketio.on('host_ip')
 def request_host_ip():
-    # if sys.platform.startswith("linux"):
-    #     result = subprocess.check_output(['hostname', '-I'])
-    #     ip_address = result.decode().strip().split()[0]
+    if sys.platform.startswith("linux"):
+        result = subprocess.check_output(['hostname', '-I'])
+        ip_address = result.decode().strip().split()[0]
         
-    #     socketio.emit('host_ip', {'data': ip_address})
-    # else:
+        socketio.emit('host_ip', {'data': ip_address})
+    else:
         socketio.emit('host_ip', {'data': socket.gethostbyname(socket.gethostname())})
     
-        # * Get current data
-        current_data = data_handler.get_current_data()
-            
-        if current_data[current_sensor_topic] == "is_on":
-            mqtt_connect.publish(current_sensor_topic, "off")
-            data_handler.update_current_data(current_sensor_topic, "is_off")
-            socketio.emit(current_sensor_topic, {'data': "is_off"})
-            
-        elif current_data[current_sensor_topic] == "is_off":
-            mqtt_connect.publish(current_sensor_topic, "on")
-            data_handler.update_current_data(current_sensor_topic, "is_on")
-            socketio.emit(current_sensor_topic, {'data': "is_on"})
+    # * Commented out code below sends an MQTT request to turn on / off the current sensor functionality. It was used during the Expo in case door collision detection glitched out.
+    """ # * Get current data
+    current_data = data_handler.get_current_data()
+        
+    if current_data[current_sensor_topic] == "is_on":
+        mqtt_connect.publish(current_sensor_topic, "off")
+        data_handler.update_current_data(current_sensor_topic, "is_off")
+        socketio.emit(current_sensor_topic, {'data': "is_off"})
+        
+    elif current_data[current_sensor_topic] == "is_off":
+        mqtt_connect.publish(current_sensor_topic, "on")
+        data_handler.update_current_data(current_sensor_topic, "is_on")
+        socketio.emit(current_sensor_topic, {'data': "is_on"}) """
             
 
 
 # * ------------------------------------------ Control Modules ------------------------------------------
                     # Camera
 if cameraCodeFlag:
+    # * Below is commented out code for how I tried to get camera frames pushed to the client via websockets... it didn't work.
     """ import base64
     socket_indoor_camera_thread = None
     socket_indoor_camera_thread_lock = threading.Lock()
