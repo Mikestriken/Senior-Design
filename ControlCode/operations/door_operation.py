@@ -21,7 +21,7 @@ from classes import door, limit_switch, mqtt_connection, motor_current
 import RPi.GPIO as GPIO # or gpio setup
 GPIO.setwarnings(False)
 
-# * ------------------------------Door Operation-----------------------------------
+# * ------------------------------ Door Operation -----------------------------------
 percent_publisher = mqtt_connection.MQTT_Connection("publisher")
 
 front_door = door.Door()
@@ -88,7 +88,7 @@ def door_collision_isr():
 
 #door_limit_switch = limit_switch.LimitSwitch(limit_isr=door_collision_isr)
 
-# * ------------------------------Mqtt Connection-----------------------------------
+# * ------------------------------ Mqtt Connection -----------------------------------
 CURRENT_SENSOR_ENABLED = True
 
 # * This on_message MQTT ISR is used to enable or disable the current sensor (Legacy code, used for expo, disabled on the client side),
@@ -105,7 +105,7 @@ def on_message_main(self, client, msg):
                   
 mqtt_connect = mqtt_connection.MQTT_Connection(type='both', topics = ['door', 'door_request', 'current_sensor'], on_message=on_message_main)
 
-# * ------------------------------Motor Current-----------------------------------
+# * ------------------------------ Motor Current -----------------------------------
 # * The current sensor doesn't behave as expected... The expected output is a steady logic 1 value to be output when the motor attempts
 # * To draw more current than possible. In practice the current sensor spikes to a logic 1 and the returns to logic 0 repeatedly.
 # * This variable is used to keep track of the number of spikes detected.
@@ -131,7 +131,7 @@ def current_isr(temp_arg):
 
 current_detect = motor_current.MotorCurrent(isr=current_isr)
 
-# * ------------------------------Operation Loop---------------------------------
+# * ------------------------------ Operation Loop ---------------------------------
 # * I think this is to make sure all the threads don't some because the main script reaches the end.. -- Michael
 def operation_loop():
     while True:
