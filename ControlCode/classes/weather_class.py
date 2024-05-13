@@ -38,6 +38,7 @@ class WeatherStation():
             raise ValueError(f"Serial port couldn't be instantiated with \'/dev/{port}\' at {baud} baud")
         
         # * Threading Lock for Asynchronous Data Updating and Publishing
+        # Note: I don't think this is strictly necessary because this program is asynchronous, not multithreaded.
         self.lock = threading.Lock()
         
         # * UNICODE Decode Error Flag, used in get_line method
@@ -126,6 +127,7 @@ class WeatherStation():
             # * 2. Print / Send data
             # * 3. Wait 2 seconds before doing so again.
             # Note: displayPublishedDataFlag will enable these print statements
+            # ToDo: Add an await NEW_DATA_FLAG after sleeping 2 seconds.
 
             if displayPublishedDataFlag:
                 print(f"Attempting to Publish...")
@@ -149,12 +151,15 @@ class WeatherStation():
     
     async def read_and_update_forever(self, rawDataFlag = False, displayPublishedDataFlag = False, displayUpdatedDataFlag = False):
         
+        # * Create an asynchronous task to publish the data
         asyncio.create_task(self.publish_data(displayPublishedDataFlag))
         
+        # * If raw data flag is set, print raw data to the command line asynchronously.
         if rawDataFlag:
             asyncio.create_task(self.get_line_forever())
             
         
+        # * Continuously update self.currentData and publish to MQTT topic when currentData is different from previousData
         while True:
             # * Attempt to decode a line from the serial port
             line = self.get_line()
@@ -185,8 +190,8 @@ class WeatherStation():
                     self.currentData['meteorological']['humidity'] = float(meteorological_match.group(4))
                     self.currentData['meteorological']['dewPoint'] = float(meteorological_match.group(5))
                     
+                # * Calculate wind direction relative to compass bearing when data is present to perform the calculation.
                 if (self.currentData['wind']['rawDirection'] != None) and (self.currentData['heading'] != None):
-                    
                     # * Calculate true wind direction:
                     # Note: The rawDirection points to where the wind is hitting the weather station relative to where it's pointing (not magnetic heading).
                     trueDirection = (self.currentData['heading'] + self.currentData['wind']['rawDirection'] - 180 + 360) % 360
@@ -198,7 +203,7 @@ class WeatherStation():
                 if displayUpdatedDataFlag:
                     print(f"Updated Data with:\n{self.currentData}\n")
                     
-                # * Set new data flag so that publish_data knows it has something new to report
+                # * Set new data flag so that the publish_data task knows it has something new to publish
                 if (self.previousData != self.currentData) and (not self.check_none(self.currentData)):
                     self.NEW_DATA_FLAG = True
                     
