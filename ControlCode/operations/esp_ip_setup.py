@@ -1,6 +1,6 @@
 ##################################################################################
 #      ESP 32 Receive Signal Strength Indication (RSSI) Setup Python Script
-# This python script sets up a connection with a robot connected to the same router
+# This python script sets up a connection with a Spot Collar connected to the same router
 # and sends the RSSI information on an MQTT topic for the door control code to use.
 #
 # Created by Joelle Bailey for EPRI_SPOT, Spring 2024

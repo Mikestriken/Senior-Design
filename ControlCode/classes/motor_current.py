@@ -16,7 +16,7 @@ class MotorCurrent:
         self.pin_number = pin_number
 
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.pin_number, GPIO.IN) # add ', pull_up_down=GPIO.PUD_DOWN'
+        GPIO.setup(self.pin_number, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
         GPIO.add_event_detect(self.pin_number, GPIO.RISING,
             callback=isr, bouncetime=300)
