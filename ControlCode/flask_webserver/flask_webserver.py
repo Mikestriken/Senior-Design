@@ -208,6 +208,7 @@ def after_request(response):
 def root():
     return redirect(url_for('main'))
 
+# * Push index.html to clients who route to /index.html.
 @app.route("/index.html")
 def main():
     return render_template('index.html')
@@ -228,17 +229,21 @@ def generate_socket_events(socket_topics, dataHandler):
         raise TypeError("Error: topic must be a string or a list of strings")
     
     
-    # * dataHandler should be DataHandler
+    # * dataHandler should be DataHandler type
     if not isinstance(dataHandler, DataHandler):
         raise TypeError("Error: dataHandler must be a DataHandler")
     
     # * Send data to connected clients
     for topic in socket_topics_list:
+        # * If the relative MQTT topic has posted new (changed / different) information
         if dataHandler.get_update_flag(topic):
+            # * unset the update flag (new information has been sent)
             dataHandler.unset_update_flag(topic)
             
+            # * Get the new information
             current_data = dataHandler.get_current_data()
             
+            # * Send the new information
             # print(f"{topic}: {current_data[topic]}")
             socketio.emit(topic, current_data[topic])
         
@@ -258,12 +263,15 @@ def check_none(obj):
                     return True
     return False
 
+# * This is a background thread that is created as soon as the first client connects. Only a single instance of this thread is created.
 def background_thread():
+    # * Variables below are used to figure out what properties in the the data_handler topic are empty, and have not been retrieved via MQTT yet.
     topicsAwaitingFirstUpdate = [wall_power_topic, door_topic, fan_HOA_topic, indoor_light_topic, fan_topic]
     updatedList = [False] * len(topicsAwaitingFirstUpdate)
     updated = False
     
     while True:
+        # * If not all properties of data_handler have valid data, post "query_state" to the relevant topic.
         if not updated:
         # * Set updated flag if everything in the updatedList is True
             if all(updatedList):
@@ -284,11 +292,14 @@ def background_thread():
                 
                 # * Request an update
                 mqtt_connect.publish(topicsAwaitingFirstUpdate[i], "query_state")
-            
+        
+        # * Update all the clients via websockets with the latest data.
         generate_socket_events([alert_topic], alert_data_handler)
         generate_socket_events(topics, data_handler)
         socketio.sleep(1)
 
+# * Code below starts background tasks thread as soon as the first user connects.
+    # Note: It only starts it once, subsequent connections don't create additional duplicate threads.
 @socketio.on('connect')
 def connect():
     global socket_thread
@@ -302,8 +313,11 @@ def connect():
 def disconnect():
     print('Client disconnected',  request.sid)
 
+# * Code below retrieves the ip of the host and sends the ip to the client when the client clicks the 'terminal' button on the HMI
 @socketio.on('host_ip')
 def request_host_ip():
+    # If on linux, retrieve ip via 'hostname -I' terminal command. Else use socketio.
+    # Note, this has a propensity to return 12.0.0.1 (or an ip similar to that), instead of a viable IPv4 address to ssh into.
     if sys.platform.startswith("linux"):
         result = subprocess.check_output(['hostname', '-I'])
         ip_address = result.decode().strip().split()[0]
